@@ -1,0 +1,417 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Main extends frontend_controller {
+	
+	function __construct(){
+		parent::__construct();
+		
+	}
+//------------------------------------------------------------------------------
+//GENERIC PREP DATA FUNCTIONS FOR FRONTEND
+//------------------------------------------------------------------------------
+	private function prepHeader($Header, $count=1){
+		//Prep generic tab
+		if($count==1){
+			return "<li role='presentation' class='active'><a href='#Tab$count' aria-controls='Tab$count' role='tab' data-toggle='tab'> $Header </a></li>";
+		}	
+		else{
+			return "<li role='presentation'><a href='#Tab$count' aria-controls='Tab$count' role='tab' data-toggle='tab'> $Header </a></li>";
+		}	
+	}
+	//--------------------------------------------------------------------------
+	private function prepContent($Content, $count=1){
+		//Prep generic content
+		if($count==1){
+			return "<div role='tabpanel' class='tab-pane active' id='Tab$count'> $Content</div>";
+		}	
+		else{
+			return "<div role='tabpanel' class='tab-pane' id='Tab$count'> $Content</div>";
+		}	
+	}
+	//-----------------------------------------------------------------------------
+	private function commonHeader()
+	{
+		$data['css'][0]="main.css";
+		$data['css'][1]="frontend/frontend.css";
+		$data['site_name']=config_item('site_name');
+		$data['dashboard']=$this->myDash();
+		$data['userOptions'] = $this->baseTemplate();
+		$data['singularContent']='';
+		return $data;
+	}
+	//-------------------------------------------------------------------------------
+	private function baseTemplate(){
+		
+		$menu='<li>'.anchor('main/index', "Home").'</li>';
+		$menu.='<li>'.anchor('main/litterbox', "Litterbox").'</li>';
+		$menu.='<li>'.anchor('main/gear', "Bull Gear").'</li>';
+		$menu.='<li>'.anchor('main/video', "Video").'</li>';
+		$menu.='<li>'.anchor('main/photos', "Photos").'</li>';
+		$menu.='<li>'.anchor('main/news', "Blog").'</li>';
+		$menu.='<li>'.anchor('main/contact', "Contact").'</li>';	
+		
+		return $menu;
+	}
+	//---------------------------------------------------------------------------------------	
+	private function myDash(){
+		$currentRole=$this->session->userdata('role');
+		if($currentRole===FALSE){
+			$currentRole=0;
+			return "<ul class='nav navbar-nav navbar-right'>
+	      			<li>".anchor('signup', "Sign up")."</li>
+	      			<li>".anchor('login', "Log In")."</li>
+	      		</ul>";
+		}
+		if($currentRole>=7){
+			return "<ul class='nav navbar-nav navbar-right'>
+	      			<li>".anchor('admin/dashboard', "Dashboard")."</li>
+	      			<li>".anchor('login/logout', "Logout")."</li>
+	      		</ul>";
+		}
+		else{
+			return "<ul class='nav navbar-nav navbar-right'>
+	      			<li>".anchor('admin/dashboard', "My Dashboard")."</li>
+	      			<li>".anchor('login/logout', "Logout")."</li>
+	      		</ul>";
+		}
+		
+	}
+	
+//-------------------------------------------------------------------------------------	
+//----------------------------------------------------------------------------------		
+	
+	public function index()
+	{
+		$this->load->model('Media_model');
+		$this->load->model('Article_model');
+		$this->load->model('Dataprep_model');
+		$data=$this->commonHeader();
+		// $data['js'][0]='bookObject.js';
+		// $data['js'][1]='bookIndex.js';
+		$data['title']="Home";
+		$data['css'][2]="frontend/home.css";		
+		
+		$data['mediaContent']=$data['mediaHeader']='';
+		// $data['mediaContent2']=$data['mediaHeader2']='';
+		// $data['mediaContent3']=$data['mediaHeader3']='';
+		// $data['mediaContent4']=$data['mediaHeader4']='';
+		
+		$currentRole=$this->session->userdata('role');
+		if($currentRole===FALSE){
+			$currentRole=0;
+		}
+		
+		if($currentRole>0){
+			$myMedia=$this->Media_model->getPhotos(NULL, NULL, NULL, 5);
+		}
+		else{
+			$myMedia=$this->Media_model->getPhotos(NULL, NULL, 0, 5);
+		}
+		$articles=$this->Article_model->getNewsPublic(NULL, 1);
+		
+		$data['mediaHeader'].=$this->prepHeader("<h3>Recently Added Photos</h3>");
+		$data['mediaContent'].=$this->prepContent($this->Dataprep_model->createCarousel($myMedia, TRUE));
+		
+		$data['mediaHeader'].=$this->prepHeader("<h3>Most Recent Post</h3>", 2);
+		$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($articles, "news", "news_id", "news"), 2);
+		
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('mainLayout', $data);
+		// $this->load->view('inc/modals');
+		$this->load->view('templates/footer', $data);
+		
+		
+	}
+	
+	
+
+	//------------------------------------------------------------------------------------
+
+	public function news($id=NULL)
+	{
+		$this->load->model('Article_model');
+		$this->load->model('Dataprep_model');
+		
+		$maxLimit=7;	
+		$data=$this->commonHeader();
+		// $data['js'][0]='bookObject.js';
+		// $data['js'][1]='bookIndex.js';
+		$data['title']="News";
+		
+		
+		$data['mediaContent']=$data['mediaHeader']='';
+		// $data['mediaContent2']=$data['mediaHeader2']='';
+		// $data['mediaContent3']=$data['mediaHeader3']='';
+		// $data['mediaContent4']=$data['mediaHeader4']='';
+		
+		
+		if($id===NULL){
+			$articles=$this->Article_model->getNewsPublic(NULL, $maxLimit, 0);
+			$maxItems=$this->Article_model->getNewsCount();
+			$data['singularContent']=$this->Dataprep_model->gatherItems($articles, "news", "news_id", "news", $maxItems, $maxLimit);
+		}
+		else{
+			
+			$allData=$this->Article_model->getNewsPublic(intval($id));
+			if(count($allData)){
+				$articles=array("solo" => $allData);
+				$data['singularContent']=$this->Dataprep_model->gatherItems($articles, "news", "news_id", "news");
+			}
+			else{
+				$data['singularContent']="<div><h4>That article does not exist.</h4></div>";
+			}
+		}
+		
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('mainLayout', $data);
+		// $this->load->view('inc/modals');
+		$this->load->view('templates/footer', $data);
+		
+		
+	}
+	public function photos($id=NULL)
+	{
+		$this->load->model('Media_model');	
+		$this->load->model('Dataprep_model');
+		$data=$this->commonHeader();
+		$maxLimit=12;
+	
+		// $data['js'][0]='bookObject.js';
+		// $data['js'][1]='bookIndex.js';
+		$data['title']="Photos";
+		
+		
+		$currentRole=$this->session->userdata('role');
+		if($currentRole===FALSE){
+			$currentRole=0;
+		}
+		
+		$data['mediaContent']=$data['mediaHeader']='';
+		// $data['mediaContent2']=$data['mediaHeader2']='';
+		// $data['mediaContent3']=$data['mediaHeader3']='';
+		// $data['mediaContent4']=$data['mediaHeader4']='';
+		
+		
+		//Populate the photo types
+		//first check if we are just getting all the records
+		if($id===NULL){
+			if($currentRole>0){
+				$maxItemsNew=$this->Media_model->getPhotoCount(0, NULL);
+				// $myMedia=$this->Media_model->getPhotos(NULL, 0, NULL, $maxItemsNew, $maxLimit);
+				$myMedia=$this->Media_model->getPhotos(NULL, 0, NULL);
+				$maxItemsVintage=$this->Media_model->getPhotoCount(1, NULL);
+				// $myVintage=$this->Media_model->getPhotos(NULL, 1, NULL, $maxItemsVintage, $maxLimit);
+				$myVintage=$this->Media_model->getPhotos(NULL, 1, NULL);
+			}
+			else{
+				$maxItemsNew=$this->Media_model->getPhotoCount(0, 0);	
+				// $myMedia=$this->Media_model->getPhotos(NULL, 0, 0, $maxItemsNew, $maxLimit);
+				$myMedia=$this->Media_model->getPhotos(NULL, 0, 0);
+				$maxItemsVintage=$this->Media_model->getPhotoCount(1, 0);
+				// $myVintage=$this->Media_model->getPhotos(NULL, 1, 0, $maxItemsNew, $maxLimit);
+				$myVintage=$this->Media_model->getPhotos(NULL, 1, 0);
+			}
+			
+			
+			
+			$data['mediaHeader'].=$this->prepHeader("<h3>New Photos</h3>");
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myMedia, "media", "media_id", "photos", 3));
+			
+			$data['mediaHeader'].=$this->prepHeader("<h3>THE VAULT</h3>", 2);
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVintage, "media", "media_id", "photos", 3), 2);
+		
+			
+		}
+		// Then check if we are getting just a specific record
+		else{
+			if($currentRole>0){
+				$myMedia=$this->Media_model->getPhotos(intval($id), NULL, NULL);
+			}
+			else{
+				$myMedia=$this->Media_model->getPhotos(intval($id), NULL, 0);
+			}
+			
+			
+			//
+			if(count($myMedia)){
+				$allMedia=array("solo" => $myMedia);
+				$data['singularContent']=$this->Dataprep_model->gatherItems($allMedia, "media", "media_id", "photos");
+			}
+			else{
+				$data['singularContent']="<div><h4>That item does not exist.</h4></div>";
+			}
+		}
+		
+		
+		
+		// $data['numUsers']=count($articles);
+		
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('mainLayout', $data);
+		// $this->load->view('inc/modals');
+		$this->load->view('templates/footer', $data);
+		
+		
+	}
+
+	
+
+
+
+
+	public function video($id=NULL)
+	{
+		$this->load->model('Media_model');	
+		$this->load->model('Dataprep_model');		
+		$data=$this->commonHeader();
+		$maxLimit=12;
+		// $data['js'][0]='bookObject.js';
+		// $data['js'][1]='bookIndex.js';
+		$data['title']="Video";
+		
+		$data['mediaContent']=$data['mediaHeader']='';
+		// $data['mediaContent2']=$data['mediaHeader2']='';
+		// $data['mediaContent3']=$data['mediaHeader3']='';
+		// $data['mediaContent4']=$data['mediaHeader4']='';
+		
+		
+		
+		$currentRole=$this->session->userdata('role');
+		if($currentRole===FALSE){
+			$currentRole=0;
+		}
+		
+		
+		if($id===NULL){
+			if($currentRole>0){
+				$maxItemsNew=$this->Media_model->getEmbedCount(0,NULL);
+				// $myMedia=$this->Media_model->getEmbeds(NULL, 0, NULL, $maxItemsNew, $maxLimit);
+				$myMedia=$this->Media_model->getEmbeds(NULL, 0, NULL);
+				$maxItemsVintage=$this->Media_model->getEmbedCount(1,NULL);
+				// $myVintage=$this->Media_model->getEmbeds(NULL, 1, NULL, $maxItemsVintage, $maxLimit);
+				$myVintage=$this->Media_model->getEmbeds(NULL, 1, NULL);
+			}
+			else{
+				$maxItemsNew=$this->Media_model->getEmbedCount(0, 0);
+				// $myMedia=$this->Media_model->getEmbeds(NULL, 0, 0, $maxItemsNew, $maxLimit);
+				$myMedia=$this->Media_model->getEmbeds(NULL, 0, 0);
+				$maxItemsVintage=$this->Media_model->getEmbedCount(1,0);
+				// $myVintage=$this->Media_model->getEmbeds(NULL, 1, 0, $maxItemsVintage, $maxLimit);
+				$myVintage=$this->Media_model->getEmbeds(NULL, 1, 0);
+			}
+			
+			
+			$data['mediaHeader'].=$this->prepHeader("<h3>New Videos</h3>");
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myMedia, "media", "media_id", "video", 3));
+			
+			$data['mediaHeader'].=$this->prepHeader("<h3>THE VAULT</h3>", 2);
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVintage, "media", "media_id", "video", 3), 2);
+			
+		}
+		else{
+			if($currentRole>0){
+				$myMedia=$this->Media_model->getEmbeds(intval($id), NULL, NULL);
+			}
+			else{
+				$myMedia=$this->Media_model->getEmbeds(intval($id), NULL);
+			}
+			
+			
+			//
+			if(count($myMedia)){
+				$allMedia=array("solo" => $myMedia);
+				$data['singularContent']=$this->Dataprep_model->gatherItems($allMedia, "media", "media_id", "video");
+			}
+			else{
+				$data['singularContent']="<div><h4>That item does not exist.</h4></div>";
+			}
+		}
+		
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('mainLayout', $data);
+		// $this->load->view('inc/modals');
+		$this->load->view('templates/footer', $data);
+		
+		
+	}
+	
+//---------------------------------------------------------------------------------------------------------------------------
+	public function gear()
+	{
+		$this->load->model('Dataprep_model');	
+		$data=$this->commonHeader();
+		// $data['js'][0]='bookObject.js';
+		// $data['js'][1]='bookIndex.js';
+		$data['title']="Bull Gear";
+		
+		$data['mediaContent']=$data['mediaHeader']='';
+		
+		
+		
+		$data['singularContent']='<div><h4>Feature coming soon: Buy Bull gear directly from the site.<br><br> 
+		In the meantime, contact Butch directly for any bull gear purchase at <a href="mailto:butchstratford@gmail.com">butchstratford@gmail.com</a> </h4></div>';
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('mainLayout', $data);
+		// $this->load->view('inc/modals');
+		$this->load->view('templates/footer', $data);
+		
+		
+	}
+	
+//------------------------------------------------------------------------------------------------------------------------------	
+	public function contact()
+	{
+		$this->load->model('Staticpages_model');
+		$this->load->model('Dataprep_model');	
+		$data=$this->commonHeader();
+		$data['css'][2]="frontend/contact.css";
+		// $data['js'][0]='bookObject.js';
+		// $data['js'][1]='bookIndex.js';
+		$data['title']="Contact";
+		
+		$data['mediaContent']=$data['mediaHeader']='';
+		
+		$contact=$this->Staticpages_model->getSpecificContact();
+		$data['singularContent']=$this->Dataprep_model->gatherItems($contact, 'contact info', "static_id");
+		
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('mainLayout', $data);
+		// $this->load->view('inc/modals');
+		$this->load->view('templates/footer', $data);
+		
+		
+	}
+//----------------------------------------------------------------------------------------------------------------------------------
+	public function litterbox()
+	{
+		$this->load->model('Vendor_model');
+		$this->load->model('Dataprep_model');	
+		$data=$this->commonHeader();
+		// $data['js'][0]='bookObject.js';
+		// $data['js'][1]='bookIndex.js';
+		$data['title']="Contact";
+		
+		$data['mediaContent']=$data['mediaHeader']='';
+		
+		
+		// $contact=$this->Staticpages_model->getSpecificContact();
+		$data['singularContent']='<div><h4>Feature coming soon:PAID VIDEOS GO HERE</h4></div>';//$this->Dataprep_model->gatherItems($contact, 'contact info', "static_id");
+		
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('mainLayout', $data);
+		// $this->load->view('inc/modals');
+		$this->load->view('templates/footer', $data);
+		
+		
+	}	
+	
+	
+}
+

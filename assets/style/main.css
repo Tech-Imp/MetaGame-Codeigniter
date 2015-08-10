@@ -1,0 +1,52 @@
+
+.contentFooter{
+	padding-top: 70px;
+}
+.invertColor{
+	padding-top: 15px;
+	padding-bottom: 15px;
+	color:#999999;
+}
+
+
+td{	
+	padding: 3px;
+}
+.well.wishColor{
+	background-image: linear-gradient(to bottom,#468847 0,#f5f5f5 100%);
+}
+
+#welcomeImage{
+	overflow-x: hidden
+}
+
+.green{
+	color:green;
+}
+
+.blue{
+	color:blue;
+}
+
+.red{
+	color:red;
+}
+.noshow{
+	display: none;
+}
+.titleSizer{
+	height: 2em; 
+	min-height: 2em;
+    line-height: 1em; 
+    overflow: hidden;
+}
+.itemVis{
+	background-image: linear-gradient(to bottom,#0099FF 0,#f5f5f5 100%);
+}
+.itemHidden{
+	background-image: linear-gradient(to bottom,#FF6666 0,#f5f5f5 100%);
+}
+.itemTemp{
+	background-image: linear-gradient(to bottom,#66E0C2 0,#f5f5f5 100%);
+}
+
