@@ -117,8 +117,8 @@ class dataprep_model extends CI_Controller{
 			if(count($myMedia)>1 && $maxRows>$limitRows && $myLink!==NULL){
 				$export.="<div class='row'><nav>
   					<ul class='pager'>
-				<li class='disabled previous'><a href='javascript:void(0);' id='".$myLink."Previous' class='prevPage'>Previous</a></li>
-				<li class='next'><a href='javascript:void(0);' id='".$myLink."Next' class='nextPage'>Next</a></li>
+				<li class='disabled previous'><a href='javascript:void(0);' data-loc='".$myLink."' class='prevPage'>Previous</a></li>
+				<li class='next'><a href='javascript:void(0);' data-loc='".$myLink."' class='nextPage'>Next</a></li>
 				</ul></nav></div>";
 			}
 			
