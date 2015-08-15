@@ -51,7 +51,7 @@ class paging extends CI_Controller{
 		
 	
 		if(count($articles)){
-			return $this->Dataprep_model->gatherItems($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit);
+			return $this->Dataprep_model->gatherItems($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit, $offset);
 		}
 		else{
 			return "<div><h4>That article does not exist.</h4></div>";

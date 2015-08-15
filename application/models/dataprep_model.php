@@ -9,7 +9,7 @@ class dataprep_model extends CI_Controller{
 //------------------------------------------------------------------------------------------
 //Used to prepare items for the front end
 //-------------------------------------------------------------------------------------------
-	public function gatherItems($myMedia, $items=NULL, $primary_key, $myLink=NULL, $perRow=1, $maxRows=0, $limitRows=1){
+	public function gatherItems($myMedia, $items=NULL, $primary_key, $myLink=NULL, $perRow=1, $maxRows=0, $limitRows=1, $pageOffset=0){
 		//myMedia is the raw data coming back from the model
 		//Items is just a string of what these things are
 		//primary_key is the name of the primary key, used to retrieve values
@@ -116,10 +116,21 @@ class dataprep_model extends CI_Controller{
 			//Handle pagination when multiple items are limited and it exceeds the limit
 			if(count($myMedia)>1 && $maxRows>$limitRows && $myLink!==NULL){
 				$export.="<div class='row'><nav>
-  					<ul class='pager'>
-				<li class='disabled previous'><a href='javascript:void(0);' data-loc='".$myLink."' class='prevPage'>Previous</a></li>
-				<li class='next'><a href='javascript:void(0);' data-loc='".$myLink."' class='nextPage'>Next</a></li>
-				</ul></nav></div>";
+  					<ul class='pager'>";
+				//Determine if previous is leading into null area and block
+				if($pageOffset>0){
+					$export.="<li class='previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='prevPage'>Previous</a></li>";
+				}
+				else{
+					$export.="<li class='disabled previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='prevPage'>Previous</a></li>";
+				}
+				if($pageOffset*$limitRows<$maxRows){
+					$export.="<li class='next'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='nextPage'>Next</a></li>";
+				}
+				else{
+					$export.="<li class='disabled next'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='nextPage'>Next</a></li>";
+				}
+				$export.="</ul></nav></div>";
 			}
 			
 		}
