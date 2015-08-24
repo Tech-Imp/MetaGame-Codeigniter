@@ -16,7 +16,7 @@ class News extends common_frontend {
 		$maxLimit=7;	
 		$data=$this->commonHeader();
 		$data['css'][2]='frontend/blog.css';
-		// $data['js'][0]='bookObject.js';
+		$data['js'][0]='commonShared.js';
 		// $data['js'][1]='bookIndex.js';
 		$data['title']="News";
 		
