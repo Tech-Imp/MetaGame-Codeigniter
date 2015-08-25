@@ -119,10 +119,10 @@ class dataprep_model extends CI_Controller{
   					<ul class='pager'>";
 				//Determine if previous is leading into null area and block
 				if($pageOffset>0){
-					$export.="<li class='previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='prevPage'>Previous</a></li>";
+					$export.="<li class='previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='prevPage'>Prev</a></li>";
 				}
 				else{
-					$export.="<li class='disabled previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='prevPage'>Previous</a></li>";
+					$export.="<li class='disabled previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='prevPage'>Prev</a></li>";
 				}
 				if($pageOffset*$limitRows<$maxRows){
 					$export.="<li class='next'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='nextPage'>Next</a></li>";
