@@ -40,18 +40,18 @@ class paging extends CI_Controller{
       	exit; 
 	}
 	
-	private function getNews($offset=0){
+	private function getNews($paging=0){
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=7;
-		$offset=$offset*$maxLimit;
+		$offset=$paging*$maxLimit;
 		
 		$articles=$this->Article_model->getNewsPublic(NULL, $maxLimit, $offset);
 		$maxItems=$this->Article_model->getNewsCount();
 		
 	
 		if(count($articles)){
-			return $this->Dataprep_model->gatherItems($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit, $offset);
+			return $this->Dataprep_model->gatherItems($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit, $paging);
 		}
 		else{
 			return "<div><h4>That article does not exist.</h4></div>";
