@@ -13,31 +13,33 @@ class commonShared
                     console.log $(event.currentTarget).parent().html()
                     console.log $(event.currentTarget).attr("data-loc")
                     
-                    @changePage($(event.currentTarget).attr("data-loc"), "prev", "News")
+                    @changePage($(event.currentTarget).attr("data-loc"), "next", "News")
                
           $(".prevPage").unbind().bind "click", (event)=>
                if !($(event.currentTarget).parent().hasClass("disabled"))
                     console.log $(event.currentTarget).parent().html()
                     console.log $(event.currentTarget).attr("data-loc")
                     
-                    @changePage($(event.currentTarget).attr("data-loc"), "next", "News")
+                    @changePage($(event.currentTarget).attr("data-loc"), "prev", "News")
           
      
       
      
      changePage:(offset=0, direction="next", type="News")=>
-          if @debug then console.log "commonShared.getBooks"
+          if @debug then console.log "commonShared.changePage"
           $("#bookDatabase").html("")
           # TODO need to finish this area
-#           
-          # $.ajax
-               # url: "paging/"+
-               # type: 'post'
-               # dataType: 'json'
-               # data:
-                    # type: genre
-               # success: (response)=>
-                    # if response.success
+          location=direction+type
+          $.ajax
+               url: window.location.origin+"/paging/"+location
+               type: 'post'
+               dataType: 'json'
+               data:
+                    offset: offset
+               success: (response)=>
+                    if response.success
+                         $("#mediaDatabase").html("<div>FOUND</div>"+response.success)
+                         @setupEvents()
                          # for book in response.success
                               # new window.classes.bookObject(book.uid, book.title, book.auth, book.page, book.cost, book.stock, book.wish, book.img)
                     # else if response.debug

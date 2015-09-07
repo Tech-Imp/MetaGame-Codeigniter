@@ -13,7 +13,7 @@ class paging extends CI_Controller{
 		header('content-type: text/javascript');
 		$offset = intval($this->input->get_post('offset')); 
 		$offset++;
-		$result=getNews($offset);
+		$result=$this->getNews($offset);
 		$data=array('success' => $result); 
       	echo json_encode($data);
       	exit; 
@@ -25,7 +25,7 @@ class paging extends CI_Controller{
 		if($offset>0){
 			$offset--;
 		} 
-		$result=getNews($offset);
+		$result=$this->getNews($offset);
 		$data=array('success' => $result); 
       	echo json_encode($data);
       	exit; 
@@ -34,7 +34,7 @@ class paging extends CI_Controller{
 	function specificPage(){
 		header('content-type: text/javascript');
 		$offset = abs(intval($this->input->get_post('offset'))); 
-		$result=getNews($offset);
+		$result=$this->getNews($offset);
 		$data=array('success' => $result); 
       	echo json_encode($data);
       	exit; 

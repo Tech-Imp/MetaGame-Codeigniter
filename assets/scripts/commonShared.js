@@ -26,7 +26,7 @@
           if (!($(event.currentTarget).parent().hasClass("disabled"))) {
             console.log($(event.currentTarget).parent().html());
             console.log($(event.currentTarget).attr("data-loc"));
-            return _this.changePage($(event.currentTarget).attr("data-loc"), "prev", "News");
+            return _this.changePage($(event.currentTarget).attr("data-loc"), "next", "News");
           }
         };
       })(this));
@@ -35,13 +35,14 @@
           if (!($(event.currentTarget).parent().hasClass("disabled"))) {
             console.log($(event.currentTarget).parent().html());
             console.log($(event.currentTarget).attr("data-loc"));
-            return _this.changePage($(event.currentTarget).attr("data-loc"), "next", "News");
+            return _this.changePage($(event.currentTarget).attr("data-loc"), "prev", "News");
           }
         };
       })(this));
     };
 
     commonShared.prototype.changePage = function(offset, direction, type) {
+      var location;
       if (offset == null) {
         offset = 0;
       }
@@ -52,9 +53,26 @@
         type = "News";
       }
       if (this.debug) {
-        console.log("commonShared.getBooks");
+        console.log("commonShared.changePage");
       }
-      return $("#bookDatabase").html("");
+      $("#bookDatabase").html("");
+      location = direction + type;
+      return $.ajax({
+        url: window.location.origin + "/paging/" + location,
+        type: 'post',
+        dataType: 'json',
+        data: {
+          offset: offset
+        },
+        success: (function(_this) {
+          return function(response) {
+            if (response.success) {
+              $("#mediaDatabase").html("<div>FOUND</div>" + response.success);
+              return _this.setupEvents();
+            }
+          };
+        })(this)
+      });
     };
 
     commonShared.prototype.determineLoad = function() {
