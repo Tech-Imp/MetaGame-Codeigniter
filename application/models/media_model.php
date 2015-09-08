@@ -140,9 +140,7 @@ class Media_model extends MY_Model{
 						
 		}
 		
-		
 		return $this->get($id);
-		
 	}
 	public function getEmbedCount($vintage=0, $logged=1){
 		$now=date('Y-m-d H:i:s');	

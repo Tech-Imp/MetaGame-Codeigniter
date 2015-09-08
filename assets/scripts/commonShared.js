@@ -41,7 +41,7 @@
       })(this));
     };
 
-    commonShared.prototype.changePage = function(offset, direction, type) {
+    commonShared.prototype.changePage = function(offset, direction, type, orig) {
       var location;
       if (offset == null) {
         offset = 0;
@@ -51,6 +51,9 @@
       }
       if (type == null) {
         type = "News";
+      }
+      if (orig == null) {
+        orig = false;
       }
       if (this.debug) {
         console.log("commonShared.changePage");
@@ -67,7 +70,11 @@
         success: (function(_this) {
           return function(response) {
             if (response.success) {
-              $("#mediaDatabase").html("<div>FOUND</div>" + response.success);
+              if (orig === false) {
+                $("#mediaDatabase").html(response.success);
+              } else {
+                console.log("Data returned, need location to export");
+              }
               return _this.setupEvents();
             }
           };

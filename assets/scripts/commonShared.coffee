@@ -25,7 +25,7 @@ class commonShared
      
       
      
-     changePage:(offset=0, direction="next", type="News")=>
+     changePage:(offset=0, direction="next", type="News", orig=false)=>
           if @debug then console.log "commonShared.changePage"
           $("#bookDatabase").html("")
           # TODO need to finish this area
@@ -38,7 +38,10 @@ class commonShared
                     offset: offset
                success: (response)=>
                     if response.success
-                         $("#mediaDatabase").html("<div>FOUND</div>"+response.success)
+                         if(orig==false)
+                              $("#mediaDatabase").html(response.success)
+                         else
+                              console.log "Data returned, need location to export"
                          @setupEvents()
                          # for book in response.success
                               # new window.classes.bookObject(book.uid, book.title, book.auth, book.page, book.cost, book.stock, book.wish, book.img)

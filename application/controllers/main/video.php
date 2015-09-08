@@ -13,7 +13,7 @@ class Video extends common_frontend {
 		$this->load->model('Media_model');	
 		$this->load->model('Dataprep_model');		
 		$data=$this->commonHeader();
-		$maxLimit=12;
+		$maxLimit=9;
 		// $data['js'][0]='bookObject.js';
 		// $data['js'][1]='bookIndex.js';
 		$data['title']="Video";
@@ -27,28 +27,28 @@ class Video extends common_frontend {
 		
 		if($id===NULL){
 			if($currentRole>0){
+				$myMedia=$this->Media_model->getEmbeds(NULL, 0, NULL, $maxLimit, 0);
 				$maxItemsNew=$this->Media_model->getEmbedCount(0,NULL);
-				// $myMedia=$this->Media_model->getEmbeds(NULL, 0, NULL, $maxItemsNew, $maxLimit);
-				$myMedia=$this->Media_model->getEmbeds(NULL, 0, NULL);
+				
+				$myVintage=$this->Media_model->getEmbeds(NULL, 1, NULL, $maxLimit, 0);
 				$maxItemsVintage=$this->Media_model->getEmbedCount(1,NULL);
-				// $myVintage=$this->Media_model->getEmbeds(NULL, 1, NULL, $maxItemsVintage, $maxLimit);
-				$myVintage=$this->Media_model->getEmbeds(NULL, 1, NULL);
+				
 			}
 			else{
+				$myMedia=$this->Media_model->getEmbeds(NULL, 0, 0, $maxLimit, 0);
 				$maxItemsNew=$this->Media_model->getEmbedCount(0, 0);
-				// $myMedia=$this->Media_model->getEmbeds(NULL, 0, 0, $maxItemsNew, $maxLimit);
-				$myMedia=$this->Media_model->getEmbeds(NULL, 0, 0);
+				
+				$myVintage=$this->Media_model->getEmbeds(NULL, 1, 0, $maxLimit, 0);
 				$maxItemsVintage=$this->Media_model->getEmbedCount(1,0);
-				// $myVintage=$this->Media_model->getEmbeds(NULL, 1, 0, $maxItemsVintage, $maxLimit);
-				$myVintage=$this->Media_model->getEmbeds(NULL, 1, 0);
 			}
+			
 			
 			
 			$data['mediaHeader'].=$this->prepHeader("<h3>New Videos</h3>");
-			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myMedia, "media", "media_id", "video", 3));
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myMedia, "media", "media_id", "video", 3, $maxItemsNew, $maxLimit));
 			
 			$data['mediaHeader'].=$this->prepHeader("<h3>THE VAULT</h3>", 2);
-			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVintage, "media", "media_id", "video", 3), 2);
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVintage, "media", "media_id", "video", 3, $maxItemsVintage, $maxLimit), 2);
 			
 		}
 		else{
