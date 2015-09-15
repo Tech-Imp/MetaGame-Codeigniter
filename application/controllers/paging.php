@@ -49,8 +49,8 @@ class paging extends CI_Controller{
 		$maxLimit=7;
 		$offset=$paging*$maxLimit;
 		
-		$articles=$this->Article_model->getPhotos(NULL, $maxLimit, $offset);
-		$maxItems=$this->Article_model->getPhotoCount();
+		$articles=$this->Media_model->getPhotos(NULL, $maxLimit, $offset);
+		$maxItems=$this->Media_model->getPhotoCount();
 		
 	
 		if(count($articles)){
