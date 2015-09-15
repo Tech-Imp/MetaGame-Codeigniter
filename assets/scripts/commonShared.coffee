@@ -12,7 +12,8 @@ class commonShared
                if !($(event.currentTarget).parent().hasClass("disabled"))
                     # console.log $(event.currentTarget).parent().html()
                     # console.log $(event.currentTarget).attr("data-loc")
-                    store=@whichDatabase($(event.currentTarget))
+                    store=@whichDatabase($(event.currentTarget), $(event.currentTarget).attr("data-loc"), $(event.currentTarget).attr("data-type"))
+                    console.log store
                     if (store!=false)
                          @changePage(store, "next")
                
@@ -21,6 +22,7 @@ class commonShared
                     # console.log $(event.currentTarget).parent().html()
                     # console.log $(event.currentTarget).attr("data-loc")
                     store=@whichDatabase($(event.currentTarget), $(event.currentTarget).attr("data-loc"), $(event.currentTarget).attr("data-type"))
+                    console.log store
                     if (store!=false)
                          @changePage(store, "prev")
           
@@ -29,6 +31,7 @@ class commonShared
      whichDatabase:(target, offset, selector)=>
            if @debug then console.log "commonShared.whichDatabase"
            here=window.location.pathname
+           console.log here
            switch here
                when "/main/photos" 
                     # TODO Determine if normal or vintage

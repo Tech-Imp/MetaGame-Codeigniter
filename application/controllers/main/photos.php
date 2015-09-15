@@ -14,7 +14,7 @@ class Photos extends common_frontend {
 		$data=$this->commonHeader();
 		$maxLimit=12;
 	
-		// $data['js'][0]='bookObject.js';
+		$data['js'][0]='commonShared.js';
 		// $data['js'][1]='bookIndex.js';
 		$data['title']="Photos";
 		
@@ -47,10 +47,10 @@ class Photos extends common_frontend {
 			
 			
 			$data['mediaHeader'].=$this->prepHeader("<h3>New Photos</h3>");
-			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myMedia, "media", "media_id", "photos", 3, $maxItemsNew, $maxLimit));
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myMedia, "media", "media_id", "photos", 3, $maxItemsNew, $maxLimit, "primary"));
 			
 			$data['mediaHeader'].=$this->prepHeader("<h3>THE VAULT</h3>", 2);
-			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVintage, "media", "media_id", "photos", 3, $maxItemsVintage, $maxLimit), 2);
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVintage, "media", "media_id", "photos", 3, $maxItemsVintage, $maxLimit, "secondary"), 2);
 		
 			
 		}

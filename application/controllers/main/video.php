@@ -14,7 +14,7 @@ class Video extends common_frontend {
 		$this->load->model('Dataprep_model');		
 		$data=$this->commonHeader();
 		$maxLimit=9;
-		// $data['js'][0]='bookObject.js';
+		$data['js'][0]='commonShared.js';
 		// $data['js'][1]='bookIndex.js';
 		$data['title']="Video";
 		
@@ -45,10 +45,10 @@ class Video extends common_frontend {
 			
 			
 			$data['mediaHeader'].=$this->prepHeader("<h3>New Videos</h3>");
-			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myMedia, "media", "media_id", "video", 3, $maxItemsNew, $maxLimit));
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myMedia, "media", "media_id", "video", 3, $maxItemsNew, $maxLimit, "primary"));
 			
 			$data['mediaHeader'].=$this->prepHeader("<h3>THE VAULT</h3>", 2);
-			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVintage, "media", "media_id", "video", 3, $maxItemsVintage, $maxLimit), 2);
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVintage, "media", "media_id", "video", 3, $maxItemsVintage, $maxLimit, "secondary"), 2);
 			
 		}
 		else{
