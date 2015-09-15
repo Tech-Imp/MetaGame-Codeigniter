@@ -10,6 +10,7 @@
       this.getData = __bind(this.getData, this);
       this.determineLoad = __bind(this.determineLoad, this);
       this.changePage = __bind(this.changePage, this);
+      this.whichDatabase = __bind(this.whichDatabase, this);
       this.setupEvents = __bind(this.setupEvents, this);
       if (this.debug) {
         console.log("commonShared.constructor");
@@ -23,63 +24,96 @@
       }
       $(".nextPage").unbind().bind("click", (function(_this) {
         return function(event) {
+          var store;
           if (!($(event.currentTarget).parent().hasClass("disabled"))) {
-            console.log($(event.currentTarget).parent().html());
-            console.log($(event.currentTarget).attr("data-loc"));
-            return _this.changePage($(event.currentTarget).attr("data-loc"), "next", "News");
+            store = _this.whichDatabase($(event.currentTarget));
+            if (store !== false) {
+              return _this.changePage(store, "next");
+            }
           }
         };
       })(this));
       return $(".prevPage").unbind().bind("click", (function(_this) {
         return function(event) {
+          var store;
           if (!($(event.currentTarget).parent().hasClass("disabled"))) {
-            console.log($(event.currentTarget).parent().html());
-            console.log($(event.currentTarget).attr("data-loc"));
-            return _this.changePage($(event.currentTarget).attr("data-loc"), "prev", "News");
+            store = _this.whichDatabase($(event.currentTarget), $(event.currentTarget).attr("data-loc"), $(event.currentTarget).attr("data-type"));
+            if (store !== false) {
+              return _this.changePage(store, "prev");
+            }
           }
         };
       })(this));
     };
 
-    commonShared.prototype.changePage = function(offset, direction, type, orig) {
+    commonShared.prototype.whichDatabase = function(target, offset, selector) {
+      var here, location;
+      if (this.debug) {
+        console.log("commonShared.whichDatabase");
+      }
+      here = window.location.pathname;
+      switch (here) {
+        case "/main/photos":
+          location = {
+            orig: target.parents("div.tab-pane"),
+            name: "image",
+            offset: offset,
+            type: selector
+          };
+          return location;
+        case "/main/video":
+          location = {
+            orig: target.parents("div.tab-pane"),
+            name: "video",
+            offset: offset,
+            type: selector
+          };
+          return location;
+        case "/main/news":
+          location = {
+            orig: $("#mediaDatabase"),
+            name: "news",
+            offset: offset,
+            type: selector
+          };
+          return location;
+        default:
+          return false;
+      }
+    };
+
+    commonShared.prototype.changePage = function(database, direction) {
       var location;
-      if (offset == null) {
-        offset = 0;
+      if (database == null) {
+        database = false;
       }
       if (direction == null) {
         direction = "next";
       }
-      if (type == null) {
-        type = "News";
-      }
-      if (orig == null) {
-        orig = false;
-      }
       if (this.debug) {
         console.log("commonShared.changePage");
       }
-      $("#bookDatabase").html("");
-      location = direction + type;
-      return $.ajax({
-        url: window.location.origin + "/paging/" + location,
-        type: 'post',
-        dataType: 'json',
-        data: {
-          offset: offset
-        },
-        success: (function(_this) {
-          return function(response) {
-            if (response.success) {
-              if (orig === false) {
-                $("#mediaDatabase").html(response.success);
-              } else {
-                console.log("Data returned, need location to export");
+      location = direction + "Page";
+      if (database !== false) {
+        return $.ajax({
+          url: window.location.origin + "/paging/" + location,
+          type: 'post',
+          dataType: 'json',
+          data: {
+            offset: database.offset,
+            database: database.name,
+            type: database.type
+          },
+          success: (function(_this) {
+            return function(response) {
+              if (response.success) {
+                database.orig.html(response.success);
+                return _this.setupEvents();
               }
-              return _this.setupEvents();
-            }
-          };
-        })(this)
-      });
+            };
+          })(this)
+        });
+      }
     };
 
     commonShared.prototype.determineLoad = function() {

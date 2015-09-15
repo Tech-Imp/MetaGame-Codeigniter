@@ -9,7 +9,7 @@ class dataprep_model extends CI_Controller{
 //------------------------------------------------------------------------------------------
 //Used to prepare items for the front end
 //-------------------------------------------------------------------------------------------
-	public function gatherItems($myMedia, $items=NULL, $primary_key, $myLink=NULL, $perRow=1, $maxRows=0, $limitRows=1, $pageOffset=0){
+	public function gatherItems($myMedia, $items=NULL, $primary_key, $myLink=NULL, $perRow=1, $maxRows=0, $limitRows=1, $pageOffset=0, $databaseType='primary' ){
 		//myMedia is the raw data coming back from the model
 		//Items is just a string of what these things are
 		//primary_key is the name of the primary key, used to retrieve values
@@ -120,16 +120,16 @@ class dataprep_model extends CI_Controller{
   					<ul class='pager'>";
 				//Determine if previous is leading into null area and block
 				if($pageOffset>0){
-					$export.="<li class='previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='prevPage'>Prev</a></li>";
+					$export.="<li class='previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='prevPage'>Prev</a></li>";
 				}
 				else{
-					$export.="<li class='disabled previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='prevPage'>Prev</a></li>";
+					$export.="<li class='disabled previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='prevPage'>Prev</a></li>";
 				}
 				if(($pageOffset+1)*$limitRows<$maxRows){
-					$export.="<li class='next'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='nextPage'>Next</a></li>";
+					$export.="<li class='next'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='nextPage'>Next</a></li>";
 				}
 				else{
-					$export.="<li class='disabled next'><a href='javascript:void(0);' data-loc='".$pageOffset."' class='nextPage'>Next</a></li>";
+					$export.="<li class='disabled next'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='nextPage'>Next</a></li>";
 				}
 				$export.="</ul></nav></div>";
 			}

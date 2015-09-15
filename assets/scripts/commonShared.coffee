@@ -10,50 +10,70 @@ class commonShared
           if @debug then console.log "commonShared.setupEvents"
           $(".nextPage").unbind().bind "click", (event)=>
                if !($(event.currentTarget).parent().hasClass("disabled"))
-                    console.log $(event.currentTarget).parent().html()
-                    console.log $(event.currentTarget).attr("data-loc")
-                    
-                    @changePage($(event.currentTarget).attr("data-loc"), "next", "News")
+                    # console.log $(event.currentTarget).parent().html()
+                    # console.log $(event.currentTarget).attr("data-loc")
+                    store=@whichDatabase($(event.currentTarget))
+                    if (store!=false)
+                         @changePage(store, "next")
                
           $(".prevPage").unbind().bind "click", (event)=>
                if !($(event.currentTarget).parent().hasClass("disabled"))
-                    console.log $(event.currentTarget).parent().html()
-                    console.log $(event.currentTarget).attr("data-loc")
-                    
-                    @changePage($(event.currentTarget).attr("data-loc"), "prev", "News")
+                    # console.log $(event.currentTarget).parent().html()
+                    # console.log $(event.currentTarget).attr("data-loc")
+                    store=@whichDatabase($(event.currentTarget), $(event.currentTarget).attr("data-loc"), $(event.currentTarget).attr("data-type"))
+                    if (store!=false)
+                         @changePage(store, "prev")
           
      
-      
-     
-     changePage:(offset=0, direction="next", type="News", orig=false)=>
+     # Determines which paging algorithm from paging controller to run and also determines where this data should be put 
+     whichDatabase:(target, offset, selector)=>
+           if @debug then console.log "commonShared.whichDatabase"
+           here=window.location.pathname
+           switch here
+               when "/main/photos" 
+                    # TODO Determine if normal or vintage
+                    location=
+                         orig: target.parents("div.tab-pane")
+                         name: "image"     
+                         offset: offset
+                         type: selector
+                    return location
+               when "/main/video"
+                    # TODO Determine if normal or vintage
+                    location=
+                         orig: target.parents("div.tab-pane")
+                         name: "video"
+                         offset: offset
+                         type: selector
+                    return location     
+               when "/main/news"
+                    location=
+                         orig: $("#mediaDatabase")
+                         name: "news"
+                         offset: offset
+                         type: selector
+                    return location
+               else
+                    return false     
+         
+          
+     changePage:(database=false, direction="next")=>
           if @debug then console.log "commonShared.changePage"
-          $("#bookDatabase").html("")
-          # TODO need to finish this area
-          location=direction+type
-          $.ajax
-               url: window.location.origin+"/paging/"+location
-               type: 'post'
-               dataType: 'json'
-               data:
-                    offset: offset
-               success: (response)=>
-                    if response.success
-                         if(orig==false)
-                              $("#mediaDatabase").html(response.success)
-                         else
-                              console.log "Data returned, need location to export"
-                         @setupEvents()
-                         # for book in response.success
-                              # new window.classes.bookObject(book.uid, book.title, book.auth, book.page, book.cost, book.stock, book.wish, book.img)
-                    # else if response.debug
-                         # # uid, name, author, pages, price, stock, wish, img
-                         # new window.classes.bookObject(123, "20000 Leagues Under the Sea", "Jules Verne", 503, "$20", 13, 0 )
-                         # new window.classes.bookObject(456, "The Great Gatsby", "F. Scott Fitzgerald ", 320, "$15", 3, 1 )
-                         # new window.classes.bookObject(789, "Animal Farm", "George Orwell", 290, "$25", 1, 1 )
-                         # new window.classes.bookObject(321, "The Hobbit", "J.R.R. Tolkien", 345, "$23", 0, 1 )
-                    # else if response.error
-                         # $("#bookDatabase").html("No books found.")        
-#      
+          location=direction+"Page"
+          
+          if database != false
+               $.ajax
+                    url: window.location.origin+"/paging/"+location
+                    type: 'post'
+                    dataType: 'json'
+                    data:
+                         offset: database.offset
+                         database: database.name
+                         type: database.type
+                    success: (response)=>
+                         if response.success
+                              database.orig.html(response.success)
+                              @setupEvents()
      
      determineLoad:()=>
           if @debug then console.log "commonShared.getBooks"
