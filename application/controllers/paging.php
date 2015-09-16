@@ -125,7 +125,7 @@ class paging extends CI_Controller{
 	private function getImage($paging=0, $type){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
-		$maxLimit=7;
+		$maxLimit=12;
 		$offset=$paging*$maxLimit;
 		
 		$vintage=$this->determineVintage($type);
@@ -161,7 +161,7 @@ class paging extends CI_Controller{
 	private function getVideo($paging=0, $type){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
-		$maxLimit=7;
+		$maxLimit=9;
 		$offset=$paging*$maxLimit;
 		
 		$vintage=$this->determineVintage($type);
@@ -184,7 +184,7 @@ class paging extends CI_Controller{
 		}
 	
 		if(count($myMedia)){
-			return $this->Dataprep_model->gatherItems($myMedia, "media", "media_id", "videos", 1, $maxItems, $maxLimit, $paging, $type);
+			return $this->Dataprep_model->gatherItems($myMedia, "media", "media_id", "video", 3, $maxItems, $maxLimit, $paging, $type);
 		}
 		else{
 			return "<div><h4>That video does not exist.</h4></div>";
