@@ -1,3 +1,1 @@
-Codeigniter Simplicity
-=============
-http://www.grocerycrud.com/codeigniter-simplicity
+Primary repository for Metagame's website
