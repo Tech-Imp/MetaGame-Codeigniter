@@ -6,9 +6,9 @@
 				<br>
 				<h4>Site Progress:</h4>
 				<div class="progress">
-			  		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-		    			<span class="sr-only">30% Complete</span>
-		    			30% Complete
+			  		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style="width: 35%">
+		    			<span class="sr-only">35% Complete</span>
+		    			35% Complete
 			  		</div>
 				</div>	
 			
