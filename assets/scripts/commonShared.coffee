@@ -10,8 +10,6 @@ class commonShared
           if @debug then console.log "commonShared.setupEvents"
           $(".nextPage").unbind().bind "click", (event)=>
                if !($(event.currentTarget).parent().hasClass("disabled"))
-                    # console.log $(event.currentTarget).parent().html()
-                    # console.log $(event.currentTarget).attr("data-loc")
                     store=@whichDatabase($(event.currentTarget), $(event.currentTarget).attr("data-loc"), $(event.currentTarget).attr("data-type"))
                     console.log store
                     if (store!=false)
@@ -19,8 +17,6 @@ class commonShared
                
           $(".prevPage").unbind().bind "click", (event)=>
                if !($(event.currentTarget).parent().hasClass("disabled"))
-                    # console.log $(event.currentTarget).parent().html()
-                    # console.log $(event.currentTarget).attr("data-loc")
                     store=@whichDatabase($(event.currentTarget), $(event.currentTarget).attr("data-loc"), $(event.currentTarget).attr("data-type"))
                     console.log store
                     if (store!=false)
@@ -30,11 +26,11 @@ class commonShared
      # Determines which paging algorithm from paging controller to run and also determines where this data should be put 
      whichDatabase:(target, offset, selector)=>
            if @debug then console.log "commonShared.whichDatabase"
+           # Here is used to determine which page we are on. It can only do paging on pages it is set for
            here=window.location.pathname
-           console.log here
            switch here
                when "/main/photos" 
-                    # TODO Determine if normal or vintage
+                    #Type determines vintage status, name is which database, origin is where to put the data
                     location=
                          orig: target.parents("div.tab-pane")
                          name: "image"     
@@ -42,7 +38,6 @@ class commonShared
                          type: selector
                     return location
                when "/main/video"
-                    # TODO Determine if normal or vintage
                     location=
                          orig: target.parents("div.tab-pane")
                          name: "video"
@@ -78,38 +73,6 @@ class commonShared
                               database.orig.html(response.success)
                               @setupEvents()
      
-     determineLoad:()=>
-          if @debug then console.log "commonShared.getBooks"
-          $("#bookDatabase").html("")     
-     
-     
-     
-     
-     
-     
-          
-     getData:(type="changes")=>
-          if @debug then console.log "commonShared.getBooks"
-          $("#bookDatabase").html("")
-          
-          $.ajax
-               url: "get/getData"
-               type: 'post'
-               dataType: 'json'
-               data:
-                    type: type
-               success: (response)=>
-                    if response.success
-                         for book in response.success
-                              new window.classes.bookObject(book.uid, book.title, book.auth, book.page, book.cost, book.stock, book.wish, book.img)
-                    else if response.debug
-                         # uid, name, author, pages, price, stock, wish, img
-                         new window.classes.bookObject(123, "20000 Leagues Under the Sea", "Jules Verne", 503, "$20", 13, 0 )
-                         new window.classes.bookObject(456, "The Great Gatsby", "F. Scott Fitzgerald ", 320, "$15", 3, 1 )
-                         new window.classes.bookObject(789, "Animal Farm", "George Orwell", 290, "$25", 1, 1 )
-                         new window.classes.bookObject(321, "The Hobbit", "J.R.R. Tolkien", 345, "$23", 0, 1 )
-                    else if response.error
-                         $("#bookDatabase").html("No books found.")      
   
      
 window.classes ?= {}
