@@ -243,7 +243,7 @@ class post extends CI_Controller{
 		if($verify->author_id==$myID || $myRole>8){
 			$result=$this->Article_model->postArticles($verify->author_id, $visibleWhen, $title, $stub, $clean_html, $newsID);
 			$this->load->model("Logging_model");
-			$this->Logging_model->newLog($result, 'eNew', 'News item '.$title.' ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
+			$this->Logging_model->newLog($result, 'eNew', 'News item '.$title.' ('.$result.') edit saved successfully by '.$myName.'('.$myEmail.')');  
 			$data=array('success' => $result);
 		}
 		else{
