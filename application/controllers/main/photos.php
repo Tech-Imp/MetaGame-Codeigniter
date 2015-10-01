@@ -12,7 +12,7 @@ class Photos extends common_frontend {
 		$this->load->model('Media_model');	
 		$this->load->model('Dataprep_model');
 		$data=$this->commonHeader();
-		$maxLimit=12;
+		$maxLimit=$this->config->item('maxSMedia');
 	
 		$data['js'][0]='commonShared.js';
 		// $data['js'][1]='bookIndex.js';

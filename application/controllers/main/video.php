@@ -13,7 +13,7 @@ class Video extends common_frontend {
 		$this->load->model('Media_model');	
 		$this->load->model('Dataprep_model');		
 		$data=$this->commonHeader();
-		$maxLimit=9;
+		$maxLimit=$this->config->item('maxMMedia');
 		$data['js'][0]='commonShared.js';
 		// $data['js'][1]='bookIndex.js';
 		$data['title']="Video";

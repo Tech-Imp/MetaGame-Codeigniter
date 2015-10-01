@@ -103,7 +103,7 @@ class paging extends CI_Controller{
 	private function getNews($paging=0){
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
-		$maxLimit=7;
+		$maxLimit=$this->config->item('maxArticles');;
 		$offset=$paging*$maxLimit;
 		
 		$articles=$this->Article_model->getNewsPublic(NULL, $maxLimit, $offset);
@@ -125,7 +125,7 @@ class paging extends CI_Controller{
 	private function getImage($paging=0, $type){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
-		$maxLimit=12;
+		$maxLimit=$this->config->item('maxSMedia');
 		$offset=$paging*$maxLimit;
 		
 		$vintage=$this->determineVintage($type);
@@ -161,7 +161,7 @@ class paging extends CI_Controller{
 	private function getVideo($paging=0, $type){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
-		$maxLimit=9;
+		$maxLimit=$this->config->item('maxMMedia');
 		$offset=$paging*$maxLimit;
 		
 		$vintage=$this->determineVintage($type);
