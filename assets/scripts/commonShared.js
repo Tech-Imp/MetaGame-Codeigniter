@@ -77,6 +77,22 @@
             type: selector
           };
           return location;
+        case "/admin/dashboard/media":
+          location = {
+            orig: $("#mediaTable"),
+            name: "media",
+            offset: offset,
+            type: selector
+          };
+          return location;
+        case "/admin/dashboard/article":
+          location = {
+            orig: $("#mediaTable"),
+            name: "articles",
+            offset: offset,
+            type: selector
+          };
+          return location;
         default:
           return false;
       }

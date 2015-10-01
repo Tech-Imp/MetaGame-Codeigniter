@@ -114,7 +114,6 @@ class dataprep_model extends CI_Controller{
 			}
 
 			//Handle pagination when multiple items are limited and it exceeds the limit
-			// if(count($myMedia)>1 && $maxRows>$limitRows && $myLink!==NULL){
 			if($maxRows>$limitRows && $myLink!==NULL){
 				$export.="<div class='row'><nav>
   					<ul class='pager'>";
@@ -234,9 +233,13 @@ class dataprep_model extends CI_Controller{
 //-------------------------------------------------------------------------------------------------------------------------
 //Prepares items for the backend
 //-------------------------------------------------------------------------------------------------------------------------
-	public function gatherItemsAdmin($myMedia, $items, $primary_key, $editFn){
+	public function gatherItemsAdmin($myMedia, $items, $primary_key, $editFn, $maxRows=0, $limitRows=1, $pageOffset=0, $databaseType='all' ){
 		//myMedia is the raw data coming back from the model
 		//Items is just a string of what these things are
+		//editFn leads over the the editing function needed on the dashboard since this is written generically
+		//maxRows is the total number of items 
+		//limitRows is the amount we want displayed at once
+		//pageOffset sets how many multiples of limitRows down we are looking 
 		$export="<strong>No ".$items." to display that you have editing rights on.</strong>";
 		if(count($myMedia)){
 			$export="";
@@ -329,6 +332,25 @@ class dataprep_model extends CI_Controller{
                     <div>".anchor('admin/dashboard/'.$editFn.'/'.$newsID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
                 </div>";
                          
+			}
+			//Handle pagination when multiple items are limited and it exceeds the limit
+			if($maxRows>$limitRows){
+				$export.="<div class='row'><nav>
+  					<ul class='pager'>";
+				//Determine if previous is leading into null area and block
+				if($pageOffset>0){
+					$export.="<li class='previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='prevPage'>Prev</a></li>";
+				}
+				else{
+					$export.="<li class='disabled previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='prevPage'>Prev</a></li>";
+				}
+				if(($pageOffset+1)*$limitRows<$maxRows){
+					$export.="<li class='next'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='nextPage'>Next</a></li>";
+				}
+				else{
+					$export.="<li class='disabled next'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='nextPage'>Next</a></li>";
+				}
+				$export.="</ul></nav></div>";
 			}
 		}
 		return $export;

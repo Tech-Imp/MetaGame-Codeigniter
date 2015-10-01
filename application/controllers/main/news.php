@@ -13,7 +13,7 @@ class News extends common_frontend {
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
 		
-		$maxLimit=$this->config->item('maxArticles');;	
+		$maxLimit=$this->config->item('maxArticles');	
 		$data=$this->commonHeader();
 		$data['css'][2]='frontend/blog.css';
 		$data['js'][0]='commonShared.js';

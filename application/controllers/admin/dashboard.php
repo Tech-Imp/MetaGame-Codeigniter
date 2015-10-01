@@ -269,6 +269,7 @@ class dashboard extends admin_controller {
 		$data['js'][1]= 'plupload/jquery.ui.plupload/jquery.ui.plupload.js';
 		$data['js'][2]= 'dash/dashboardIndex.js';
 		$data['js'][3]= 'dash/dashboardMedia.js';
+		$data['js'][4]='commonShared.js';
 		$data['css'][1]='plupload/jquery.ui.plupload.css';
 		$data['currentLocation']="<div class='navbar-brand'>Media Dashboard</div>";
 		$data['additionalTech']="<div class='row'>
@@ -278,10 +279,12 @@ class dashboard extends admin_controller {
 			</div>
 		</div>";
 		$data['mediaTable']="<strong>No media to display that you have rights on.</strong>";
-		$myMedia=$this->Media_model->getMedia();
-		// $data['numUsers']=count($articles);
 		
-		$data['mediaTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia", "deleteMedia");
+		$maxLimit=$this->config->item('maxAdmin');
+		$myMedia=$this->Media_model->getMedia(NULL, $maxLimit, 0);
+		$maxMediaCount=$this->Media_model->getMediaCount();
+		
+		$data['mediaTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia", $maxMediaCount, $maxLimit, 0);
 
 		
 		$this->load->view('templates/header', $data);
@@ -362,6 +365,7 @@ class dashboard extends admin_controller {
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
 		$data['js'][1]= 'dash/dashboardIndex.js';
 		$data['js'][2]= 'dash/dashboardNews.js';
+		$data['js'][3]='commonShared.js';
 		//To cover bases, any additional outside tech is documented
 		$data['additionalTech']="<div class='row'>
 			<br>
@@ -370,11 +374,11 @@ class dashboard extends admin_controller {
 			</div>
 		</div>";
 		
+		$maxLimit=$this->config->item('maxAdmin');
+		$articles=$this->Article_model->getArticles(NULL, $maxLimit, 0);
+		$maxNewsCount=$this->Media_model->getNewsCount(false);
 		
-		$articles=$this->Article_model->getArticles();
-		// $data['numUsers']=count($articles);
-		
-		$data['articleTable']=$this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "editNews");
+		$data['articleTable']=$this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "editNews", $maxNewsCount, $maxLimit, 0);
 		
 		
 		

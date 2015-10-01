@@ -42,7 +42,7 @@
 				        	
 				      	</h4>
 				    </div>
-		      		<div class="panel-body">
+		      		<div id='mediaTable' class="panel-body">
 				        	<?php echo $articleTable?>
 			      	</div>
 		      	</div>

@@ -81,14 +81,15 @@ class Article_model extends MY_Model{
 	//-------------------------------------------------------------------------------------------------------
 	//Get count of valid articles
 	//-------------------------------------------------------------------------------------------------------
-	public function getNewsCount(){
-		$now=date('Y-m-d H:i:s');	
-		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
+	public function getNewsCount($findViaTime=true){
 		
-		$this->db->where('body !=', '');
-		$this->db->where($visArr);
-		// $this->db->where('visibleWhen <=', $now);
-		// $this->db->where('visibleWhen !=', '0000-00-00 00:00:00');
+		if($findViaTime){
+			$now=date('Y-m-d H:i:s');	
+			$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
+			$this->db->where('body !=', '');
+			$this->db->where($visArr);
+		}
+		
 		return $this->db->count_all_results($this->_table_name);
 	}
 	

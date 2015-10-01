@@ -66,6 +66,12 @@ class paging extends CI_Controller{
 			case 'news':
 				$results=$this->getNews($offset);
 				break;
+			case 'media':
+				$results=$this->getMedia($offset);
+				break;
+			case 'articles':
+				$results=$this->getArticles($offset);
+				break;
 			default:
 				$results=false;
 				break;
@@ -190,9 +196,46 @@ class paging extends CI_Controller{
 			return "<div><h4>That video does not exist.</h4></div>";
 		}
 	} 
+	//---------------------------------------------------------------------------
+	//Articles paging on the dashboard
+	//--------------------------------------------------------------------------
+	private function getArticles($paging=0){
+		$this->load->model('Article_model');
+		$this->load->model('Dataprep_model');
+		$maxLimit=$this->config->item('maxAdmin');
+		$offset=$paging*$maxLimit;
+		
+		$articles=$this->Article_model->getArticles(NULL, $maxLimit, $offset);
+		$maxNewsCount=$this->Media_model->getNewsCount(false);
+		
 	
+		if(count($articles)){
+			return $this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "editNews", $maxNewsCount, $maxLimit, $paging);
+		}
+		else{
+			return "<div><h4>That article does not exist.</h4></div>";
+		}
+	}
+	//---------------------------------------------------------------------------
+	//Media pgaing on the dashboard
+	//------------------------------------------------------------------------------
+	private function getMedia($paging=0){
+		$this->load->model('Media_model');
+		$this->load->model('Dataprep_model');
+		$maxLimit=$this->config->item('maxAdmin');
+		$offset=$paging*$maxLimit;
+		
+		$myMedia=$this->Media_model->getMedia(NULL, $maxLimit, $offset);
+		$maxMediaCount=$this->Media_model->getMediaCount();
+		
 	
-	
+		if(count($myMedia)){
+			return $this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia", $maxMediaCount, $maxLimit, $paging);
+		}
+		else{
+			return "<div><h4>That video does not exist.</h4></div>";
+		}
+	} 
 	
 	
 }

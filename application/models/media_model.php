@@ -13,7 +13,7 @@ class Media_model extends MY_Model{
 	}
 	
 	//-------------------------------------------------------------------------------------------------------
-	//Get Media from database
+	//Get Media from database, primarily used on backend, no media type distinction
 	//-------------------------------------------------------------------------------------------------------
 	public function getMedia($id=NULL, $resultLimit=NULL, $offset=NULL){
 		$myRole=$this->session->userdata('role');
@@ -30,6 +30,18 @@ class Media_model extends MY_Model{
 		
 		return $this->get($id);
 		
+	}
+	
+	public function getMediaCount(){
+		$myRole=$this->session->userdata('role');
+		$myID=$this->session->userdata('id');
+			
+		//Only limit view if not superadmin
+		if($myRole<9){
+			$this->db->where('author_id =', $myID);
+		}
+		
+		return $this->db->count_all_results($this->_table_name);
 	}
 	//-------------------------------------------------------------------------------------------------------
 	//Save normal uploads to server
