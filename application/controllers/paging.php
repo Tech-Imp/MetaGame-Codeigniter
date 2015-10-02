@@ -206,7 +206,7 @@ class paging extends CI_Controller{
 		$offset=$paging*$maxLimit;
 		
 		$articles=$this->Article_model->getArticles(NULL, $maxLimit, $offset);
-		$maxNewsCount=$this->Media_model->getNewsCount(false);
+		$maxNewsCount=$this->Article_model->getNewsCount(false);
 		
 	
 		if(count($articles)){

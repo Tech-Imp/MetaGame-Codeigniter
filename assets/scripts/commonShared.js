@@ -25,7 +25,6 @@
           var store;
           if (!($(event.currentTarget).parent().hasClass("disabled"))) {
             store = _this.whichDatabase($(event.currentTarget), $(event.currentTarget).attr("data-loc"), $(event.currentTarget).attr("data-type"));
-            console.log(store);
             if (store !== false) {
               return _this.changePage(store, "next");
             }
@@ -37,7 +36,6 @@
           var store;
           if (!($(event.currentTarget).parent().hasClass("disabled"))) {
             store = _this.whichDatabase($(event.currentTarget), $(event.currentTarget).attr("data-loc"), $(event.currentTarget).attr("data-type"));
-            console.log(store);
             if (store !== false) {
               return _this.changePage(store, "prev");
             }

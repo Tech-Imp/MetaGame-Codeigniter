@@ -376,7 +376,7 @@ class dashboard extends admin_controller {
 		
 		$maxLimit=$this->config->item('maxAdmin');
 		$articles=$this->Article_model->getArticles(NULL, $maxLimit, 0);
-		$maxNewsCount=$this->Media_model->getNewsCount(false);
+		$maxNewsCount=$this->Article_model->getNewsCount(false);
 		
 		$data['articleTable']=$this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "editNews", $maxNewsCount, $maxLimit, 0);
 		

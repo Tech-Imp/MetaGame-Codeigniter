@@ -11,14 +11,14 @@ class commonShared
           $(".nextPage").unbind().bind "click", (event)=>
                if !($(event.currentTarget).parent().hasClass("disabled"))
                     store=@whichDatabase($(event.currentTarget), $(event.currentTarget).attr("data-loc"), $(event.currentTarget).attr("data-type"))
-                    console.log store
+                    # console.log store
                     if (store!=false)
                          @changePage(store, "next")
                
           $(".prevPage").unbind().bind "click", (event)=>
                if !($(event.currentTarget).parent().hasClass("disabled"))
                     store=@whichDatabase($(event.currentTarget), $(event.currentTarget).attr("data-loc"), $(event.currentTarget).attr("data-type"))
-                    console.log store
+                    # console.log store
                     if (store!=false)
                          @changePage(store, "prev")
           
@@ -28,6 +28,7 @@ class commonShared
            if @debug then console.log "commonShared.whichDatabase"
            # Here is used to determine which page we are on. It can only do paging on pages it is set for
            here=window.location.pathname
+           # console.log here
            switch here
                when "/main/photos" 
                     #Type determines vintage status, name is which database, origin is where to put the data
