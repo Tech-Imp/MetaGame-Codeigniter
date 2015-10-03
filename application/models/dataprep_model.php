@@ -44,8 +44,15 @@ class dataprep_model extends CI_Controller{
 				}
 				elseif (array_key_exists('embed', $row) && $row->embed !== "") {
 					if($row->embed !== ""){
+						// Determine if video is alone on page
+						if($perRow==1 && count($myMedia)==1 && $maxRows==0){
+							$embedItem=$row->embed;
+						}
+						else{
+							$embedItem=$this->checkYoutube($row->embed, 'main/'.$myLink.'/index', $newsID);
+						}
 						$media="<div class='embed-responsive embed-responsive-16by9'>"
-						.$row->embed."
+						.$embedItem."
 						</div>";	
 					}	
 				}
@@ -91,12 +98,8 @@ class dataprep_model extends CI_Controller{
                     ".$media."
                     <br>
                     ".$modified;
-                    // <div>".anchor('main/'.$myLink.'/'.$newsID,"<span class='glyphicon glyphicon-search'></span><strong>Get permanent link to ".$items." </strong>")."</div>
-                // </div>";
                 if($items!==NULL && $myLink!==NULL){
-					// if((array_key_exists('fileLoc', $row) && $perRow==1) || count($myMedia)==1){
 					if($perRow==1 && count($myMedia)==1 && $maxRows==0){
-					// if($perRow==1){
 						$export.="<div>".anchor('main/'.$myLink.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
 					}
 					else{
@@ -157,7 +160,7 @@ class dataprep_model extends CI_Controller{
 		if($siteLogo==TRUE){
 			$start=1;
 			$images.='<div class="item active">
-			      <img class="img-responsive center-block" src="'.base_url().'/assets/image/Meta Game Logo WIP BW.jpg'.'">
+			      <img class="img-responsive center-block" src="'.base_url().'/assets/image/MG WIP.png'.'">
 			      <div class="carousel-caption">
 			      
 			      </div>
@@ -282,8 +285,15 @@ class dataprep_model extends CI_Controller{
 				}
 				elseif (array_key_exists('embed', $row) && $row->embed !== "") {
 					if($row->embed !== ""){
+						// Determine if item is solo and load thumbnails otherwise
+						if(count($myMedia)==1 && $maxRows==0){
+							$embedItem=$row->embed;
+						}
+						else{
+							$embedItem=$this->checkYoutube($row->embed, 'admin/dashboard/'.$editFn, $newsID);
+						}
 						$media="<div class='embed-responsive embed-responsive-16by9'>"
-						.$row->embed."
+						.$embedItem."
 						</div>";	
 					}	
 				}
@@ -355,5 +365,24 @@ class dataprep_model extends CI_Controller{
 		}
 		return $export;
 	}
-	
+	//-------------------------------------------------------------------------------------------------
+	//This function will trigger when it finds a youtube embed was linked.
+	//It will strip out the ID of the video so that an image can be used as a placeholder instead to increase optimization
+	//of the page itself.
+	//------------------------------------------------------------------------------------------------
+	private function checkYoutube($embed, $redirectPage="", $redirectID=""){
+		if(strpos($embed, "youtube.com/embed/") !==FALSE){
+			$precheck=explode("youtube.com/embed/", $embed);
+			$embedID=explode("\"", $precheck[1]);
+			// return $embedID[0];
+			$img='<img class="img-responsive center-block youtube-thumb" src="https://i.ytimg.com/vi/'.$embedID[0].'/hqdefault.jpg">';
+			return "<div class='youtube-vid' data-vid=".$embedID[0].">
+				".anchor($redirectPage.'/'.$redirectID, $img)."
+			</div>
+			";
+		}
+		else{
+			return $embed;
+		}
+	}
 }
