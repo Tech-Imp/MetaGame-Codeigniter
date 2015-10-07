@@ -285,7 +285,10 @@ class dashboard extends admin_controller {
 		$maxMediaCount=$this->Media_model->getMediaCount();
 		
 		$data['mediaTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia", $maxMediaCount, $maxLimit, 0);
-
+		$data['mediaOptions']="<select id='mediaOptions'>
+			<option value='video'>Video</option>
+			<option value='sound'>Audio</option>
+		</select>";
 		
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);

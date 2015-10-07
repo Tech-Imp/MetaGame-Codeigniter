@@ -440,7 +440,7 @@ class post extends CI_Controller{
 			$this->load->model("Media_model");
 			$loc=base_url().$uploadDir.'/'.$fileName;
 			//TODO need to prevent duplicates
-        	$result=$this->Media_model->uploadMedia($loc, NULL, $fileMD5hash, $visibleWhen, $title, $stub, $loggedOnly);
+        	$result=$this->Media_model->uploadMedia($loc, NULL, $mediaType, $fileMD5hash, $visibleWhen, $title, $stub, $loggedOnly);
 		}
 		
 		
@@ -463,6 +463,7 @@ class post extends CI_Controller{
 		$myEmail=$this->session->userdata('email');
 		$title = $this->input->get_post('title'); 
 		$stub = $this->input->get_post('stub'); 
+		$mediaType = $this->input->get_post('mediaType'); 
 		$loggedOnly = intval($this->input->get_post('loggedOnly'));
       	$visibleWhen = $this->input->get_post('visibleWhen');
 		$uncleanText = $this->input->get_post('embed');
@@ -479,24 +480,33 @@ class post extends CI_Controller{
 		// $this->load->helper('htmlpurifier');
 		// $clean_html = html_purify($uncleanText);
 		
-		if(empty($uncleanText) || empty($title) || empty($stub)){
+		if(empty($uncleanText) || empty($title) || empty($stub) || empty($mediaType)){
 			$data=array('error' => "Required text field is empty"); 
 			$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog(-1, 'aEmb', 'Embed item failed to upload. Required field empty'); 
       		echo json_encode($data);
       		exit; 
+		}
+		//Base case
+		if($mediaType=="video" || $mediaType=="picture"|| $mediaType=="sound"){
+			$md5=md5($uncleanText);
+			$this->load->model("Media_model");
+			$result=$this->Media_model->uploadMedia(NULL, $uncleanText, $mediaType, $md5, $visibleWhen, $title, $stub, $loggedOnly);
+			//Log a good entry		
+			$this->load->model("Logging_model");
+			$this->Logging_model->newLog($result, 'aEmb', 'Embed item '.$title.' ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')'); 
+			$data=array('success' => $result); 
+      		echo json_encode($data);
+      		exit;
 		} 
-		$md5=md5($uncleanText);
-		$this->load->model("Media_model");
-		$result=$this->Media_model->uploadMedia(NULL, $uncleanText, $md5, $visibleWhen, $title, $stub, $loggedOnly);
-		
-        // $result=$this->Article_model->postArticles($author, $visibleWhen, $title, $stub, $clean_html);
-		
-		$this->load->model("Logging_model");
-		$this->Logging_model->newLog($result, 'aEmb', 'Embed item '.$title.' ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')'); 
-		$data=array('success' => $result); 
-      	echo json_encode($data);
-      	exit; 
+		//Missing media type or someone attempts to rename it
+		else{
+			$data=array('error' => "Media type was unexpected"); 
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog(-1, 'aEmb', 'Media type was unexpected. Attempted to store: '.$mediaType); 
+      		echo json_encode($data);
+      		exit; 
+		}
 	}
 	
 	//-----------------------------------------------------------------------------------------------------------------
@@ -536,7 +546,7 @@ class post extends CI_Controller{
 		// Verify user has rights to media
 		$verify=$this->Media_model->get($mediaID, TRUE);
 		if($verify->author_id==$myID || $myRole>8){
-			$result=$this->Media_model->uploadMedia(NULL, NULL, NULL, $visibleWhen, $title, $stub, $loggedOnly, $mediaID, $vintage);
+			$result=$this->Media_model->uploadMedia(NULL, NULL, $mediaType, NULL, $visibleWhen, $title, $stub, $loggedOnly, $mediaID, $vintage);
 			$data=array('success' => $result);
 			$this->load->model("Logging_model");
 			$this->Logging_model->newLog($mediaID, 'eMed', 'Media item '.$title.' ('.$mediaID.') edit saved successfully by '.$myName.'('.$myEmail.')'); 

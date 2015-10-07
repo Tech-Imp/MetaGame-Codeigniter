@@ -46,7 +46,7 @@ class Media_model extends MY_Model{
 	//-------------------------------------------------------------------------------------------------------
 	//Save normal uploads to server
 	//-----------------------------------------------------------------------------------------------------
-	public function uploadMedia($location=NULL, $embed=NULL, $md5=NULL, $visibleWhen, $title, $stub, $loggedOnly, $id=NULL, $vintage=NULL){
+	public function uploadMedia($location=NULL, $embed=NULL, $mediaType, $md5=NULL, $visibleWhen, $title, $stub, $loggedOnly, $id=NULL, $vintage=NULL){
 		$myID=$this->session->userdata('id');
 			
 		$data=array(
@@ -55,6 +55,7 @@ class Media_model extends MY_Model{
 			'stub'=>$stub,
 			'visibleWhen'=>$visibleWhen,
 			'loggedOnly'=>$loggedOnly,
+			'mediaType' => $mediaType,
 		); 
 		// Auxiliary data
 		if($md5!==NULL){

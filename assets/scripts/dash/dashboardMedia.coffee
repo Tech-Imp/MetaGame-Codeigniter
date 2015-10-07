@@ -44,6 +44,7 @@ class dashboardMedia extends window.classes.dashboardIndex
                     stub: $("#uploadStub").val()
                     visibleWhen: $("#uploadWhen").val()
                     loggedOnly: $('#uploadLogged').val()
+                    mediaType: "picture"
                     
           $("#saveEmbedded").unbind().bind "click", (event)=>
                $("#saveEmbedded").prop("disabled", "disabled")    
@@ -79,6 +80,7 @@ class dashboardMedia extends window.classes.dashboardIndex
                          stub: $("#embedStub").val()
                          visibleWhen: $("#embedWhen").val()
                          embed: $('#mceEmbedArea').val()
+                         mediaType: $("#mediaOptions").val()
                               
                     success: (response)=>
                          if response.success
