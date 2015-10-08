@@ -51,7 +51,8 @@
           visibleWhen: $("#mediaWhen").val(),
           mediaID: $('#mediaID').val(),
           loggedOnly: $('#mediaLogged').val(),
-          vintage: $('#mediaVintage').val()
+          vintage: $('#mediaVintage').val(),
+          mediaType: $('#mediaType').val()
         },
         success: (function(_this) {
           return function(response) {

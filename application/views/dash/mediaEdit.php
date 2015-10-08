@@ -9,6 +9,7 @@
 	    	</div>
 	      		<div class="panel-body">
 	      			<div class="row">
+	      				<?php echo $mediaInfo;?>
 	      				<div class="col-xs-2"><strong>MediaID</strong></div>
 			      		<div class="col-xs-10 col-md-4"><input type="text" id="mediaID" disabled="disabled" value="<?php echo $mediaID;?>" ></div>
 	      			</div><br>
@@ -19,10 +20,21 @@
 			      		<div class="col-xs-10 col-md-4"><input type="text" id="mediaWhen" value="<?php echo $mediaWhen;?>" class='when'></div>
 			      	</div>
 			      	<br>
+			      	<div class="row">
+		      			<div class="col-xs-12 col-md-6 col-md-offset-6">Leaving "Show when" blank will hide the article</div>
+		      		</div>
+			      	<br>
 					<div class="row">
 						<div class="col-xs-2"><strong>Stub</strong></div>
 			      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="mediaStub" value="<?php echo $mediaStub;?>"></div>
-			      		<div class="col-xs-12 col-md-6">Leaving "Show when" blank will hide the photo</div>
+						<div class="col-xs-2"><strong>Media type</strong></div>
+			      		<div class="col-xs-10 col-md-4">
+			      			<select id='mediaOptions'>
+								<option <?php echo $mediaPic;?> value='picture'> Picture</option>
+								<option <?php echo $mediaVid;?> value='video'>Video</option>
+								<option <?php echo $mediaAud;?> value='sound'>Audio</option>
+							</select>
+						</div>
 					</div>
 					<br>
 					<div class="row">

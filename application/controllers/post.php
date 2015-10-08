@@ -521,6 +521,7 @@ class post extends CI_Controller{
 		$mediaID = $this->input->get_post('mediaID'); 
 		$title = $this->input->get_post('title'); 
 		$stub = $this->input->get_post('stub'); 
+		$mediaType = $this->input->get_post('mediaType'); 
       	$visibleWhen = $this->input->get_post('visibleWhen');
 		$loggedOnly = intval($this->input->get_post('loggedOnly'));
 		$vintage = intval($this->input->get_post('vintage')); 
@@ -539,7 +540,13 @@ class post extends CI_Controller{
       		echo json_encode($data);
       		exit; 
 		} 
-		
+		if(!($mediaType=="video" || $mediaType=="picture"|| $mediaType=="sound")){
+			$data=array('error' => "Media type was unexpected"); 
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog($mediaID, 'eMed', 'Media type for'.$title.' ('.$mediaID.') was unexpected. Attempted to store: '.$mediaType); 
+      		echo json_encode($data);
+      		exit; 
+		}
 		
 		$this->load->model("Media_model");
 		

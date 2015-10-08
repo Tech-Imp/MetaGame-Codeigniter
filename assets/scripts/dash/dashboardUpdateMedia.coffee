@@ -34,7 +34,7 @@ class dashboardUpdateMedia extends window.classes.dashboardIndex
                     mediaID: $('#mediaID').val() 
                     loggedOnly: $('#mediaLogged').val()
                     vintage: $('#mediaVintage').val()  
-
+                    mediaType: $('#mediaType').val()
                          
                success: (response)=>
                     if response.success

@@ -344,6 +344,30 @@ class dashboard extends admin_controller {
 					$data['mediaNormal']='selected';
 				}
 				
+				switch ($allData->mediaType) {
+					case 'picture':
+						$data['mediaPic']='selected';
+						$data['mediaInfo']=$data['mediaVid']=$data['mediaAud']='';
+						break;
+					
+					case 'video':
+						$data['mediaVid']='selected';
+						$data['mediaInfo']=$data['mediaPic']=$data['mediaAud']='';
+						break;
+					
+					case 'audio':
+						$data['mediaAud']='selected';
+						$data['mediaInfo']=$data['mediaPic']=$data['mediaVid']='';
+						break;
+					
+					default:
+						$data['mediaInfo']='<div class="col-xs-12 alert alert-warning" role="alert">
+						Warning: Media type was either not set or improperly set. Please make sure to set it appropriately before saving. 
+						</div>';
+						$data['mediaAud']=$data['mediaPic']=$data['mediaVid']='';
+						break;
+				}
+				
 				
 				$data['mediaWhen']=$allData->visibleWhen;
 				$this->load->view('dash/mediaEdit', $data);

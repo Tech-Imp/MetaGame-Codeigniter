@@ -18,10 +18,15 @@
 			      		<div class="col-xs-10 col-md-4"><input type="text" id="uploadWhen" name="displayDateE" value="" class='when '></div>
 			      	</div>
 			      	<br>
+			      	<div class="row">
+		      			<div class="col-xs-12 col-md-6 col-md-offset-6">Leaving "Show when" blank will hide the article</div>
+		      		</div>
+		      		<br>
 					<div class="row">
 						<div class="col-xs-2"><strong>Stub</strong></div>
 			      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="uploadStub" name="stubE" value=""></div>
-			      		<div class="col-xs-12 col-md-6">Leaving "Show when" blank will hide the photo</div>
+			      		<div class="col-xs-2"><strong>Media type</strong></div>
+			      		<div class="col-xs-10 col-md-4">Picture</div>
 					</div>
 					<br>
 					<div class="row">
@@ -52,17 +57,20 @@
 	    	<div id="embedAccord" class="panel-collapse collapse" role="tabpanel" aria-labelledby="embedUploadArea">
 	      		<div class="panel-body">
 	      			<div class="row">
-			      		<div class="col-xs-2">Title</div>
+			      		<div class="col-xs-2"><strong>Title</strong></div>
 			      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="embedTitle" name="titleE" value=""></div>
-			      		<div class="col-xs-2">Show when</div>
+			      		<div class="col-xs-2"><strong>Show when</strong></div>
 			      		<div class="col-xs-10 col-md-4"><input type="text" id="embedWhen" name="displayDateE" value="" class='when '></div>
-			      		<div class="col-xs-12 col-md-6 col-md-offset-6">Leaving "Show when" blank will hide the article</div>
 			      	</div>
 			      	<br>
+			      	<div class="row">
+		      			<div class="col-xs-12 col-md-6 col-md-offset-6">Leaving "Show when" blank will hide the article</div>
+		      		</div>
+			      	<br>
 					<div class="row">
-						<div class="col-xs-2">Stub</div>
+						<div class="col-xs-2"><strong>Stub</strong></div>
 			      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="embedStub" name="stubE" value=""></div>
-			      		<div class="col-xs-2">Media type</div>
+			      		<div class="col-xs-2"><strong>Media type</strong></div>
 			      		<div class="col-xs-10 col-md-4"><?php echo $mediaOptions?></div>
 					</div>
 					<br>
