@@ -355,13 +355,13 @@ class dashboard extends admin_controller {
 						$data['mediaInfo']=$data['mediaPic']=$data['mediaAud']='';
 						break;
 					
-					case 'audio':
+					case 'sound':
 						$data['mediaAud']='selected';
 						$data['mediaInfo']=$data['mediaPic']=$data['mediaVid']='';
 						break;
 					
 					default:
-						$data['mediaInfo']='<div class="col-xs-12 alert alert-warning" role="alert">
+						$data['mediaInfo']='<div id="mediaTypeError" class="col-xs-12 alert alert-danger" role="alert">
 						Warning: Media type was either not set or improperly set. Please make sure to set it appropriately before saving. 
 						</div>';
 						$data['mediaAud']=$data['mediaPic']=$data['mediaVid']='';

@@ -41,6 +41,7 @@ class dashboardUpdateMedia extends window.classes.dashboardIndex
                          # console.log "Success"
                          # @cleanAreas()
                          @textBodyResponse("Edit saved to database", "#userMessage", false, "#textArea-alert")
+                         $("#mediaTypeError").remove() 
                          # $("#saveEditsded").prop("disabled", false)
                     else if response.debug
                          console.log "debug"

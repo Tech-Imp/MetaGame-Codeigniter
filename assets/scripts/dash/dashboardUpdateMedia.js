@@ -57,7 +57,8 @@
         success: (function(_this) {
           return function(response) {
             if (response.success) {
-              return _this.textBodyResponse("Edit saved to database", "#userMessage", false, "#textArea-alert");
+              _this.textBodyResponse("Edit saved to database", "#userMessage", false, "#textArea-alert");
+              return $("#mediaTypeError").remove();
             } else if (response.debug) {
               return console.log("debug");
             } else if (response.error) {

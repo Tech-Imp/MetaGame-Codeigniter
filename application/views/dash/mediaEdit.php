@@ -19,7 +19,6 @@
 			      		<div class="col-xs-2"><strong>Show when</strong></div>
 			      		<div class="col-xs-10 col-md-4"><input type="text" id="mediaWhen" value="<?php echo $mediaWhen;?>" class='when'></div>
 			      	</div>
-			      	<br>
 			      	<div class="row">
 		      			<div class="col-xs-12 col-md-6 col-md-offset-6">Leaving "Show when" blank will hide the article</div>
 		      		</div>
@@ -29,7 +28,7 @@
 			      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="mediaStub" value="<?php echo $mediaStub;?>"></div>
 						<div class="col-xs-2"><strong>Media type</strong></div>
 			      		<div class="col-xs-10 col-md-4">
-			      			<select id='mediaOptions'>
+			      			<select id='mediaType'>
 								<option <?php echo $mediaPic;?> value='picture'> Picture</option>
 								<option <?php echo $mediaVid;?> value='video'>Video</option>
 								<option <?php echo $mediaAud;?> value='sound'>Audio</option>

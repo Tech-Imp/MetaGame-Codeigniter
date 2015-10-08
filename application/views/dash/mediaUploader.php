@@ -17,9 +17,8 @@
 			      		<div class="col-xs-2"><strong>Show when</strong></div>
 			      		<div class="col-xs-10 col-md-4"><input type="text" id="uploadWhen" name="displayDateE" value="" class='when '></div>
 			      	</div>
-			      	<br>
 			      	<div class="row">
-		      			<div class="col-xs-12 col-md-6 col-md-offset-6">Leaving "Show when" blank will hide the article</div>
+		      			<div class="col-xs-12 col-md-6 col-md-offset-6">Leaving "Show when" blank will hide the Media item</div>
 		      		</div>
 		      		<br>
 					<div class="row">
@@ -62,9 +61,8 @@
 			      		<div class="col-xs-2"><strong>Show when</strong></div>
 			      		<div class="col-xs-10 col-md-4"><input type="text" id="embedWhen" name="displayDateE" value="" class='when '></div>
 			      	</div>
-			      	<br>
 			      	<div class="row">
-		      			<div class="col-xs-12 col-md-6 col-md-offset-6">Leaving "Show when" blank will hide the article</div>
+		      			<div class="col-xs-12 col-md-6 col-md-offset-6">Leaving "Show when" blank will hide the Media item</div>
 		      		</div>
 			      	<br>
 					<div class="row">

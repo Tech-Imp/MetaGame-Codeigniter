@@ -269,6 +269,27 @@ class dataprep_model extends CI_Controller{
 					$vis="Currently <span class='glyphicon glyphicon-eye-open'></span><strong>VISIBLE</strong>";
 				}
 				
+				// Give visual representation where items will go and what they are categorized as
+				$mediaClass="";
+				if(array_key_exists('mediaType', $row)){
+					switch ($row->mediaType) {
+						case 'picture':
+							$mediaClass="<div><span class='glyphicon glyphicon-picture'></span><strong> Photo </strong></div>";
+							break;
+						case 'video':
+							$mediaClass="<div><span class='glyphicon glyphicon-facetime-video'></span><strong> Video </strong></div>";
+							break;
+						case 'sound':
+							$mediaClass="<div><span class='glyphicon glyphicon-headphones'></span><strong> Audio </strong></div>";
+							break;
+						default:
+							$mediaClass="<div><span class='glyphicon glyphicon-ban-circle'></span><strong> UNKNOWN </strong></div>";
+							break;
+					}
+				}
+				
+				
+				
 				if(array_key_exists('loggedOnly', $row) && $row->loggedOnly !== ""){
 					$vis.="<br>";
 					if ($row->loggedOnly==1){$vis.="   <span class='glyphicon glyphicon-lock'></span><strong> to Logged Only</strong>"; }
@@ -331,7 +352,9 @@ class dataprep_model extends CI_Controller{
 				//Create the block item based on info gathered and add to return value
 				$export.=
 				"<div id=mediaItem".$newsID." class='col-lg-4 col-md-6 col-xs-12 well ".$artVis."'>
-                    <div class='titleSizer'><strong>".$row->title."</strong></div><br>
+                    <div class='titleSizer'><strong>".$row->title."</strong></div>
+                    ".$mediaClass."
+                    <br>
                     ".$media."
                     ".$content."
                     <div>".$vis."</div>
