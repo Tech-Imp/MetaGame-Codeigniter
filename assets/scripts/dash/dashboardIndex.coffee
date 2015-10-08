@@ -21,6 +21,7 @@ class dashboardIndex
      cleanAreas:()=>
           if @debug then console.log "dashboardIndex.cleanAreas"
           $('.cleanMe').html("")
+          $('.cleanMe').val("")
           $(".textReq").val("")
           $(".when").datepicker("setDate", new Date()) 
      

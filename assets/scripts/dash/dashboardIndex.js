@@ -32,6 +32,7 @@
         console.log("dashboardIndex.cleanAreas");
       }
       $('.cleanMe').html("");
+      $('.cleanMe').val("");
       $(".textReq").val("");
       return $(".when").datepicker("setDate", new Date());
     };
