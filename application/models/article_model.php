@@ -61,6 +61,23 @@ class Article_model extends MY_Model{
 		$now=date('Y-m-d H:i:s');	
 		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
 		
+		//Whole section dedicated to making sure that items can be separated based on 
+		//exclusive areas.
+		//TODO Test abstract this to my_model
+		$excludeLoc=array(
+			'main',
+			'admin'
+		);
+		
+		$here=explode('/', uri_string());
+		if (in_array($here[1], $excludeLoc)==FALSE){
+			$this->db->where('forSection ==', $here[1]);
+		}
+		else{
+			$this->db->where('exclusiveSection ==', 0);
+		}
+		// End content Exclusion
+		
 		$this->db->where('body !=', '');
 		$this->db->where($visArr);
 		
