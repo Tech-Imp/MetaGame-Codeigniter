@@ -20,7 +20,7 @@ class Logging_model extends MY_Model{
 		$myID=$this->session->userdata('id');
 			
 		//Only limit view if not superadmin
-		if($myRole<8){
+		if($myRole<$this->config->item('sectionAdmin')){
 			$this->db->where('change_made_by =', $myID);
 		}
 		
@@ -91,7 +91,7 @@ class Logging_model extends MY_Model{
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
 		
-		if($myRole<8){
+		if($myRole<$this->config->item('sectionAdmin')){
 			$this->db->where('change_made_by =', $myID);
 		}
 		

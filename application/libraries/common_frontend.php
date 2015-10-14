@@ -62,7 +62,7 @@ class common_frontend extends frontend_controller{
 	      			<li>".anchor('login', "Log In")."</li>
 	      		</ul>";
 		}
-		if($currentRole>=7){
+		if($currentRole>=$this->config->item('contributor')){
 			return "<ul class='nav navbar-nav navbar-right'>
 	      			<li>".anchor('admin/dashboard', "Dashboard")."</li>
 	      			<li>".anchor('login/logout', "Logout")."</li>

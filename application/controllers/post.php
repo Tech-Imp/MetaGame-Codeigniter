@@ -17,7 +17,7 @@ class post extends CI_Controller{
 		$uncleanText = $this->input->get_post('bodyText');
 		$author = $this->session->userdata('id');
 		
-		if($myRole<7){
+		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges");
 			$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog(-1, 'aCon', 'Contact item failed to upload. Insufficient privledges. User role '.$myRole);  
@@ -61,7 +61,7 @@ class post extends CI_Controller{
 		$this->load->helper('htmlpurifier');
 		$clean_html = html_purify($uncleanText);
 		
-		if($myRole<7){
+		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges");
 			$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog($contactID, 'eCon', 'Contact item '.$contactID.' failed to be reuploaded. Insufficient privledges. User '.$myID.' role '.$myRole);   
@@ -91,7 +91,7 @@ class post extends CI_Controller{
 		
 		// Verify user has rights to media
 		$verify=$this->Staticpages_model->get($contactID, TRUE);
-		if($verify->author_id==$myID || $myRole>8){
+		if($verify->author_id==$myID || $myRole> $this->config->item('sectionAdmin')){
 			$result=$this->Staticpages_model->saveContact($clean_html, $title, $contactID);
 			$this->load->model("Logging_model");
 			$this->Logging_model->newLog($result, 'eCon', 'Contact item '.$title.' ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
@@ -112,7 +112,7 @@ class post extends CI_Controller{
 		$myEmail=$this->session->userdata('email');
 		$contactID = intval($this->input->get_post('staticID')); 
 		
-		if($myRole<7){
+		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
 			$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog($contactID, 'dCon', 'Contact item delete failed. Insufficient permissions. User '.$myID.' role '.$myRole);
@@ -129,7 +129,7 @@ class post extends CI_Controller{
 		
 		// Verify user has rights to media
 		$verify=$this->Staticpages_model->get($contactID, TRUE);
-		if($verify->author_id==$myID || $myRole>8){
+		if($verify->author_id==$myID || $myRole> $this->config->item('sectionAdmin')){
 			$result=$this->Staticpages_model->delete($contactID);
 			$data=array('success' => $contactID);
 			$this->load->model("Logging_model");
@@ -161,7 +161,7 @@ class post extends CI_Controller{
 		$uncleanText = $this->input->get_post('bodyText');
 		$author = $this->session->userdata('id');
 		
-		if($myRole<7){
+		if($myRole < $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges");
 			$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog(-1, 'aNew', 'News item failed to upload. Insufficient privledges. User role '.$myRole);  
@@ -210,7 +210,7 @@ class post extends CI_Controller{
 		$this->load->helper('htmlpurifier');
 		$clean_html = html_purify($uncleanText);
 		
-		if($myRole<7){
+		if($myRole < $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges");
 			$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog($newsID, 'eNew', 'News item '.$newsID.' failed to be reuploaded. Insufficient privledges. User '.$myID.' role '.$myRole);   
@@ -240,7 +240,7 @@ class post extends CI_Controller{
 		
 		// Verify user has rights to media
 		$verify=$this->Article_model->get($newsID, TRUE);
-		if($verify->author_id==$myID || $myRole>8){
+		if($verify->author_id==$myID || $myRole>$this->config->item('sectionAdmin')){
 			$result=$this->Article_model->postArticles($verify->author_id, $visibleWhen, $title, $stub, $clean_html, $newsID);
 			$this->load->model("Logging_model");
 			$this->Logging_model->newLog($result, 'eNew', 'News item '.$title.' ('.$result.') edit saved successfully by '.$myName.'('.$myEmail.')');  
@@ -264,7 +264,7 @@ class post extends CI_Controller{
 		$myEmail=$this->session->userdata('email');
 		$newsID = intval($this->input->get_post('newsID')); 
 		
-		if($myRole<7){
+		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
 			$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog($newsID, 'dNews', 'News item delete failed. Insufficient permissions. User '.$myID.' role '.$myRole);
@@ -281,7 +281,7 @@ class post extends CI_Controller{
 		
 		// Verify user has rights to media
 		$verify=$this->Article_model->get($newsID, TRUE);
-		if($verify->author_id==$myID || $myRole>8){
+		if($verify->author_id==$myID || $myRole>$this->config->item('sectionAdmin')){
 			$result=$this->Article_model->delete($newsID);
 			$data=array('success' => $newsID);
 			$this->load->model("Logging_model");
@@ -468,7 +468,7 @@ class post extends CI_Controller{
       	$visibleWhen = $this->input->get_post('visibleWhen');
 		$uncleanText = $this->input->get_post('embed');
 		
-		if($myRole<7){
+		if($myRole<$this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
 			$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog(-1, 'aEmb', 'Embed item failed to upload. Insufficient privledges. User role '.$myRole); 
@@ -526,7 +526,7 @@ class post extends CI_Controller{
 		$loggedOnly = intval($this->input->get_post('loggedOnly'));
 		$vintage = intval($this->input->get_post('vintage')); 
 		
-		if($myRole<7){
+		if($myRole<$this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
       		echo json_encode($data);
 			$this->load->model("Errorlog_model");
@@ -552,7 +552,7 @@ class post extends CI_Controller{
 		
 		// Verify user has rights to media
 		$verify=$this->Media_model->get($mediaID, TRUE);
-		if($verify->author_id==$myID || $myRole>8){
+		if($verify->author_id==$myID || $myRole>$this->config->item('sectionAdmin')){
 			$result=$this->Media_model->uploadMedia(NULL, NULL, $mediaType, NULL, $visibleWhen, $title, $stub, $loggedOnly, $mediaID, $vintage);
 			$data=array('success' => $result);
 			$this->load->model("Logging_model");
@@ -579,7 +579,7 @@ class post extends CI_Controller{
 		$myEmail=$this->session->userdata('email');
 		$mediaID = intval($this->input->get_post('mediaID')); 
 		
-		if($myRole<7){
+		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
       		$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog($mediaID, 'dMed', 'Media item '.$mediaID.' delete failed. Insufficient privledges. User '.$myID.' role '.$myRole); 
@@ -599,7 +599,7 @@ class post extends CI_Controller{
 		// Verify user has rights to media
 		$verify=$this->Media_model->get($mediaID, TRUE);
 		$location=NULL;
-		if($verify->author_id==$myID || $myRole>8){
+		if($verify->author_id==$myID || $myRole>$this->config->item('sectionAdmin')){
 			if(!empty($verify->fileLoc)){
 				$location=explode(base_url(),$verify->fileLoc);
 				if(file_exists($location[1])){

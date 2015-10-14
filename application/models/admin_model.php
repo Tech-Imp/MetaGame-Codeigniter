@@ -121,7 +121,7 @@ class Admin_model extends MY_Model{
 			$data=array(
 				'salt'=>$salt,
 				'id'=>$id,
-				'role'=>3,
+				'role'=>$this->config->item('normUser'),
 				'comment'=>'Joined on: '.date('Y-m-d H:i:s'). ' from '.$this->input->ip_address(),
 			);
 			if($this->save($data, FALSE,'auth_role') !== NULL){
@@ -153,7 +153,7 @@ class Admin_model extends MY_Model{
 		$otherUser=$this->get_by(array('id' => $otherId), true);
 		$otherEmail=$otherUser->email;
 		
-		if($myRole>=8 && $myRole > $affectedRole){
+		if($myRole>=$this->config->item('sectionAdmin') && $myRole > $affectedRole){
 			$password=FALSE;
 			$password= $this->input->post('password');
 		
@@ -190,7 +190,7 @@ class Admin_model extends MY_Model{
 		//TODO Where clause for searching via LIKE
 		
 		//Only limit view if not superadmin
-		if($myRole<9){
+		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('auth_role.role <', $myRole);
 		}
 		

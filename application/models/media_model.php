@@ -20,7 +20,7 @@ class Media_model extends MY_Model{
 		$myID=$this->session->userdata('id');
 			
 		//Only limit view if not superadmin
-		if($myRole<9){
+		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('author_id =', $myID);
 		}
 		
@@ -37,7 +37,7 @@ class Media_model extends MY_Model{
 		$myID=$this->session->userdata('id');
 			
 		//Only limit view if not superadmin
-		if($myRole<9){
+		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('author_id =', $myID);
 		}
 		

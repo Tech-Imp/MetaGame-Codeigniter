@@ -74,7 +74,7 @@ class dashboard extends admin_controller {
 		// Determine menu options based on role
 		$userOptions=anchor('main/index',"<span class='glyphicon glyphicon-arrow-left'></span> Back to Site", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'retSite'));
 		$userOptions.=anchor('admin/dashboard',"<span class='glyphicon glyphicon-home'></span> Home", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'retHome'));
-		if($this->session->userdata('role') >= 7){
+		if($this->session->userdata('role') >= $this->config->item('contributor')){
 			
 			$userOptions.=anchor('admin/dashboard/article',"<span class='glyphicon glyphicon-align-left'></span> Add Article", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addArticle'));
 			$userOptions.=anchor('admin/dashboard/media',"<span class='glyphicon glyphicon-file'></span> Add Media", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addMedia'));
@@ -128,7 +128,7 @@ class dashboard extends admin_controller {
 				$editID=$this->Admin_model->fixSelf();
 			
 			}
-			elseif($this->session->userdata('role')>=7 && $roleAffected !== -1 && $this->session->userdata('role') > $roleAffected){
+			elseif($this->session->userdata('role')>= $this->config->item('contributor') && $roleAffected !== -1 && $this->session->userdata('role') > $roleAffected){
 				$editID=$this->Admin_model->fixOther(intval($id));
 			}
 			else{

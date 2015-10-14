@@ -28,8 +28,13 @@ class Errorlog_model extends MY_Model{
 	//-------------------------------------------------------------------------------------------------------
 	//Save normal uploads to server
 	//-----------------------------------------------------------------------------------------------------
-	public function newLog($affectedID=NULL, $cat, $catStub, $role=9){
+	public function newLog($affectedID=NULL, $cat, $catStub, $role=NULL){
 		$myID=$this->session->userdata('id');
+		
+		if($role===NULL){
+			$role=$this->config->item('superAdmin');
+		}
+		
 		
 		if((bool)$myID==FALSE){
 			$myID=0;

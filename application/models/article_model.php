@@ -21,7 +21,7 @@ class Article_model extends MY_Model{
 	
 		
 		//Only limit view if not superadmin
-		if($myRole<9){
+		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('author_id =', $myID);
 		}
 		
