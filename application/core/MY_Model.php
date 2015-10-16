@@ -42,6 +42,7 @@ class MY_Model extends CI_Model{
 					$this->db->order_by($altOrder);
 				}
 			}
+			
 			return $this->db->get($altTable)->$method();
 		}
 	
@@ -136,7 +137,25 @@ class MY_Model extends CI_Model{
 
 //---------------------------------------------------------------
 
-	
+	public function restrictSect(){
+		//Whole section dedicated to making sure that items can be separated based on 
+		//exclusive areas.
+		//TODO Account for the issue with paging being considered the uri rather than the current page
+		$excludeLoc=array(
+			'main',
+			'admin'
+		);
+		
+		// $here=explode('/', uri_string());
+		$here=$this->uri->segment(1,"main");
+		if (in_array($here, $excludeLoc)==FALSE){
+			$this->db->where('forSection =', $here);
+		}
+		else{
+			$this->db->where('exclusiveSection =', 0);
+		}
+		// End content Exclusion
+	}
 
 
 }

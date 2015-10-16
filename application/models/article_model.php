@@ -63,19 +63,8 @@ class Article_model extends MY_Model{
 		
 		//Whole section dedicated to making sure that items can be separated based on 
 		//exclusive areas.
-		//TODO Test abstract this to my_model
-		$excludeLoc=array(
-			'main',
-			'admin'
-		);
+		// $this->restrictSect();
 		
-		$here=explode('/', uri_string());
-		if (in_array($here[1], $excludeLoc)==FALSE){
-			$this->db->where('forSection ==', $here[1]);
-		}
-		else{
-			$this->db->where('exclusiveSection ==', 0);
-		}
 		// End content Exclusion
 		
 		$this->db->where('body !=', '');
@@ -91,8 +80,19 @@ class Article_model extends MY_Model{
 						
 		}
 		
-		
 		return $this->get($id);
+		//TODO REMOVE THIS DEBUG TEST stuff
+		// if($offset!==NULL && intval($offset)>0){
+			// $stuff=$this->get($id);
+			// $here=explode('/', uri_string());
+			// echo $here[1];
+			// echo $this->uri->segment(1,"main");
+			// echo $this->db->last_query();
+			// exit();
+		// }
+		// else{
+			// return $this->get($id);
+		// }
 		
 	}
 	//-------------------------------------------------------------------------------------------------------
@@ -106,7 +106,7 @@ class Article_model extends MY_Model{
 			$this->db->where('body !=', '');
 			$this->db->where($visArr);
 		}
-		
+		// $this->restrictSect();
 		return $this->db->count_all_results($this->_table_name);
 	}
 	
