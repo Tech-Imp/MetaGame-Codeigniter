@@ -56,14 +56,14 @@ class Article_model extends MY_Model{
 	//--------------------------------------------------------------------------------------------------
 	//Get articles in a limit/offest way only for valid timestamped articles
 	//---------------------------------------------------------------------------------------------------
-	public function getNewsPublic($id=NULL, $resultLimit=NULL, $offset=NULL){
+	public function getNewsPublic($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
 		
 		$now=date('Y-m-d H:i:s');	
 		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
 		
 		//Whole section dedicated to making sure that items can be separated based on 
 		//exclusive areas.
-		// $this->restrictSect();
+		$this->restrictSect($here);
 		
 		// End content Exclusion
 		
@@ -98,7 +98,7 @@ class Article_model extends MY_Model{
 	//-------------------------------------------------------------------------------------------------------
 	//Get count of valid articles
 	//-------------------------------------------------------------------------------------------------------
-	public function getNewsCount($findViaTime=true){
+	public function getNewsCount($findViaTime=true, $here=null){
 		
 		if($findViaTime){
 			$now=date('Y-m-d H:i:s');	
@@ -106,7 +106,7 @@ class Article_model extends MY_Model{
 			$this->db->where('body !=', '');
 			$this->db->where($visArr);
 		}
-		// $this->restrictSect();
+		$this->restrictSect($here);
 		return $this->db->count_all_results($this->_table_name);
 	}
 	

@@ -15,9 +15,11 @@ class Media_model extends MY_Model{
 	//-------------------------------------------------------------------------------------------------------
 	//Get Media from database, primarily used on backend, no media type distinction
 	//-------------------------------------------------------------------------------------------------------
-	public function getMedia($id=NULL, $resultLimit=NULL, $offset=NULL){
+	public function getMedia($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
+		
+		$this->restrictSect($here);
 			
 		//Only limit view if not superadmin
 		if($myRole<$this->config->item('superAdmin')){
@@ -32,7 +34,7 @@ class Media_model extends MY_Model{
 		
 	}
 	
-	public function getMediaCount(){
+	public function getMediaCount($here=null){
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
 			
@@ -40,7 +42,7 @@ class Media_model extends MY_Model{
 		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('author_id =', $myID);
 		}
-		
+		$this->restrictSect($here);
 		return $this->db->count_all_results($this->_table_name);
 	}
 	//-------------------------------------------------------------------------------------------------------
@@ -80,7 +82,7 @@ class Media_model extends MY_Model{
 	//--------------------------------------------------------------------------------------------------------------------
 	//Get only photos from database, use limit
 	//--------------------------------------------------------------------------------------------------------------------
-	public function getPhotos($id=NULL, $vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL){
+	public function getPhotos($id=NULL, $vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
 		
 		$now=date('Y-m-d H:i:s');	
 		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
@@ -109,7 +111,7 @@ class Media_model extends MY_Model{
 		return $this->get($id);
 	}
 	
-	public function getPhotoCount($vintage=0, $logged=1){
+	public function getPhotoCount($vintage=0, $logged=1, $here=null){
 		$now=date('Y-m-d H:i:s');	
 		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
 		$this->db->where('fileLoc !=', '');
@@ -127,13 +129,15 @@ class Media_model extends MY_Model{
 	//---------------------------------------------------------------------------------------------------------------------------
 	//Get only embeds from database, use limit 
 	//---------------------------------------------------------------------------------------------------------------------------
-	public function getEmbeds($id=NULL ,$vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL){
+	public function getEmbeds($id=NULL ,$vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
 		
 		$now=date('Y-m-d H:i:s');	
 		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
 		
 		$this->db->where('embed !=', '');
 		$this->db->where($visArr);
+		
+		$this->restrictSect($here);
 		//Only limit to vintage or nonvintage when proper value
 		if($vintage != NULL){
 			$this->db->where('vintage', intval($vintage));
@@ -155,10 +159,12 @@ class Media_model extends MY_Model{
 		
 		return $this->get($id);
 	}
-	public function getEmbedCount($vintage=0, $logged=1){
+	public function getEmbedCount($vintage=0, $logged=1, $here=null){
 		$now=date('Y-m-d H:i:s');	
 		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
 		$this->db->where('embed !=', '');
+		
+		$this->restrictSect($here);
 		
 		$this->db->where($visArr);
 		if($vintage != NULL){

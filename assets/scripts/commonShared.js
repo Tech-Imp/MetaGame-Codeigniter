@@ -45,55 +45,37 @@
     };
 
     commonShared.prototype.whichDatabase = function(target, offset, selector) {
-      var here, location;
+      var currentEnd, here, location;
       if (this.debug) {
         console.log("commonShared.whichDatabase");
       }
       here = window.location.pathname;
-      switch (here) {
-        case "/main/photos":
-          location = {
-            orig: target.parents("div.tab-pane"),
-            name: "image",
-            offset: offset,
-            type: selector
-          };
-          return location;
-        case "/main/video":
-          location = {
-            orig: target.parents("div.tab-pane"),
-            name: "video",
-            offset: offset,
-            type: selector
-          };
-          return location;
-        case "/main/news":
-          location = {
-            orig: $("#mediaDatabase"),
-            name: "news",
-            offset: offset,
-            type: selector
-          };
-          return location;
-        case "/admin/dashboard/media":
-          location = {
-            orig: $("#mediaTable"),
-            name: "media",
-            offset: offset,
-            type: selector
-          };
-          return location;
-        case "/admin/dashboard/article":
-          location = {
-            orig: $("#mediaTable"),
-            name: "articles",
-            offset: offset,
-            type: selector
-          };
-          return location;
+      location = {
+        current: here,
+        offset: offset,
+        type: selector
+      };
+      currentEnd = here.split("/");
+      switch (currentEnd.pop()) {
+        case "photos":
+          location["orig"] = target.parents("div.tab-pane");
+          break;
+        case "video":
+          location["orig"] = target.parents("div.tab-pane");
+          break;
+        case "news":
+          location["orig"] = $("#mediaDatabase");
+          break;
+        case "media":
+          location["orig"] = $("#mediaTable");
+          break;
+        case "article":
+          location["orig"] = $("#mediaTable");
+          break;
         default:
-          return false;
+          location = false;
       }
+      return location;
     };
 
     commonShared.prototype.changePage = function(database, direction) {
@@ -115,7 +97,7 @@
           dataType: 'json',
           data: {
             offset: database.offset,
-            database: database.name,
+            database: database.current,
             type: database.type
           },
           success: (function(_this) {

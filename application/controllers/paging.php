@@ -56,21 +56,22 @@ class paging extends CI_Controller{
 	}
 	// Figure out which datatable to load
 	private function determineData($database, $type, $offset){
-		switch ($database) {
+		$loc=explode("/", $database);
+		switch (end($loc)) {
 			case 'video':
-				$results=$this->getVideo($offset, $type);
+				$results=$this->getVideo($offset, $type, $loc[1]);
 				break;
 			case 'image':
-				$results=$this->getImage($offset, $type);
+				$results=$this->getImage($offset, $type, $loc[1]);
 				break;
 			case 'news':
-				$results=$this->getNews($offset);
+				$results=$this->getNews($offset, $loc[1]);
 				break;
 			case 'media':
-				$results=$this->getMedia($offset);
+				$results=$this->getMedia($offset, $loc[1]);
 				break;
 			case 'articles':
-				$results=$this->getArticles($offset);
+				$results=$this->getArticles($offset, $loc[1]);
 				break;
 			default:
 				$results=false;
@@ -106,14 +107,14 @@ class paging extends CI_Controller{
       	exit; 
 	}
 	
-	private function getNews($paging=0){
+	private function getNews($paging=0, $currentLoc=null){
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxArticles');;
 		$offset=$paging*$maxLimit;
 		
-		$articles=$this->Article_model->getNewsPublic(NULL, $maxLimit, $offset);
-		$maxItems=$this->Article_model->getNewsCount();
+		$articles=$this->Article_model->getNewsPublic(NULL, $maxLimit, $offset, $currentLoc);
+		$maxItems=$this->Article_model->getNewsCount(true, $currentLoc);
 		
 	
 		if(count($articles)){
@@ -128,7 +129,7 @@ class paging extends CI_Controller{
 	//-----------------------------------------------------------------------
 	
 	
-	private function getImage($paging=0, $type){
+	private function getImage($paging=0, $type, $currentLoc=null){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxSMedia');
@@ -143,13 +144,13 @@ class paging extends CI_Controller{
 		
 		if($currentRole>0){
 		// Show only images that do not require logging in
-			$myMedia=$this->Media_model->getPhotos(NULL, $vintage, NULL, $maxLimit, $offset);
-			$maxItems=$this->Media_model->getPhotoCount($vintage, NULL);
+			$myMedia=$this->Media_model->getPhotos(NULL, $vintage, NULL, $maxLimit, $offset, $currentLoc);
+			$maxItems=$this->Media_model->getPhotoCount($vintage, NULL, $currentLoc);
 		}
 		else{
 		// Show media for logged in users	
-			$myMedia=$this->Media_model->getPhotos(NULL, $vintage, 0, $maxLimit, $offset);
-			$maxItems=$this->Media_model->getPhotoCount($vintage, 0);	
+			$myMedia=$this->Media_model->getPhotos(NULL, $vintage, 0, $maxLimit, $offset, $currentLoc);
+			$maxItems=$this->Media_model->getPhotoCount($vintage, 0, $currentLoc);	
 			
 		}
 	
@@ -164,7 +165,7 @@ class paging extends CI_Controller{
 	//Video paging
 	//-----------------------------------------------------------------------
 	
-	private function getVideo($paging=0, $type){
+	private function getVideo($paging=0, $type, $currentLoc=null){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxMMedia');
@@ -179,14 +180,14 @@ class paging extends CI_Controller{
 		
 		if($currentRole>0){
 			// show only embeded media that do not require login
-			$myMedia=$this->Media_model->getEmbeds(NULL, $vintage, NULL, $maxLimit, $offset);
-			$maxItems=$this->Media_model->getEmbedCount($vintage,NULL);
+			$myMedia=$this->Media_model->getEmbeds(NULL, $vintage, NULL, $maxLimit, $offset, $currentLoc);
+			$maxItems=$this->Media_model->getEmbedCount($vintage,NULL, $currentLoc);
 			
 		}
 		else{
 			// Show all embedded media for logged in users
-			$myMedia=$this->Media_model->getEmbeds(NULL, $vintage, 0, $maxLimit, $offset);
-			$maxItems=$this->Media_model->getEmbedCount($vintage, 0);
+			$myMedia=$this->Media_model->getEmbeds(NULL, $vintage, 0, $maxLimit, $offset, $currentLoc);
+			$maxItems=$this->Media_model->getEmbedCount($vintage, 0, $currentLoc);
 		}
 	
 		if(count($myMedia)){
@@ -199,14 +200,14 @@ class paging extends CI_Controller{
 	//---------------------------------------------------------------------------
 	//Articles paging on the dashboard
 	//--------------------------------------------------------------------------
-	private function getArticles($paging=0){
+	private function getArticles($paging=0, $currentLoc=null){
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxAdmin');
 		$offset=$paging*$maxLimit;
 		
-		$articles=$this->Article_model->getArticles(NULL, $maxLimit, $offset);
-		$maxNewsCount=$this->Article_model->getNewsCount(false);
+		$articles=$this->Article_model->getArticles(NULL, $maxLimit, $offset, $currentLoc);
+		$maxNewsCount=$this->Article_model->getNewsCount(false, $currentLoc);
 		
 	
 		if(count($articles)){
@@ -219,14 +220,14 @@ class paging extends CI_Controller{
 	//---------------------------------------------------------------------------
 	//Media pgaing on the dashboard
 	//------------------------------------------------------------------------------
-	private function getMedia($paging=0){
+	private function getMedia($paging=0, $currentLoc=null){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxAdmin');
 		$offset=$paging*$maxLimit;
 		
-		$myMedia=$this->Media_model->getMedia(NULL, $maxLimit, $offset);
-		$maxMediaCount=$this->Media_model->getMediaCount();
+		$myMedia=$this->Media_model->getMedia(NULL, $maxLimit, $offset, $currentLoc);
+		$maxMediaCount=$this->Media_model->getMediaCount($currentLoc);
 		
 	
 		if(count($myMedia)){

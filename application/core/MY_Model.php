@@ -137,9 +137,12 @@ class MY_Model extends CI_Model{
 
 //---------------------------------------------------------------
 
-	public function restrictSect(){
+	public function restrictSect($here=null){
 		//Whole section dedicated to making sure that items can be separated based on 
 		//exclusive areas.
+		if($here===null){
+			$here=$this->uri->segment(1,"main");
+		}
 		//TODO Account for the issue with paging being considered the uri rather than the current page
 		$excludeLoc=array(
 			'main',
@@ -147,7 +150,7 @@ class MY_Model extends CI_Model{
 		);
 		
 		// $here=explode('/', uri_string());
-		$here=$this->uri->segment(1,"main");
+		
 		if (in_array($here, $excludeLoc)==FALSE){
 			$this->db->where('forSection =', $here);
 		}
