@@ -57,11 +57,12 @@ class paging extends CI_Controller{
 	// Figure out which datatable to load
 	private function determineData($database, $type, $offset){
 		$loc=explode("/", $database);
+		// var_dump($loc);
 		switch (end($loc)) {
 			case 'video':
 				$results=$this->getVideo($offset, $type, $loc[1]);
 				break;
-			case 'image':
+			case 'photos':
 				$results=$this->getImage($offset, $type, $loc[1]);
 				break;
 			case 'news':
