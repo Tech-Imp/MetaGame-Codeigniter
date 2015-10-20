@@ -41,7 +41,8 @@ class common_frontend extends frontend_controller{
 	}
 	//-------------------------------------------------------------------------------
 	public function baseTemplate(){
-		
+			
+		// TODO Need to adjust this to the multisection model dynamically
 		$menu='<li>'.anchor('main/index', "Home").'</li>';
 		$menu.='<li>'.anchor('main/news', "News").'</li>';
 		$menu.='<li>'.anchor('main/video', "Video").'</li>';
