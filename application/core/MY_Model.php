@@ -141,20 +141,17 @@ class MY_Model extends CI_Model{
 		//Whole section dedicated to making sure that items can be separated based on 
 		//exclusive areas.
 		if($here===null){
-			$here=$this->uri->segment(1,"main");
+			$here=$this->uri->segment(1, $this->config->item('mainPage'));
 		}
 		//TODO Account for the issue with paging being considered the uri rather than the current page
-		$excludeLoc=array(
-			'main',
-			'admin'
-		);
+		$excludeLoc=$this->config->item('excludeLoc');
 		
 		// $here=explode('/', uri_string());
 		
 		if (in_array($here, $excludeLoc)==FALSE){
 			$this->db->where('forSection =', $here);
 		}
-		else{
+		elseif(strpos($here, $this->config->item('adminPage')) === false){
 			$this->db->where('exclusiveSection =', 0);
 		}
 		// End content Exclusion

@@ -87,7 +87,7 @@ class Media_model extends MY_Model{
 		$now=date('Y-m-d H:i:s');	
 		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
 		$this->db->where('fileLoc !=', '');
-		
+		$this->restrictSect($here);
 		$this->db->where($visArr);
 		//Only limit to vintage or nonvintage when proper value
 		if($vintage !== NULL){
@@ -115,7 +115,7 @@ class Media_model extends MY_Model{
 		$now=date('Y-m-d H:i:s');	
 		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
 		$this->db->where('fileLoc !=', '');
-		
+		$this->restrictSect($here);
 		$this->db->where($visArr);
 		if($vintage !== NULL){
 			$this->db->where('vintage', intval($vintage));
