@@ -101,9 +101,21 @@ class paging extends CI_Controller{
 	// TODO Need to adjust this for any auto jump to page
 	function specificPage(){
 		header('content-type: text/javascript');
-		$offset = abs(intval($this->input->get_post('offset'))); 
-		$result=$this->getNews($offset);
-		$data=array('success' => $result); 
+		$offset = intval($this->input->get_post('offset')); 
+		$database = $this->input->get_post('database'); 
+		$type = $this->input->get_post('type'); 
+		
+		if(!(isset($offset))||!(isset($database))||!(isset($type))){
+			$data=array('error' => "Error in intial data");
+		} 
+		$result=$this->determineData($database, $type, $offset);
+		if($result!=false){
+			$data=array('success' => $result); 
+		}
+		else {
+			$data=array('failure' => "Error retrieving data"); 
+		}
+		
       	echo json_encode($data);
       	exit; 
 	}

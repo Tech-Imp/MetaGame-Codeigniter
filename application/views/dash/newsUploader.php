@@ -22,6 +22,23 @@
 					      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="articleStub" name="title" value=""></div>
 					      		<div class="col-xs-12 col-md-6">Leaving "Show when" blank will hide the article</div>
 							</div>
+							<div class="row">
+								<div class="col-xs-2">Exclusive to section?</div>
+								<div class="col-xs-10 col-md-4">
+				      				<select id="exclusiveFlag">
+				      					<option <?php echo $sectionNo;?> value='0'>No</option>
+				      					<option <?php echo $sectionYes;?> value='1'>Yes</option>
+				      				</select>
+		      					</div>
+					      		<div class="col-xs-12 col-md-6">"Yes" will only display to specific section</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2">Show in section</div>
+								<div class="col-xs-10 col-md-4 ui-widget">
+									<input id="section" >
+		      					</div>
+					      		<div class="col-xs-12 col-md-6">Always displays to <?php echo $displayDash;?> and <?php echo $displayMain;?> unless exclusive</div>
+							</div>
 							<br>
 							<h3>Body of article</h3>
 							<div class="alert alert-danger noshow" id="textArea-alert">

@@ -393,6 +393,10 @@ class dashboard extends admin_controller {
 		$data['js'][1]= 'dash/dashboardIndex.js';
 		$data['js'][2]= 'dash/dashboardNews.js';
 		$data['js'][3]='commonShared.js';
+		
+		
+		
+		
 		//To cover bases, any additional outside tech is documented
 		$data['additionalTech']="<div class='row'>
 			<br>
