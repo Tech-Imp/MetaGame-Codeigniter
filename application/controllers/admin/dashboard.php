@@ -411,7 +411,7 @@ class dashboard extends admin_controller {
 		
 		$data['articleTable']=$this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "editNews", $maxNewsCount, $maxLimit, 0);
 		
-		
+		$data['exclusive']=$this->exclusiveSelector();
 		
 		$data['currentLocation']="<div class='navbar-brand'>News Dashboard</div>";
 		$this->load->view('templates/header', $data);
@@ -444,6 +444,7 @@ class dashboard extends admin_controller {
 				
 				
 				$data['newsWhen']=$allData->visibleWhen;
+				$data['exclusive']=$this->exclusiveSelector($allData->exclusiveSection, $allData->forSection);
 				$this->load->view('dash/newsEdit', $data);
 			}
 			else{
@@ -532,7 +533,38 @@ class dashboard extends admin_controller {
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);
 	}
-
+	private function exclusiveSelector($exFlag=false, $exPage=''){
+		
+		
+		$exclusive='<div class="row">
+						<div class="col-xs-2">Show in section</div>
+						<div class="col-xs-10 col-md-4 ui-widget">
+							<input type="text" id="section" value='.$exPage.'>
+						</div>
+		      			<div class="col-xs-12 col-md-6">Always displays to main as well, unless exclusive</div>
+					</div>';
+			
+		$exclusive.='<div class="row">
+						<div class="col-xs-2">Exclusive to section?</div>
+						<div class="col-xs-10 col-md-4">
+	      					<select id="exclusiveFlag">';
+		//Determine if the data is exclusive to a section or can just appear in multiple places
+		if ($exFlag) {
+			$exclusive.='<option value="0">No</option>
+  						<option selected value="1">Yes</option>';	
+		}
+		else{
+			$exclusive.='<option selected value="0">No</option>
+  						<option value="1">Yes</option>';
+		}
+	      						
+		$exclusive.='</select>
+      					</div>
+		      			<div class="col-xs-12 col-md-6">"Yes" will only display to specific section</div>
+					</div>';	
+		
+		return $exclusive;
+	}
 
 
 

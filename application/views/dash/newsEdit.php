@@ -25,6 +25,7 @@
 				      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="articleStub" value="<?php echo $newsStub;?>"></div>
 				      		<div class="col-xs-12 col-md-6">Leaving "Show when" blank will hide the article</div>
 						</div>
+						<?php echo $exclusive;?>
 						<br>
 						<h3>Body of article</h3>
 						<div class="alert alert-danger noshow" id="textArea-alert">
