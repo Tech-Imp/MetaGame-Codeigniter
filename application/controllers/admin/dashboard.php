@@ -536,7 +536,7 @@ class dashboard extends admin_controller {
 	private function exclusiveSelector($exFlag=false, $exPage=''){
 		
 		
-		$exclusive='<div class="row">
+		$exclusive='<br><div class="row">
 						<div class="col-xs-2">Show in section</div>
 						<div class="col-xs-10 col-md-4 ui-widget">
 							<input type="text" id="section" value='.$exPage.'>
@@ -544,7 +544,7 @@ class dashboard extends admin_controller {
 		      			<div class="col-xs-12 col-md-6">Always displays to main as well, unless exclusive</div>
 					</div>';
 			
-		$exclusive.='<div class="row">
+		$exclusive.='<br><div class="row">
 						<div class="col-xs-2">Exclusive to section?</div>
 						<div class="col-xs-10 col-md-4">
 	      					<select id="exclusiveFlag">';
