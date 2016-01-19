@@ -76,7 +76,7 @@ class dataprep_model extends CI_Controller{
 				
 				//Create the block item based on info gathered and add to return value, Default case will assume theres only one item per slot
 				if ($perRow==1){
-					$export.="<div id=mediaItem".$newsID.">";
+					$export.="<div id=mediaItem".$newsID." class='metaBorder' >";
 				}
 				else {
 					//Manages the whole row nesting. Only triggered when a value is passed.

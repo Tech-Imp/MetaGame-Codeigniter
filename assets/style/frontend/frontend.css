@@ -1,7 +1,17 @@
 body{
-	background-color: black;
+	background: #1F0039;
+    background: linear-gradient(-90deg, #08010E, #1F0039, #08010E);
 	color: white;
+}
+.metaBorder{
+	border-style: ridge;
+	border-color: #79C942;
+	background-color: black;
 }
 .well{
 	color: black;
+    background-image: linear-gradient(to bottom,#717070 0,#3C3B3B 100%);
+    border-color: #79C942;
+    border-width: 4px;
+    border-style: ridge;
 }
