@@ -41,15 +41,16 @@ class common_frontend extends frontend_controller{
 	}
 	//-------------------------------------------------------------------------------
 	public function baseTemplate(){
-			
+		$section=$this->uri->segment(1, $this->config->item('mainPage'));
 		// TODO Need to adjust this to the multisection model dynamically
-		$menu='<li>'.anchor('main/index', "Home").'</li>';
-		$menu.='<li>'.anchor('main/news', "News").'</li>';
-		$menu.='<li>'.anchor('main/video', "Video").'</li>';
-		$menu.='<li>'.anchor('main/photos', "Photos").'</li>';
-		$menu.='<li>'.anchor('main/gear', "Merch").'</li>';
+		$menu='<li>'.anchor($section.'/index', "Home").'</li>';
+		$menu.='<li>'.anchor($section.'/news', "News").'</li>';
+		$menu.='<li>'.anchor($section.'/video', "Video").'</li>';
+		$menu.='<li>'.anchor($section.'/photos', "Photos").'</li>';
+		$menu.='<li>'.anchor($section.'/gear', "Merch").'</li>';
 		
-		$menu.='<li>'.anchor('main/contact', "Contact").'</li>';	
+		$menu.='<li>'.anchor($section.'/contact', "Contact").'</li>';	
+		// $menu.=$section;
 		
 		return $menu;
 	}
