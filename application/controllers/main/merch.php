@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Gear extends common_frontend {
+class Merch extends common_frontend {
 	
 	function __construct(){
 		parent::__construct();

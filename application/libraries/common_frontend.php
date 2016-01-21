@@ -47,7 +47,7 @@ class common_frontend extends frontend_controller{
 		$menu.='<li>'.anchor($section.'/news', "News").'</li>';
 		$menu.='<li>'.anchor($section.'/video', "Video").'</li>';
 		$menu.='<li>'.anchor($section.'/photos', "Photos").'</li>';
-		$menu.='<li>'.anchor($section.'/gear', "Merch").'</li>';
+		$menu.='<li>'.anchor($section.'/merch', "Merch").'</li>';
 		
 		$menu.='<li>'.anchor($section.'/contact', "Contact").'</li>';	
 		// $menu.=$section;
