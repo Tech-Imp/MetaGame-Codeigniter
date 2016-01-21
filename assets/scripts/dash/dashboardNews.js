@@ -72,7 +72,9 @@
             title: $("#articleTitle").val(),
             stub: $("#articleStub").val(),
             visibleWhen: $("#articleWhen").val(),
-            bodyText: $('#mceNewsArea').html()
+            bodyText: $('#mceNewsArea').html(),
+            section: $("#section").val(),
+            exFlag: $("#exclusiveFlag").val()
           },
           success: (function(_this) {
             return function(response) {

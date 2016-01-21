@@ -148,7 +148,7 @@ class MY_Model extends CI_Model{
 		
 		// $here=explode('/', uri_string());
 		
-		if (in_array($here, $excludeLoc)==FALSE){
+		if (in_array($here, $excludeLoc)==FALSE && $here != ""){
 			$this->db->where('forSection =', $here);
 		}
 		elseif(strpos($here, $this->config->item('adminPage')) === false){

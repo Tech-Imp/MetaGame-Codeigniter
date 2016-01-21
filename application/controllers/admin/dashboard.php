@@ -84,6 +84,9 @@ class dashboard extends admin_controller {
 			$userOptions.=anchor('admin/dashboard/stats',"<span class='glyphicon glyphicon-stats'></span> View Stats", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'vStats'));
 	            	
 		}
+		if($this->session->userdata('role') >= $this->config->item('superAdmin')){
+			$userOptions.=anchor('admin/dashboard/tools',"<span class='glyphicon glyphicon-alert'></span> Admin Tools", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'metaTools'));
+		}
 		$userOptions.=anchor('admin/dashboard/update',"<span class='glyphicon glyphicon-cog'></span> Change Settings", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'cSettings'));
 	
 		return $userOptions;

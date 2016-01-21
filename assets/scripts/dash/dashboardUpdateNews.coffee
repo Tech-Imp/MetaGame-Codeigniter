@@ -44,6 +44,8 @@ class dashboardUpdateNews extends window.classes.dashboardIndex
                          stub: $("#articleStub").val()
                          visibleWhen: $("#articleWhen").val()
                          body: $('#mceNewsArea').html()
+                         section:  $("#section").val()
+                         exFlag:  $("#exclusiveFlag").val()
                          
                     success: (response)=>
                          if response.success
