@@ -60,10 +60,10 @@ class Article_model extends MY_Model{
 	//News/Articles wrappers
 	//-------------------------------------------------------------------------------------------------
 	public function getNewsPublic($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
-		return $this->getWrittenPublic(id, $resultLimit, $offset, $here, "news");
+		return $this->getWrittenPublic($id, $resultLimit, $offset, $here, "news");
 	}
 	public function getArticlesPublic($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
-		return $this->getWrittenPublic(id, $resultLimit, $offset, $here, "articles");
+		return $this->getWrittenPublic($id, $resultLimit, $offset, $here, "articles");
 	}
 	
 	//--------------------------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ class Article_model extends MY_Model{
 		$this->db->where('body !=', '');
 		$this->db->where($visArr);
 		if ($type!==NULL) {
-			$this->db->where('type ==', $type);
+			$this->db->where('type =', $type);
 		}
 		
 		if($resultLimit !== NULL){
@@ -114,7 +114,7 @@ class Article_model extends MY_Model{
 	public function getWrittenCount($findViaTime=true, $here=null, $type=NULL){
 			
 		if($type!==NULL){
-			$this->db->where('type ==', $type);
+			$this->db->where('type =', $type);
 		}
 		
 		if($findViaTime){
