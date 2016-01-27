@@ -118,7 +118,7 @@ class dataprep_model extends CI_Controller{
 
 			//Handle pagination when multiple items are limited and it exceeds the limit
 			if($maxRows>$limitRows && $myLink!==NULL){
-				$export.="<div class='row'><nav>
+				$export.="<div class='row'><nav class='col-xs-12'>
   					<ul class='pager'>";
 				//Determine if previous is leading into null area and block
 				if($pageOffset>0){
@@ -368,7 +368,7 @@ class dataprep_model extends CI_Controller{
 			}
 			//Handle pagination when multiple items are limited and it exceeds the limit
 			if($maxRows>$limitRows){
-				$export.="<div class='row'><nav>
+				$export.="<div class='row'><nav class='col-xs-12'>
   					<ul class='pager'>";
 				//Determine if previous is leading into null area and block
 				if($pageOffset>0){
