@@ -45,8 +45,10 @@ class common_frontend extends frontend_controller{
 		// TODO Need to adjust this to the multisection model dynamically
 		$menu='<li>'.anchor($section.'/index', "Home").'</li>';
 		$menu.='<li>'.anchor($section.'/news', "News").'</li>';
-		$menu.='<li>'.anchor($section.'/video', "Video").'</li>';
-		$menu.='<li>'.anchor($section.'/photos', "Photos").'</li>';
+		$menu.='<li>'.anchor($section.'/media', "Media").'</li>';
+		$menu.='<li>'.anchor($section.'/articles', "Articles").'</li>';
+		// $menu.='<li>'.anchor($section.'/video', "Video").'</li>';
+		// $menu.='<li>'.anchor($section.'/photos', "Photos").'</li>';
 		$menu.='<li>'.anchor($section.'/merch', "Merch").'</li>';
 		
 		$menu.='<li>'.anchor($section.'/contact', "Contact").'</li>';	

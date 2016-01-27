@@ -55,10 +55,21 @@ class Article_model extends MY_Model{
 		
 		return $newsId;
 	}
-	//--------------------------------------------------------------------------------------------------
-	//Get articles in a limit/offest way only for valid timestamped articles
-	//---------------------------------------------------------------------------------------------------
+	
+	//-------------------------------------------------------------------------------------------------
+	//News/Articles wrappers
+	//-------------------------------------------------------------------------------------------------
 	public function getNewsPublic($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
+		return $this->getWrittenPublic(id, $resultLimit, $offset, $here, "news");
+	}
+	public function getArticlesPublic($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
+		return $this->getWrittenPublic(id, $resultLimit, $offset, $here, "articles");
+	}
+	
+	//--------------------------------------------------------------------------------------------------
+	//Get written media in a limit/offset way only for valid timestamped articles
+	//---------------------------------------------------------------------------------------------------
+	public function getWrittenPublic($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null, $type=NULL){
 		
 		$now=date('Y-m-d H:i:s');	
 		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
@@ -71,6 +82,9 @@ class Article_model extends MY_Model{
 		
 		$this->db->where('body !=', '');
 		$this->db->where($visArr);
+		if ($type!==NULL) {
+			$this->db->where('type ==', $type);
+		}
 		
 		if($resultLimit !== NULL){
 			if($offset!==NULL && intval($offset)>0){
@@ -83,24 +97,25 @@ class Article_model extends MY_Model{
 		}
 		
 		return $this->get($id);
-		//TODO REMOVE THIS DEBUG TEST stuff
-		// if($offset!==NULL && intval($offset)>0){
-			// $stuff=$this->get($id);
-			// $here=explode('/', uri_string());
-			// echo $here[1];
-			// echo $this->uri->segment(1,"main");
-			// echo $this->db->last_query();
-			// exit();
-		// }
-		// else{
-			// return $this->get($id);
-		// }
-		
 	}
 	//-------------------------------------------------------------------------------------------------------
-	//Get count of valid articles
+	//Get count of valid news/article wrappers
 	//-------------------------------------------------------------------------------------------------------
 	public function getNewsCount($findViaTime=true, $here=null){
+		return $this->getWrittenCount($findViaTime,$here, "news");
+	}
+	
+	public function getArticleCount($findViaTime=true, $here=null){
+		return $this->getWrittenCount($findViaTime,$here, "article");
+	}
+	//----------------------------------------------------------------------------
+	//Generic function for all written content
+	//----------------------------------------------------------------------------
+	public function getWrittenCount($findViaTime=true, $here=null, $type=NULL){
+			
+		if($type!==NULL){
+			$this->db->where('type ==', $type);
+		}
 		
 		if($findViaTime){
 			$now=date('Y-m-d H:i:s');	
