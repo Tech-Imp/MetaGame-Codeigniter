@@ -47,6 +47,8 @@ class commonShared
                     location["orig"]=$("#mediaTable")
                when "article"
                     location["orig"]=$("#mediaTable")
+               when "media" 
+                    location["orig"]= target.parents("div.tab-pane")
                else
                     location=false     
           return location

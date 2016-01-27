@@ -72,6 +72,9 @@
         case "article":
           location["orig"] = $("#mediaTable");
           break;
+        case "media":
+          location["orig"] = target.parents("div.tab-pane");
+          break;
         default:
           location = false;
       }
