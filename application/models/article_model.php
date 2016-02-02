@@ -105,7 +105,7 @@ class Article_model extends MY_Model{
 		return $this->getWrittenCount($findViaTime,$here, "news");
 	}
 	
-	public function getArticleCount($findViaTime=true, $here=null){
+	public function getArticlesCount($findViaTime=true, $here=null){
 		return $this->getWrittenCount($findViaTime,$here, "article");
 	}
 	//----------------------------------------------------------------------------
