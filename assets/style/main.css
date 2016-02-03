@@ -1,6 +1,11 @@
 .nav-tabs{
 	border-bottom:none;
 }
+
+.icon-header{
+	max-height:50px;
+}
+
 .contentFooter{
 	padding-top: 70px;
 }
