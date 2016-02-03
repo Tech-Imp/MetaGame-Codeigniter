@@ -44,12 +44,12 @@ class common_frontend extends frontend_controller{
 		$section=$this->uri->segment(1, $this->config->item('mainPage'));
 		// TODO Need to adjust this to the multisection model dynamically
 		$menu='<li>'.anchor($section.'/index', "Home").'</li>';
-		$menu.='<li>'.anchor($section.'/news', "News").'</li>';
-		$menu.='<li>'.anchor($section.'/media', "Media").'</li>';
-		$menu.='<li>'.anchor($section.'/articles', "Articles").'</li>';
+		$menu.='<li>'.anchor($section.'/news', "<img src='/assets/image/News Button.png' class='img-responsive' alt='News'>").'</li>';
+		$menu.='<li>'.anchor($section.'/media', "<img src='/assets/image/Media Button.png' class='img-responsive' alt='Media'>").'</li>';
+		$menu.='<li>'.anchor($section.'/articles', "<img src='/assets/image/Articles Button.png' class='img-responsive' alt='Articles'>").'</li>';
 		// $menu.='<li>'.anchor($section.'/video', "Video").'</li>';
 		// $menu.='<li>'.anchor($section.'/photos', "Photos").'</li>';
-		$menu.='<li>'.anchor($section.'/merch', "Merch").'</li>';
+		$menu.='<li>'.anchor($section.'/merch', "<img src='/assets/image/Shop Button.png' class='img-responsive' alt='Merch'>").'</li>';
 		
 		$menu.='<li>'.anchor($section.'/contact', "Contact").'</li>';	
 		// $menu.=$section;

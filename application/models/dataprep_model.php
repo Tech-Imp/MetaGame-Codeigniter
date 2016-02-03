@@ -10,6 +10,17 @@ class dataprep_model extends CI_Controller{
 //Used to prepare items for the front end
 //-------------------------------------------------------------------------------------------
 	public function gatherItems($myMedia, $items=NULL, $primary_key, $myLink=NULL, $perRow=1, $maxRows=0, $limitRows=1, $pageOffset=0, $databaseType='primary' ){
+		$existing = $this->gatherGenericItems($myMedia, $items, $primary_key, $myLink, $perRow, $maxRows );
+		return $this->generalPagination($existing, $maxRows, $limitRows, $pageOffset, $databaseType);
+	}
+
+	public function gatherItemsRedirect($myMedia, $items=NULL, $primary_key, $myLink=NULL, $perRow=1, $maxRows=0, $limitRows=1, $pageOffset=0, $databaseType='primary', $redirect=NULL){
+		$existing = $this->gatherGenericItems($myMedia, $items, $primary_key, $myLink, $perRow, $maxRows, $redirect);
+		return $this->generalPagination($existing, $maxRows, $limitRows, $pageOffset, $databaseType);
+	}
+
+
+	private function gatherGenericItems($myMedia, $items, $primary_key, $myLink, $perRow, $maxRows, $redirect=NULL){
 		//myMedia is the raw data coming back from the model
 		//Items is just a string of what these things are
 		//primary_key is the name of the primary key, used to retrieve values
@@ -98,9 +109,16 @@ class dataprep_model extends CI_Controller{
                     ".$media."
                     <br>
                     ".$modified;
+				//Cap off the entry with ability to get permalinks or a way back to main section
                 if($items!==NULL && $myLink!==NULL){
 					if($perRow==1 && count($myMedia)==1 && $maxRows==0){
-						$export.="<div>".anchor('main/'.$myLink.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
+						if($redirect==NULL){
+							$export.="<div>".anchor('main/'.$myLink.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
+						}
+						else{
+							$export.="<div>".anchor('main/'.$redirect.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
+						}
+						
 					}
 					else{
 						$export.="<div>".anchor('main/'.$myLink.'/index/'.$newsID,"<span class='glyphicon glyphicon-search'></span><strong>  Get permanent link to ".$items." </strong>")."</div>";
@@ -115,27 +133,33 @@ class dataprep_model extends CI_Controller{
 					}
 				}
 			}
-
-			//Handle pagination when multiple items are limited and it exceeds the limit
-			if($maxRows>$limitRows && $myLink!==NULL){
-				$export.="<div class='row'><nav class='col-xs-12'>
-  					<ul class='pager'>";
-				//Determine if previous is leading into null area and block
-				if($pageOffset>0){
-					$export.="<li class='previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='prevPage'>Prev</a></li>";
-				}
-				else{
-					$export.="<li class='disabled previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='prevPage'>Prev</a></li>";
-				}
-				if(($pageOffset+1)*$limitRows<$maxRows){
-					$export.="<li class='next'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='nextPage'>Next</a></li>";
-				}
-				else{
-					$export.="<li class='disabled next'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='nextPage'>Next</a></li>";
-				}
-				$export.="</ul></nav></div>";
-			}
 			
+		}
+		return $export;
+	}
+	//---------------------------------------------------------------------------------------------------
+	//Generic version of pagination to be reused
+	//---------------------------------------------------------------------------------------------------
+
+	private function generalPagination($existing=NULL, $maxRows, $limitRows, $pageOffset, $databaseType=NULL){
+		$export=$existing;
+		if($maxRows>$limitRows && $databaseType!==NULL){
+			$export.="<div class='row'><nav class='col-xs-12'>
+				<ul class='pager'>";
+			//Determine if previous is leading into null area and block
+			if($pageOffset>0){
+				$export.="<li class='previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='prevPage'>Prev</a></li>";
+			}
+			else{
+				$export.="<li class='disabled previous'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='prevPage'>Prev</a></li>";
+			}
+			if(($pageOffset+1)*$limitRows<$maxRows){
+				$export.="<li class='next'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='nextPage'>Next</a></li>";
+			}
+			else{
+				$export.="<li class='disabled next'><a href='javascript:void(0);' data-loc='".$pageOffset."' data-type='".$databaseType."' class='nextPage'>Next</a></li>";
+			}
+			$export.="</ul></nav></div>";
 		}
 		return $export;
 	}

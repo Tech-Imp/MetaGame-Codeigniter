@@ -1,7 +1,7 @@
 <div class='mainContent'>
-	<!-- <div class='imageBanner'>
-		<img src="<?php echo base_url() ; ?>assets/image/header.jpg" class='img-responsive' alt="Official site of Meta-Game Productions" width="100%">
-	</div> -->
+	<div class='imageBanner'>
+		<img src="<?php echo base_url() ; ?>assets/image/Metagame Banner HD thin.jpg" class='img-responsive' alt="Official site of Meta-Game Productions" width="100%">
+	</div>
 	<nav class="navbar navbar-inverse" role="navigation">
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
