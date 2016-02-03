@@ -26,6 +26,18 @@ class dashboardNews extends window.classes.dashboardIndex
           $("#saveNewArticle").unbind().bind "click", (event)=>
                $("#saveNewArticle").prop("disabled", "disabled")    
                @saveNews()
+          
+          $("#saveWrittenArticle").unbind().bind "click", (event)=>
+               $("#saveNewArticle").prop("disabled", "disabled")
+               $("#saveWrittenNews").prop("disabled", "disabled")  
+               $("#saveWrittenArticle").prop("disabled", "disabled")
+               @saveNews("articles")
+          
+          $("#saveWrittenNews").unbind().bind "click", (event)=>
+               $("#saveNewArticle").prop("disabled", "disabled")
+               $("#saveWrittenNews").prop("disabled", "disabled")
+               $("#saveWrittenArticle").prop("disabled", "disabled")
+               @saveNews("news")
 
           $("#clearArticle").unbind().bind "click", (event)=>
                @cleanAreas()
@@ -38,13 +50,17 @@ class dashboardNews extends window.classes.dashboardIndex
                          empty = true
                if empty
                     console.log "remain locked"
-                    $("#saveNewArticle").prop("disabled", "disabled")  
+                    $("#saveNewArticle").prop("disabled", "disabled")
+                    $("#saveWrittenNews").prop("disabled", "disabled")
+                    $("#saveWrittenArticle").prop("disabled", "disabled")  
                else
                     console.log "open"
-                    $("#saveNewArticle").prop("disabled", false)  
+                    $("#saveNewArticle").prop("disabled", false)
+                    $("#saveWrittenNews").prop("disabled", false)
+                    $("#saveWrittenArticle").prop("disabled", false)  
 
    
-     saveNews:()=>
+     saveNews:(type="news")=>
           if @debug then console.log "dashboardIndex.saveNews"
           
           if $.trim($("#mceNewsArea").html())
@@ -59,6 +75,7 @@ class dashboardNews extends window.classes.dashboardIndex
                          bodyText: $('#mceNewsArea').html()
                          section:  $("#section").val()
                          exFlag:  $("#exclusiveFlag").val()
+                         type: type
                               
                     success: (response)=>
                          if response.success

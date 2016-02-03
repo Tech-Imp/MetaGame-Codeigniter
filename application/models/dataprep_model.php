@@ -287,6 +287,19 @@ class dataprep_model extends CI_Controller{
 							break;
 					}
 				}
+				elseif (array_key_exists('type', $row)) {
+					switch ($row->type) {
+						case 'news':
+							$mediaClass="<div><span class='glyphicon glyphicon-send'></span><strong> News </strong></div>";
+							break;
+						case 'articles':
+							$mediaClass="<div><span class='glyphicon glyphicon-list-alt'></span><strong> Articles </strong></div>";
+							break;
+						default:
+							$mediaClass="<div><span class='glyphicon glyphicon-ban-circle'></span><strong> UNKNOWN </strong></div>";
+							break;
+					}
+				}
 				
 				
 				

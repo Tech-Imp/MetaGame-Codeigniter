@@ -36,6 +36,22 @@
           return _this.saveNews();
         };
       })(this));
+      $("#saveWrittenArticle").unbind().bind("click", (function(_this) {
+        return function(event) {
+          $("#saveNewArticle").prop("disabled", "disabled");
+          $("#saveWrittenNews").prop("disabled", "disabled");
+          $("#saveWrittenArticle").prop("disabled", "disabled");
+          return _this.saveNews("articles");
+        };
+      })(this));
+      $("#saveWrittenNews").unbind().bind("click", (function(_this) {
+        return function(event) {
+          $("#saveNewArticle").prop("disabled", "disabled");
+          $("#saveWrittenNews").prop("disabled", "disabled");
+          $("#saveWrittenArticle").prop("disabled", "disabled");
+          return _this.saveNews("news");
+        };
+      })(this));
       $("#clearArticle").unbind().bind("click", (function(_this) {
         return function(event) {
           return _this.cleanAreas();
@@ -51,15 +67,22 @@
         });
         if (empty) {
           console.log("remain locked");
-          return $("#saveNewArticle").prop("disabled", "disabled");
+          $("#saveNewArticle").prop("disabled", "disabled");
+          $("#saveWrittenNews").prop("disabled", "disabled");
+          return $("#saveWrittenArticle").prop("disabled", "disabled");
         } else {
           console.log("open");
-          return $("#saveNewArticle").prop("disabled", false);
+          $("#saveNewArticle").prop("disabled", false);
+          $("#saveWrittenNews").prop("disabled", false);
+          return $("#saveWrittenArticle").prop("disabled", false);
         }
       });
     };
 
-    dashboardNews.prototype.saveNews = function() {
+    dashboardNews.prototype.saveNews = function(type) {
+      if (type == null) {
+        type = "news";
+      }
       if (this.debug) {
         console.log("dashboardIndex.saveNews");
       }
@@ -74,7 +97,8 @@
             visibleWhen: $("#articleWhen").val(),
             bodyText: $('#mceNewsArea').html(),
             section: $("#section").val(),
-            exFlag: $("#exclusiveFlag").val()
+            exFlag: $("#exclusiveFlag").val(),
+            type: type
           },
           success: (function(_this) {
             return function(response) {

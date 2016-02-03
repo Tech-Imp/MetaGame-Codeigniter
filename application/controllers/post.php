@@ -162,6 +162,7 @@ class post extends CI_Controller{
       	$visibleWhen = $this->input->get_post('visibleWhen');
 		$uncleanText = $this->input->get_post('bodyText');
 		$author = $this->session->userdata('id');
+		$type=$this->input->get_post('type');
 		
 		if($myRole < $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges");
@@ -186,7 +187,7 @@ class post extends CI_Controller{
 		} 
 		
 		$this->load->model("Article_model");
-        $result=$this->Article_model->postArticles($author, $visibleWhen, $title, $stub, $clean_html, NULL, $exFlag, $section);
+        $result=$this->Article_model->postArticles($author, $visibleWhen, $title, $stub, $clean_html, NULL, $exFlag, $section, $type);
 		$this->load->model("Logging_model");
 		$this->Logging_model->newLog($result, 'aNew', 'News item '.$title.' ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
 		
@@ -202,6 +203,7 @@ class post extends CI_Controller{
 		header('content-type: text/javascript');
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
+		$type=$this->input->get_post('type');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
 		$newsID = $this->input->get_post('newsID'); 
@@ -249,7 +251,7 @@ class post extends CI_Controller{
 		// Verify user has rights to media
 		$verify=$this->Article_model->get($newsID, TRUE);
 		if($verify->author_id==$myID || $myRole>$this->config->item('sectionAdmin')){
-			$result=$this->Article_model->postArticles($verify->author_id, $visibleWhen, $title, $stub, $clean_html, $newsID, $exFlag, $section);
+			$result=$this->Article_model->postArticles($verify->author_id, $visibleWhen, $title, $stub, $clean_html, $newsID, $exFlag, $section, $type);
 			$this->load->model("Logging_model");
 			$this->Logging_model->newLog($result, 'eNew', 'News item '.$title.' ('.$result.') edit saved successfully by '.$myName.'('.$myEmail.')');  
 			$data=array('success' => $result);

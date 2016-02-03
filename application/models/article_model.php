@@ -41,7 +41,7 @@ class Article_model extends MY_Model{
 	//-------------------------------------------------------------------------------------------------------
 	//Save Articles to database
 	//-------------------------------------------------------------------------------------------------------
-	public function postArticles($author, $visibleWhen, $title, $stub, $body, $id=NULL, $exFlag, $section){
+	public function postArticles($author, $visibleWhen, $title, $stub, $body, $id=NULL, $exFlag, $section, $type="news"){
 		$data=array(
 			'title'=>$title,
 			'stub'=>$stub,
@@ -50,6 +50,7 @@ class Article_model extends MY_Model{
 			'exclusiveSection'=>$exFlag,
 			'forSection'=>$section,
 			'visibleWhen'=>$visibleWhen,
+			'type'=>$type,
 		); 
 		$newsId=$this->save($data, $id);
 		

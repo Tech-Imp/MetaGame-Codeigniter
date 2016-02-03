@@ -8,12 +8,12 @@
 				<br>
 				<h4>Site Progress:</h4>
 				<div class="progress">
-			  		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="91" aria-valuemin="0" aria-valuemax="100" style="width: 91%">
-		    			<span class="sr-only">91% Complete</span>
-		    			91% Complete
+			  		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100" style="width: 94%">
+		    			<span class="sr-only">94% Complete</span>
+		    			94% Complete
 			  		</div>
 				</div>	
-				<h2 class="text-center">Official Launch: End of January 2016, with some <a href="http://south.paxsite.com/" target="_blank">PAX South goodness</a></h2>
+				<h2 class="text-center"><strike>Official Launch: End of January 2016</strike> Soft Launch: February 2016, with some <a href="http://south.paxsite.com/" target="_blank">PAX South goodness</a></h2>
 			</div>
 			<!-- Add an anchor button here later  -->
 		</div>

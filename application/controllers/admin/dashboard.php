@@ -76,7 +76,7 @@ class dashboard extends admin_controller {
 		$userOptions.=anchor('admin/dashboard',"<span class='glyphicon glyphicon-home'></span> Home", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'retHome'));
 		if($this->session->userdata('role') >= $this->config->item('contributor')){
 			
-			$userOptions.=anchor('admin/dashboard/article',"<span class='glyphicon glyphicon-align-left'></span> Add Article", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addArticle'));
+			$userOptions.=anchor('admin/dashboard/article',"<span class='glyphicon glyphicon-align-left'></span> Add Written", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addArticle'));
 			$userOptions.=anchor('admin/dashboard/media',"<span class='glyphicon glyphicon-file'></span> Add Media", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addMedia'));
 			$userOptions.=anchor('admin/dashboard/items',"<span class='glyphicon glyphicon-usd'></span> Add Merch", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addItem'));
 			$userOptions.=anchor('admin/dashboard/staticpages',"<span class='glyphicon glyphicon-tag'></span> Edit Static", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'editStatics'));
@@ -444,7 +444,7 @@ class dashboard extends admin_controller {
 				$data['newsTitle']=$allData->title;
 				$data['newsStub']=$allData->stub;
 				$data['newsBody']=$allData->body;
-				$data['newsType']=$allData->type;
+				$data['newsType']=$this->validTypes($allData->type);
 				
 				$data['newsWhen']=$allData->visibleWhen;
 				$data['exclusive']=$this->exclusiveSelector($allData->exclusiveSection, $allData->forSection);
@@ -538,6 +538,14 @@ class dashboard extends admin_controller {
 	}
 	private function exclusiveSelector($exFlag=false, $exPage=''){
 		
+		$exYes=$exNo="";
+		
+		if ($exFlag) {
+			$exYes="selected";
+		}
+		else{
+			$exNo="selected";
+		}
 		
 		$exclusive='<br><div class="row">
 						<div class="col-xs-2">Show in section</div>
@@ -545,30 +553,36 @@ class dashboard extends admin_controller {
 							<input type="text" id="section" value='.$exPage.'>
 						</div>
 		      			<div class="col-xs-12 col-md-6">Always displays to main as well, unless exclusive</div>
-					</div>';
-			
-		$exclusive.='<br><div class="row">
+					</div><br><div class="row">
 						<div class="col-xs-2">Exclusive to section?</div>
 						<div class="col-xs-10 col-md-4">
-	      					<select id="exclusiveFlag">';
-		//Determine if the data is exclusive to a section or can just appear in multiple places
-		if ($exFlag) {
-			$exclusive.='<option value="0">No</option>
-  						<option selected value="1">Yes</option>';	
-		}
-		else{
-			$exclusive.='<option selected value="0">No</option>
-  						<option value="1">Yes</option>';
-		}
-	      						
-		$exclusive.='</select>
+	      					<select id="exclusiveFlag">
+	      						<option '.$exYes.' value="0">No</option>
+  								<option '.$exNo.' value="1">Yes</option>
+							</select>
       					</div>
 		      			<div class="col-xs-12 col-md-6">"Yes" will only display to specific section</div>
 					</div>';	
 		
 		return $exclusive;
 	}
-
+	private function validTypes($type){
+		$typeOptions=$newsSelected=$articlesSelected="";
+		
+		if($type=="news"){
+			$newsSelected="selected";
+		}
+		else if($type=="articles"){
+			$articlesSelected="selected";
+		}
+		
+		$typeOptions="<select id='typeID'>
+			<option ".$newsSelected. " value='news'>NEWS</option>
+			<option ".$articlesSelected." value='articles'>ARTICLE</option>
+		</select>";
+		
+		return $typeOptions;
+	}
 
 
 

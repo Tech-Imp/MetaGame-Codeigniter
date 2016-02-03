@@ -59,7 +59,8 @@
             visibleWhen: $("#articleWhen").val(),
             body: $('#mceNewsArea').html(),
             section: $("#section").val(),
-            exFlag: $("#exclusiveFlag").val()
+            exFlag: $("#exclusiveFlag").val(),
+            type: $("#typeID").val()
           },
           success: (function(_this) {
             return function(response) {

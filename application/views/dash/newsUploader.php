@@ -31,7 +31,9 @@
 							</div>
 					      	<textarea name="MCEarea" class='cleanMe' cols="40" rows="10" id="mceNewsArea" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
 					       	<br>
-					       	<button id="saveNewArticle" class="btn btn-success" disabled="disabled">Save to Database</button>
+					       	<!-- <button id="saveNewArticle" class="btn btn-success" disabled="disabled">Save to Database</button> -->
+					       	<button id="saveWrittenNews" class="btn btn-primary" disabled="disabled">Save as <span class="glyphicon glyphicon-send">NEWS</span></button>
+					       	<button id="saveWrittenArticle" class="btn btn-success" disabled="disabled">Save as <span class="glyphicon glyphicon-list-alt">ARTICLE</span></button>
 					       	<button id="clearArticle" class="btn btn-warning">Clear</button>
 				      	</div>
 				    </div>

@@ -13,7 +13,7 @@
 		      				<div class="col-xs-2"><strong>News ID</strong></div>
 				      		<div class="col-xs-4 col-md-4"><input type="text" id="newsID" disabled="disabled" value="<?php echo $newsID;?>" ></div>
 				      		<div class="col-xs-2"><strong>TYPE</strong></div>
-				      		<div class="col-xs-4 col-md-4"><input type="text" id="newsID" disabled="disabled" value="<?php echo $newsType;?>" ></div>
+				      		<div class="col-xs-4 col-md-4"><?php echo $newsType;?></div>
 		      			</div><br>
 				      	<div class="row">
 				      		<div class="col-xs-2">Title</div>

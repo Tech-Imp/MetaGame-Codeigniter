@@ -46,6 +46,7 @@ class dashboardUpdateNews extends window.classes.dashboardIndex
                          body: $('#mceNewsArea').html()
                          section:  $("#section").val()
                          exFlag:  $("#exclusiveFlag").val()
+                         type: $("#typeID").val()
                          
                     success: (response)=>
                          if response.success
