@@ -45,8 +45,8 @@ class commonShared
                     location["orig"]=$("#mediaDatabase")
                when "media"
                     location["orig"]=$("#mediaTable")
-               when "article"
-                    location["orig"]=$("#mediaTable")
+               when "articles"
+                    location["orig"]=$("#mediaDatabase")
                when "written"
                     location["orig"]=$("#mediaTable")
                when "media" 

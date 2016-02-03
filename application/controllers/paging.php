@@ -123,23 +123,7 @@ class paging extends CI_Controller{
       	exit; 
 	}
 	
-	private function getNews($paging=0, $currentLoc=null){
-		$this->load->model('Article_model');
-		$this->load->model('Dataprep_model');
-		$maxLimit=$this->config->item('maxArticles');;
-		$offset=$paging*$maxLimit;
-		
-		$articles=$this->Article_model->getNewsPublic(NULL, $maxLimit, $offset, $currentLoc);
-		$maxItems=$this->Article_model->getNewsCount(true, $currentLoc);
-		
 	
-		if(count($articles)){
-			return $this->Dataprep_model->gatherItems($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit, $paging);
-		}
-		else{
-			return "<div><h4>That article does not exist.</h4></div>";
-		}
-	}
 	//-------------------------------------------------------------------------
 	//Image paging
 	//-----------------------------------------------------------------------
@@ -213,20 +197,39 @@ class paging extends CI_Controller{
 			return "<div><h4>That video does not exist.</h4></div>";
 		}
 	} 
-
-
-	private function getWritten($paging=0, $currentLoc=null){
+	//------------------------------------------------------------------------------
+	//Written areas paging
+	//------------------------------------------------------------------------------
+	private function getArticles($paging=0, $currentLoc=null){
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxAdmin');
 		$offset=$paging*$maxLimit;
 		
-		$articles=$this->Article_model->getArticles(NULL, $maxLimit, $offset, $currentLoc);
-		$maxNewsCount=$this->Article_model->getWrittenCount(false, $currentLoc);
+		$articles=$this->Article_model->getArticlesPublic(NULL, $maxLimit, $offset, $currentLoc);
+		$maxNewsCount=$this->Article_model->getArticlesCount(true, $currentLoc);
 		
 	
 		if(count($articles)){
-			return $this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "editNews", $maxNewsCount, $maxLimit, $paging);
+			return $this->Dataprep_model->gatherItems($articles, "article", "news_id", "articles", 1, $maxNewsCount, $maxLimit, $paging);
+		}
+		else{
+			return "<div><h4>That article does not exist.</h4></div>";
+		}
+	}
+
+	private function getNews($paging=0, $currentLoc=null){
+		$this->load->model('Article_model');
+		$this->load->model('Dataprep_model');
+		$maxLimit=$this->config->item('maxArticles');;
+		$offset=$paging*$maxLimit;
+		
+		$articles=$this->Article_model->getNewsPublic(NULL, $maxLimit, $offset, $currentLoc);
+		$maxItems=$this->Article_model->getNewsCount(true, $currentLoc);
+		
+	
+		if(count($articles)){
+			return $this->Dataprep_model->gatherItems($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit, $paging);
 		}
 		else{
 			return "<div><h4>That article does not exist.</h4></div>";
@@ -237,7 +240,7 @@ class paging extends CI_Controller{
 	//---------------------------------------------------------------------------
 	//Articles paging on the dashboard
 	//--------------------------------------------------------------------------
-	private function getArticles($paging=0, $currentLoc=null){
+	private function getWritten($paging=0, $currentLoc=null){
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxAdmin');

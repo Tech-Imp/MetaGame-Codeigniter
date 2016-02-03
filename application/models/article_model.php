@@ -67,9 +67,9 @@ class Article_model extends MY_Model{
 		return $this->getWrittenPublic($id, $resultLimit, $offset, $here, "articles");
 	}
 	
-	//--------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	//Get written media in a limit/offset way only for valid timestamped articles
-	//---------------------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	public function getWrittenPublic($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null, $type=NULL){
 		
 		$now=date('Y-m-d H:i:s');	
@@ -99,6 +99,7 @@ class Article_model extends MY_Model{
 		
 		return $this->get($id);
 	}
+	
 	//-------------------------------------------------------------------------------------------------------
 	//Get count of valid news/article wrappers
 	//-------------------------------------------------------------------------------------------------------
@@ -107,7 +108,7 @@ class Article_model extends MY_Model{
 	}
 	
 	public function getArticlesCount($findViaTime=true, $here=null){
-		return $this->getWrittenCount($findViaTime,$here, "article");
+		return $this->getWrittenCount($findViaTime,$here, "articles");
 	}
 	//----------------------------------------------------------------------------
 	//Generic function for all written content

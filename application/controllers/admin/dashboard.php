@@ -557,8 +557,8 @@ class dashboard extends admin_controller {
 						<div class="col-xs-2">Exclusive to section?</div>
 						<div class="col-xs-10 col-md-4">
 	      					<select id="exclusiveFlag">
-	      						<option '.$exYes.' value="0">No</option>
-  								<option '.$exNo.' value="1">Yes</option>
+	      						<option '.$exNo.' value="0">No</option>
+  								<option '.$exYes.' value="1">Yes</option>
 							</select>
       					</div>
 		      			<div class="col-xs-12 col-md-6">"Yes" will only display to specific section</div>

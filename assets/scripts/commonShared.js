@@ -69,8 +69,8 @@
         case "media":
           location["orig"] = $("#mediaTable");
           break;
-        case "article":
-          location["orig"] = $("#mediaTable");
+        case "articles":
+          location["orig"] = $("#mediaDatabase");
           break;
         case "written":
           location["orig"] = $("#mediaTable");
