@@ -13,7 +13,7 @@
 		    			94% Complete
 			  		</div>
 				</div>	
-				<h2 class="text-center"><strike>Official Launch: End of January 2016</strike> Soft Launch: February 2016, with some <a href="http://south.paxsite.com/" target="_blank">PAX South goodness</a></h2>
+				<h2 class="text-center"><s>Official Launch: End of January 2016</s> Soft Launch: February 2016, with some <a href="http://south.paxsite.com/" target="_blank">PAX South goodness</a></h2>
 			</div>
 			<!-- Add an anchor button here later  -->
 		</div>
