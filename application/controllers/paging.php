@@ -74,6 +74,9 @@ class paging extends CI_Controller{
 			case 'articles':
 				$results=$this->getArticles($offset, $loc[1]);
 				break;
+			case 'written':
+				$results=$this->getWritten($offset, $loc[1]);
+				break;
 			default:
 				$results=false;
 				break;
@@ -210,6 +213,27 @@ class paging extends CI_Controller{
 			return "<div><h4>That video does not exist.</h4></div>";
 		}
 	} 
+
+
+	private function getWritten($paging=0, $currentLoc=null){
+		$this->load->model('Article_model');
+		$this->load->model('Dataprep_model');
+		$maxLimit=$this->config->item('maxAdmin');
+		$offset=$paging*$maxLimit;
+		
+		$articles=$this->Article_model->getArticles(NULL, $maxLimit, $offset, $currentLoc);
+		$maxNewsCount=$this->Article_model->getWrittenCount(false, $currentLoc);
+		
+	
+		if(count($articles)){
+			return $this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "editNews", $maxNewsCount, $maxLimit, $paging);
+		}
+		else{
+			return "<div><h4>That article does not exist.</h4></div>";
+		}
+	}
+
+
 	//---------------------------------------------------------------------------
 	//Articles paging on the dashboard
 	//--------------------------------------------------------------------------

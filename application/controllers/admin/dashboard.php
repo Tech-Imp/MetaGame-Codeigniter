@@ -76,7 +76,7 @@ class dashboard extends admin_controller {
 		$userOptions.=anchor('admin/dashboard',"<span class='glyphicon glyphicon-home'></span> Home", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'retHome'));
 		if($this->session->userdata('role') >= $this->config->item('contributor')){
 			
-			$userOptions.=anchor('admin/dashboard/article',"<span class='glyphicon glyphicon-align-left'></span> Add Written", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addArticle'));
+			$userOptions.=anchor('admin/dashboard/written',"<span class='glyphicon glyphicon-align-left'></span> Add Written", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addArticle'));
 			$userOptions.=anchor('admin/dashboard/media',"<span class='glyphicon glyphicon-file'></span> Add Media", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addMedia'));
 			$userOptions.=anchor('admin/dashboard/items',"<span class='glyphicon glyphicon-usd'></span> Add Merch", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addItem'));
 			$userOptions.=anchor('admin/dashboard/staticpages',"<span class='glyphicon glyphicon-tag'></span> Edit Static", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'editStatics'));
@@ -388,7 +388,7 @@ class dashboard extends admin_controller {
 //Add/remove/edit New articles
 //------------------------------------------------------------------------------------------------------------------------------------
 	
-	public function article(){
+	public function written(){
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
 		$data=$this->commonHeader();
@@ -412,7 +412,7 @@ class dashboard extends admin_controller {
 		$articles=$this->Article_model->getArticles(NULL, $maxLimit, 0);
 		$maxNewsCount=$this->Article_model->getWrittenCount(false);
 		
-		$data['articleTable']=$this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "editNews", $maxNewsCount, $maxLimit, 0);
+		$data['articleTable']=$this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "editWritten", $maxNewsCount, $maxLimit, 0);
 		
 		$data['exclusive']=$this->exclusiveSelector();
 		
@@ -424,13 +424,13 @@ class dashboard extends admin_controller {
 		$this->load->view('templates/footer', $data);
 	}
 	
-	public function editNews($id=NULL){
+	public function editWritten($id=NULL){
 		$this->load->model('Article_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
 		$data['js'][1]= 'dash/dashboardIndex.js';
 		$data['js'][2]= 'dash/dashboardUpdateNews.js';
-		$data['currentLocation']="<div class='navbar-brand'>Edit News</div>";
+		$data['currentLocation']="<div class='navbar-brand'>Edit Written</div>";
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
 		
