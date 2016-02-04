@@ -203,13 +203,11 @@ class paging extends CI_Controller{
 	private function getArticles($paging=0, $currentLoc=null){
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
-		$maxLimit=$this->config->item('maxAdmin');
+		$maxLimit=$this->config->item('maxArticles');
 		$offset=$paging*$maxLimit;
-		
 		$articles=$this->Article_model->getArticlesPublic(NULL, $maxLimit, $offset, $currentLoc);
 		$maxNewsCount=$this->Article_model->getArticlesCount(true, $currentLoc);
 		
-	
 		if(count($articles)){
 			return $this->Dataprep_model->gatherItems($articles, "article", "news_id", "articles", 1, $maxNewsCount, $maxLimit, $paging);
 		}

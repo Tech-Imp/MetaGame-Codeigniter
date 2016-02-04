@@ -19,7 +19,6 @@ class Articles extends common_frontend {
 		$data['js'][0]='commonShared.js';
 		$data['title']="Articles";
 		
-		
 		if($id===NULL){
 			$articles=$this->Article_model->getArticlesPublic(NULL, $maxLimit, 0);
 			$maxItems=$this->Article_model->getArticlesCount();
