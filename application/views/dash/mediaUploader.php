@@ -38,6 +38,7 @@
 		      			</div>
 			      		<div class="col-xs-12 col-md-6">If yes, will only be visible to logged in members.</div>
 					</div>
+					<?php echo $exclusivePic;?>
 					<br>
 	      			<div class='nUpload'>
 	      				<p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
@@ -71,6 +72,7 @@
 			      		<div class="col-xs-2"><strong>Media type</strong></div>
 			      		<div class="col-xs-10 col-md-4"><?php echo $mediaOptions?></div>
 					</div>
+					<?php echo $exclusiveEmbed;?>
 					<br>
 					<h3>Copy embed statement below</h3>
 					<div class="alert alert-danger noshow" id="textArea-alert">

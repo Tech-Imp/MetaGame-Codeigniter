@@ -57,6 +57,7 @@
 		      			</div>
 			      		<div class="col-xs-12 col-md-6">If yes, will be put in Vintage section.</div>
 					</div>
+					<?php echo $exclusive;?>
 					<br>
 	      				<?php echo $mediaItem;?>
 	      			<br>

@@ -58,7 +58,9 @@
             stub: $("#uploadStub").val(),
             visibleWhen: $("#uploadWhen").val(),
             loggedOnly: $('#uploadLogged').val(),
-            mediaType: "picture"
+            mediaType: "picture",
+            exFlag: $("#exclusiveFlagPic").val(),
+            section: $("#sectionPic").val()
           };
         };
       })(this));
@@ -105,7 +107,9 @@
             stub: $("#embedStub").val(),
             visibleWhen: $("#embedWhen").val(),
             embed: $('#mceEmbedArea').val(),
-            mediaType: $("#mediaOptions").val()
+            mediaType: $("#mediaOptions").val(),
+            exFlag: $("#exclusiveFlagEmbed").val(),
+            section: $("#sectionEmbed").val()
           },
           success: (function(_this) {
             return function(response) {

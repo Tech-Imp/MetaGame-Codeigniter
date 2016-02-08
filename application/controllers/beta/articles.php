@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class News extends common_frontend {
+class Articles extends common_frontend {
 	
 	function __construct(){
 		parent::__construct();
@@ -17,20 +17,19 @@ class News extends common_frontend {
 		$data=$this->commonHeader();
 		$data['css'][2]='frontend/blog.css';
 		$data['js'][0]='commonShared.js';
-		$data['title']="News";
-		
+		$data['title']="Articles";
 		
 		if($id===NULL){
-			$articles=$this->Article_model->getNewsPublic(NULL, $maxLimit, 0);
-			$maxItems=$this->Article_model->getNewsCount();
-			$data['singularContent']=$this->Dataprep_model->gatherItems($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit);
+			$articles=$this->Article_model->getArticlesPublic(NULL, $maxLimit, 0);
+			$maxItems=$this->Article_model->getArticlesCount();
+			$data['singularContent']=$this->Dataprep_model->gatherItems($articles, "article", "news_id", "articles", 1, $maxItems, $maxLimit);
 		}
 		else{
 			
-			$allData=$this->Article_model->getNewsPublic(intval($id));
+			$allData=$this->Article_model->getArticlesPublic(intval($id));
 			if(count($allData)){
 				$articles=array("solo" => $allData);
-				$data['singularContent']=$this->Dataprep_model->gatherItems($articles, "news", "news_id", "news");
+				$data['singularContent']=$this->Dataprep_model->gatherItems($articles, "article", "news_id", "articles");
 			}
 			else{
 				$data['singularContent']="<div><h4>That article does not exist.</h4></div>";

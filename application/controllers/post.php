@@ -321,6 +321,7 @@ class post extends CI_Controller{
 		$myID=$this->session->userdata('id');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
+		
 		/* 
 		// Support CORS
 		header("Access-Control-Allow-Origin: *");
@@ -447,10 +448,12 @@ class post extends CI_Controller{
 			$stub = $this->input->get_post('stub'); 
       		$visibleWhen = $this->input->get_post('visibleWhen');
 			$loggedOnly = intval($this->input->get_post('loggedOnly'));
+			$section = $this->input->get_post('section'); 
+			$exFlag = $this->input->get_post('exFlag'); 
 			$this->load->model("Media_model");
 			$loc=base_url().$uploadDir.'/'.$fileName;
 			//TODO need to prevent duplicates
-        	$result=$this->Media_model->uploadMedia($loc, NULL, $mediaType, $fileMD5hash, $visibleWhen, $title, $stub, $loggedOnly);
+        	$result=$this->Media_model->uploadMedia($loc, NULL, $mediaType, $fileMD5hash, $visibleWhen, $title, $stub, $loggedOnly, $exFlag, $section);
 		}
 		
 		
@@ -477,6 +480,8 @@ class post extends CI_Controller{
 		$loggedOnly = intval($this->input->get_post('loggedOnly'));
       	$visibleWhen = $this->input->get_post('visibleWhen');
 		$uncleanText = $this->input->get_post('embed');
+		$section = $this->input->get_post('section'); 
+		$exFlag = $this->input->get_post('exFlag'); 
 		
 		if($myRole<$this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
@@ -501,7 +506,7 @@ class post extends CI_Controller{
 		if($mediaType=="video" || $mediaType=="picture"|| $mediaType=="sound"){
 			$md5=md5($uncleanText);
 			$this->load->model("Media_model");
-			$result=$this->Media_model->uploadMedia(NULL, $uncleanText, $mediaType, $md5, $visibleWhen, $title, $stub, $loggedOnly);
+			$result=$this->Media_model->uploadMedia(NULL, $uncleanText, $mediaType, $md5, $visibleWhen, $title, $stub, $loggedOnly, $exFlag, $section);
 			//Log a good entry		
 			$this->load->model("Logging_model");
 			$this->Logging_model->newLog($result, 'aEmb', 'Embed item '.$title.' ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')'); 
@@ -535,6 +540,8 @@ class post extends CI_Controller{
       	$visibleWhen = $this->input->get_post('visibleWhen');
 		$loggedOnly = intval($this->input->get_post('loggedOnly'));
 		$vintage = intval($this->input->get_post('vintage')); 
+		$section = $this->input->get_post('section'); 
+		$exFlag = $this->input->get_post('exFlag'); 
 		
 		if($myRole<$this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
@@ -563,7 +570,7 @@ class post extends CI_Controller{
 		// Verify user has rights to media
 		$verify=$this->Media_model->get($mediaID, TRUE);
 		if($verify->author_id==$myID || $myRole>$this->config->item('sectionAdmin')){
-			$result=$this->Media_model->uploadMedia(NULL, NULL, $mediaType, NULL, $visibleWhen, $title, $stub, $loggedOnly, $mediaID, $vintage);
+			$result=$this->Media_model->uploadMedia(NULL, NULL, $mediaType, NULL, $visibleWhen, $title, $stub, $loggedOnly, $exFlag, $section, $mediaID, $vintage);
 			$data=array('success' => $result);
 			$this->load->model("Logging_model");
 			$this->Logging_model->newLog($mediaID, 'eMed', 'Media item '.$title.' ('.$mediaID.') edit saved successfully by '.$myName.'('.$myEmail.')'); 

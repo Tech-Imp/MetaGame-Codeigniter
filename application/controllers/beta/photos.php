@@ -16,7 +16,7 @@ class Photos extends common_frontend {
 	
 		$data['js'][0]='commonShared.js';
 		// $data['js'][1]='bookIndex.js';
-		$data['title']="Beta Photos";
+		$data['title']="Photos";
 		
 		
 		$currentRole=$this->session->userdata('role');
@@ -67,7 +67,8 @@ class Photos extends common_frontend {
 			//
 			if(count($myMedia)){
 				$allMedia=array("solo" => $myMedia);
-				$data['singularContent']=$this->Dataprep_model->gatherItems($allMedia, "media", "media_id", "photos");
+				//Due to the change to a media model, this page will default to redirect to there
+				$data['singularContent']=$this->Dataprep_model->gatherItems($allMedia, "media", "media_id", "media");
 			}
 			else{
 				$data['singularContent']="<div><h4>That item does not exist.</h4></div>";

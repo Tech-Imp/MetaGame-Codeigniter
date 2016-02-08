@@ -15,7 +15,7 @@ class Contact extends common_frontend {
 		$data['css'][2]="frontend/contact.css";
 		// $data['js'][0]='bookObject.js';
 		// $data['js'][1]='bookIndex.js';
-		$data['title']="Beta Contact";
+		$data['title']="Contact";
 		
 		$contact=$this->Staticpages_model->getSpecificContact();
 		$data['singularContent']=$this->Dataprep_model->gatherItems($contact, 'contact info', "static_id");

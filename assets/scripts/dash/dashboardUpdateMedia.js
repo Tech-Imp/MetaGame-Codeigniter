@@ -52,7 +52,9 @@
           mediaID: $('#mediaID').val(),
           loggedOnly: $('#mediaLogged').val(),
           vintage: $('#mediaVintage').val(),
-          mediaType: $('#mediaType').val()
+          mediaType: $('#mediaType').val(),
+          exFlag: $("#exclusiveFlag").val(),
+          section: $("#section").val()
         },
         success: (function(_this) {
           return function(response) {

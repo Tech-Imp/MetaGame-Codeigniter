@@ -282,7 +282,8 @@ class dashboard extends admin_controller {
 			</div>
 		</div>";
 		$data['mediaTable']="<strong>No media to display that you have rights on.</strong>";
-		
+		$data['exclusivePic']=$this->exclusiveSelector("Pic");
+		$data['exclusiveEmbed']=$this->exclusiveSelector("Embed");
 		$maxLimit=$this->config->item('maxAdmin');
 		$myMedia=$this->Media_model->getMedia(NULL, $maxLimit, 0);
 		$maxMediaCount=$this->Media_model->getMediaCount();
@@ -306,6 +307,7 @@ class dashboard extends admin_controller {
 		$data['js'][0]= 'dash/dashboardIndex.js';
 		$data['js'][1]= 'dash/dashboardUpdateMedia.js';
 		$data['currentLocation']="<div class='navbar-brand'>Edit Media</div>";
+		
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
 		
@@ -371,7 +373,7 @@ class dashboard extends admin_controller {
 						break;
 				}
 				
-				
+				$data['exclusive']=$this->exclusiveSelector(NULL, $allData->exclusiveSection, $allData->forSection);
 				$data['mediaWhen']=$allData->visibleWhen;
 				$this->load->view('dash/mediaEdit', $data);
 			}
@@ -447,7 +449,7 @@ class dashboard extends admin_controller {
 				$data['newsType']=$this->validTypes($allData->type);
 				
 				$data['newsWhen']=$allData->visibleWhen;
-				$data['exclusive']=$this->exclusiveSelector($allData->exclusiveSection, $allData->forSection);
+				$data['exclusive']=$this->exclusiveSelector(NULL, $allData->exclusiveSection, $allData->forSection);
 				$this->load->view('dash/newsEdit', $data);
 			}
 			else{
@@ -536,8 +538,9 @@ class dashboard extends admin_controller {
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);
 	}
-	private function exclusiveSelector($exFlag=false, $exPage=''){
-		
+	private function exclusiveSelector($multi="", $exFlag=false, $exPage=''){
+			
+		if($multi===NULL){$multi="";}
 		$exYes=$exNo="";
 		
 		if ($exFlag) {
@@ -548,15 +551,15 @@ class dashboard extends admin_controller {
 		}
 		
 		$exclusive='<br><div class="row">
-						<div class="col-xs-2">Show in section</div>
+						<div class="col-xs-2"><strong>Show in section</strong></div>
 						<div class="col-xs-10 col-md-4 ui-widget">
-							<input type="text" id="section" value='.$exPage.'>
+							<input type="text" id="section'.$multi.'" value='.$exPage.'>
 						</div>
 		      			<div class="col-xs-12 col-md-6">Always displays to main as well, unless exclusive</div>
 					</div><br><div class="row">
-						<div class="col-xs-2">Exclusive to section?</div>
+						<div class="col-xs-2"><strong>Exclusive to section?</strong></div>
 						<div class="col-xs-10 col-md-4">
-	      					<select id="exclusiveFlag">
+	      					<select id="exclusiveFlag'.$multi.'">
 	      						<option '.$exNo.' value="0">No</option>
   								<option '.$exYes.' value="1">Yes</option>
 							</select>
