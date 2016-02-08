@@ -66,7 +66,7 @@
         case "news":
           location["orig"] = $("#mediaDatabase");
           break;
-        case "media":
+        case "multimedia":
           location["orig"] = $("#mediaTable");
           break;
         case "articles":

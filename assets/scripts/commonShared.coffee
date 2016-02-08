@@ -43,7 +43,7 @@ class commonShared
                    location["orig"]=target.parents("div.tab-pane")
                when "news"
                     location["orig"]=$("#mediaDatabase")
-               when "media"
+               when "multimedia"
                     location["orig"]=$("#mediaTable")
                when "articles"
                     location["orig"]=$("#mediaDatabase")

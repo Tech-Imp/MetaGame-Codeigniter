@@ -77,7 +77,7 @@ class dashboard extends admin_controller {
 		if($this->session->userdata('role') >= $this->config->item('contributor')){
 			
 			$userOptions.=anchor('admin/dashboard/written',"<span class='glyphicon glyphicon-align-left'></span> Add Written", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addArticle'));
-			$userOptions.=anchor('admin/dashboard/media',"<span class='glyphicon glyphicon-file'></span> Add Media", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addMedia'));
+			$userOptions.=anchor('admin/dashboard/multimedia',"<span class='glyphicon glyphicon-file'></span> Add Media", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addMedia'));
 			$userOptions.=anchor('admin/dashboard/items',"<span class='glyphicon glyphicon-usd'></span> Add Merch", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addItem'));
 			$userOptions.=anchor('admin/dashboard/staticpages',"<span class='glyphicon glyphicon-tag'></span> Edit Static", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'editStatics'));
 			$userOptions.=anchor('admin/dashboard/users',"<span class='glyphicon glyphicon-user'></span> Lookup Users", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'vUsers'));
@@ -264,7 +264,7 @@ class dashboard extends admin_controller {
 //Allow items to still persist but set visibility based on criteria (such as user must be logged in to view)
 //------------------------------------------------------------------------------------------------------------------------------
 	
-	public function media(){
+	public function multimedia(){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
 		$data=$this->commonHeader();

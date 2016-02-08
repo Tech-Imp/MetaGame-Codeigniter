@@ -68,8 +68,20 @@ class paging extends CI_Controller{
 			case 'news':
 				$results=$this->getNews($offset, $loc[1]);
 				break;
-			case 'media':
+			case 'multimedia':
 				$results=$this->getMedia($offset, $loc[1]);
+				break;
+			case 'media':
+				$whichType=explode(".", $type);
+				if(end($whichType)=="videos"){
+					$results=$this->getVideo($offset, $type, $loc[1]);
+				}
+				elseif (end($whichType)=="photos") {
+					$results=$this->getImage($offset, $type, $loc[1]);
+				}
+				else{
+					$results=false;
+				}
 				break;
 			case 'articles':
 				$results=$this->getArticles($offset, $loc[1]);
@@ -85,11 +97,15 @@ class paging extends CI_Controller{
 	}
 	//Used in cases where there is a vintage tab
 	private function determineVintage($type){
-		switch ($type) {
+		$vinType=explode(".", $type);	
+			
+		switch ($vinType[0]) {
 			case 'primary':
 				$result=0;
 				break;
-			
+			case 'all':
+				$result=NULL;
+				break;
 			default:
 				$result=1;
 				break;
@@ -137,6 +153,8 @@ class paging extends CI_Controller{
 		
 		$vintage=$this->determineVintage($type);
 		
+		// $vintage=NULL; //DEBUG LINE
+		
 		$currentRole=$this->session->userdata('role');
 		if($currentRole===FALSE){
 			$currentRole=0;
@@ -172,6 +190,7 @@ class paging extends CI_Controller{
 		$offset=$paging*$maxLimit;
 		
 		$vintage=$this->determineVintage($type);
+		// $vintage=NULL; //DEBUG LINE
 		
 		$currentRole=$this->session->userdata('role');
 		if($currentRole===FALSE){
