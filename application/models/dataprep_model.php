@@ -111,17 +111,18 @@ class dataprep_model extends CI_Controller{
                     ".$modified;
 				//Cap off the entry with ability to get permalinks or a way back to main section
                 if($items!==NULL && $myLink!==NULL){
+                	$area=$this->uri->segment(1, $this->config->item('mainPage'));
 					if($perRow==1 && count($myMedia)==1 && $maxRows==0){
 						if($redirect==NULL){
-							$export.="<div>".anchor('main/'.$myLink.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
+							$export.="<div>".anchor($area.'/'.$myLink.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
 						}
 						else{
-							$export.="<div>".anchor('main/'.$redirect.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
+							$export.="<div>".anchor($area.'/'.$redirect.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
 						}
 						
 					}
 					else{
-						$export.="<div>".anchor('main/'.$myLink.'/index/'.$newsID,"<span class='glyphicon glyphicon-search'></span><strong>  Get permanent link to ".$items." </strong>")."</div>";
+						$export.="<div>".anchor($area.'/'.$myLink.'/index/'.$newsID,"<span class='glyphicon glyphicon-search'></span><strong>  Get permanent link to ".$items." </strong>")."</div>";
 					}
 				}
 				$export.="</div>";

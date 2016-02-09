@@ -449,7 +449,9 @@ class post extends CI_Controller{
       		$visibleWhen = $this->input->get_post('visibleWhen');
 			$loggedOnly = intval($this->input->get_post('loggedOnly'));
 			$section = $this->input->get_post('section'); 
-			$exFlag = $this->input->get_post('exFlag'); 
+			$exFlag = $this->input->get_post('exFlag');
+			//HARD CODED DUE TO SETUP
+			$mediaType="picture";
 			$this->load->model("Media_model");
 			$loc=base_url().$uploadDir.'/'.$fileName;
 			//TODO need to prevent duplicates
