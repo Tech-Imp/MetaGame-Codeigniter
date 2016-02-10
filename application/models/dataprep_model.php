@@ -32,6 +32,7 @@ class dataprep_model extends CI_Controller{
 			$export="";
 			//Loop through the data and make a new row for each
 			$rowCount=0;
+			$area=$this->uri->segment(1, $this->config->item('mainPage'));
 			foreach ($myMedia as $row) {
 				$newsID=$row->$primary_key;
 				if(array_key_exists('visibleWhen', $row)){
@@ -60,7 +61,7 @@ class dataprep_model extends CI_Controller{
 							$embedItem=$row->embed;
 						}
 						else{
-							$embedItem=$this->checkYoutube($row->embed, 'main/'.$myLink.'/index', $newsID);
+							$embedItem=$this->checkYoutube($row->embed, $area.'/'.$myLink.'/index', $newsID);
 						}
 						$media="<div class='embed-responsive embed-responsive-16by9'>"
 						.$embedItem."
@@ -111,7 +112,7 @@ class dataprep_model extends CI_Controller{
                     ".$modified;
 				//Cap off the entry with ability to get permalinks or a way back to main section
                 if($items!==NULL && $myLink!==NULL){
-                	$area=$this->uri->segment(1, $this->config->item('mainPage'));
+                	
 					if($perRow==1 && count($myMedia)==1 && $maxRows==0){
 						if($redirect==NULL){
 							$export.="<div>".anchor($area.'/'.$myLink.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
