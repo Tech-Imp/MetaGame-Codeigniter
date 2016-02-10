@@ -64,6 +64,44 @@
 
   })();
 
+  ({
+    refreshData: (function(_this) {
+      return function() {
+        if (_this.debug) {
+          console.log("dashboardIndex.refreshData");
+        }
+        return $(".submitButton").unbind().bind("click", function(event) {
+          if (!($(event.currentTarget).parent().hasClass("disabled"))) {
+            return _this.changePage();
+          }
+        });
+      };
+    })(this),
+    changePage: (function(_this) {
+      return function() {
+        if (_this.debug) {
+          console.log("dashboardIndex.changePage");
+        }
+        return $.ajax({
+          url: window.location.origin + "/paging/specificPage",
+          type: 'post',
+          dataType: 'json',
+          data: {
+            offset: 0,
+            database: window.location.pathname,
+            type: "all"
+          },
+          success: function(response) {
+            if (response.success) {
+              $("#mediaTable").html(response.success);
+              return _this.refreshData();
+            }
+          }
+        });
+      };
+    })(this)
+  });
+
   if (window.classes == null) {
     window.classes = {};
   }

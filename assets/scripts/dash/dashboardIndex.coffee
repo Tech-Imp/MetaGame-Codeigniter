@@ -41,7 +41,32 @@ class dashboardIndex
                if uploadID!=null  
                     $(uploadID).prop("disabled", false)
                           
+    #generic version for general quality of life                      
+    refreshData:=>
+      if @debug then console.log "dashboardIndex.refreshData"
+      $(".submitButton").unbind().bind "click", (event)=>
+           if !($(event.currentTarget).parent().hasClass("disabled"))
+                @changePage()
+               
+          
      
+          
+    changePage:=>
+      if @debug then console.log "dashboardIndex.changePage"
+      
+      $.ajax
+        url: window.location.origin+"/paging/specificPage"
+        type: 'post'
+        dataType: 'json'
+        data:
+             offset: 0
+             database: window.location.pathname
+             type: "all"
+        success: (response)=>
+             if response.success
+                  $("#mediaTable").html(response.success)
+                  @refreshData()
+   
   
      
 window.classes ?= {}

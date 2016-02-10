@@ -81,8 +81,8 @@
 					</div>
 			      	<textarea name="MCEembed" class='cleanMe' cols="40" rows="5" id="mceEmbedArea" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
 			       	<br>
-			       	<button id="saveEmbedded" class="btn btn-success" disabled="disabled">Save Embedded Media</button>
-			       	<button id="clearEmbed" class="btn btn-warning">Clear</button>
+			       	<button id="saveEmbedded" class="submitButton btn btn-success" disabled="disabled">Save Embedded Media</button>
+			       	<button id="clearEmbed" class="submitButton btn btn-warning">Clear</button>
 	      		</div>
 	    	</div>
 	  	</div>
