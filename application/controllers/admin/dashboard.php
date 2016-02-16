@@ -79,7 +79,7 @@ class dashboard extends admin_controller {
 			$userOptions.=anchor('admin/dashboard/written',"<span class='glyphicon glyphicon-align-left'></span> Add Written", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addArticle'));
 			$userOptions.=anchor('admin/dashboard/multimedia',"<span class='glyphicon glyphicon-file'></span> Add Media", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addMedia'));
 			$userOptions.=anchor('admin/dashboard/items',"<span class='glyphicon glyphicon-usd'></span> Add Merch", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addItem'));
-			$userOptions.=anchor('admin/dashboard/staticpages',"<span class='glyphicon glyphicon-tag'></span> Edit Static", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'editStatics'));
+			$userOptions.=anchor('admin/dashboard/profile',"<span class='glyphicon glyphicon-tag'></span> Edit Profile", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'editProfileElements'));
 			$userOptions.=anchor('admin/dashboard/users',"<span class='glyphicon glyphicon-user'></span> Lookup Users", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'vUsers'));
 			$userOptions.=anchor('admin/dashboard/stats',"<span class='glyphicon glyphicon-stats'></span> View Stats", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'vStats'));
 	            	
@@ -480,24 +480,30 @@ class dashboard extends admin_controller {
 //-------------------------------------------------------------------------------------------------------------------------------------
 //
 //---------------------------------------------------------------------------------------------------------------------------------	
-	public function staticpages(){
+	public function profile(){
 		$this->load->model('Staticpages_model');
 		$this->load->model('Dataprep_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
-		$data['js'][1]= 'dash/dashboardIndex.js';
-		$data['js'][2]= 'dash/dashboardStatic.js';
+		$data['js'][1]= 'plupload/plupload.full.min.js';
+		$data['js'][2]= 'plupload/jquery.ui.plupload/jquery.ui.plupload.js';
+		$data['js'][3]= 'dash/dashboardIndex.js';
+		$data['js'][4]= 'dash/dashboardStatic.js';
+		$data['css'][1]='plupload/jquery.ui.plupload.css';
+		
+		
+		
 		//To cover bases, any additional outside tech is documented
 		$data['additionalTech']="<div class='row'>
 			<br>
 			<div class='col-xs-12 col-md-offset-5 col-md-3 addedTech'>
-				<div> This page uses tinyMCE for text editing. </div>
+				<div> This page uses tinyMCE for text editing and Plupload for the file upload interface. </div>
 			</div>
 		</div>";
 		
 		
 		$contacts=$this->Staticpages_model->getContact();
-		$data['contactTable']=$this->Dataprep_model->gatherItemsAdmin($contacts, "static items", "static_id", "editContact");
+		$data['contactTable']=$this->Dataprep_model->gatherItemsAdmin($contacts, "static items", "static_id", "editProfile");
 		$data['travelTable']="ITEM NOT HOOKED UP TO DATABASE DO NOT USE";
 		
 		$data['currentLocation']="<div class='navbar-brand'>Static Pages Dashboard</div>";
@@ -508,7 +514,7 @@ class dashboard extends admin_controller {
 		$this->load->view('templates/footer', $data);	
 	}
 
-	public function editContact($id=NULL){
+	public function editProfile($id=NULL){
 		$this->load->model('Staticpages_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';

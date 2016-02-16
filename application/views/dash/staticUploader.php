@@ -1,10 +1,40 @@
 			
 			<div class="col-md-8  col-md-offset-1">
 				<div class='panel panel-default'>
+					<div class="panel-heading" role="tab" id="photoAvatar">
+			      		<h4 class="panel-title text-center">
+				        	<a data-toggle="collapse" data-parent="#accordion" href="#avatarController" aria-expanded="false" aria-controls="articleController">
+				          		<strong class="green"><span class='glyphicon glyphicon-camera'></span> Add Avatar Picture </strong>
+					        </a>
+				      	</h4>
+				    </div>
+				    <div id="avatarController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="photoAvatar">
+			      		<div class="panel-body">
+					      	<div class="row">
+					      		<div class="col-xs-2">Stub Notes</div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="avatarNotes" name="title" value=""></div>
+					      	</div>
+					      	<?php echo $exclusiveAvatar;?>
+							<div class='nUpload'>
+	      						<p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
+	      					</div>
+					      	<div class='panel panel-default'>
+								<div class="panel-heading" >
+				      				<h4 class="panel-title text-center">
+					        			Existing Contact Info
+					      			</h4>
+					    		</div>
+				      			<div class="panel-body">
+						        	<?php echo $contactTable?>
+					      		</div>
+			      			</div>
+				      	
+				      	</div>
+				    </div>
 					<div class="panel-heading" role="tab" id="mceContactAdd">
 			      		<h4 class="panel-title text-center">
 				        	<a data-toggle="collapse" data-parent="#accordion" href="#articleController" aria-expanded="false" aria-controls="articleController">
-				          		<strong class="green"><span class='glyphicon glyphicon-pencil'></span> Add New Contact Info </strong>
+				          		<strong class="green"><span class='glyphicon glyphicon-user'></span> Add New Contact Info </strong>
 					        </a>
 				      	</h4>
 				    </div>
@@ -14,6 +44,7 @@
 					      		<div class="col-xs-2">Title</div>
 					      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="contactTitle" name="title" value=""></div>
 					      	</div>
+					      	<?php echo $exclusiveProfile;?>
 							<h3>Contact Info</h3>
 							<div class="alert alert-danger noshow" id="textArea-alert">
     							<button type="button" class="close" data-dismiss="alert">x</button>
@@ -26,7 +57,7 @@
 					      	<div class='panel panel-default'>
 								<div class="panel-heading" >
 				      				<h4 class="panel-title text-center">
-					        			Existing Contact Info
+					        			Your Profile Info
 					      			</h4>
 					    		</div>
 				      			<div class="panel-body">
