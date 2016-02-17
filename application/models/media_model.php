@@ -85,12 +85,8 @@ class Media_model extends MY_Model{
 	//Get only photos from database, use limit
 	//--------------------------------------------------------------------------------------------------------------------
 	public function getPhotos($id=NULL, $vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
-		
-		$now=date('Y-m-d H:i:s');	
-		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
 		$this->db->where('fileLoc !=', '');
-		$this->restrictSect($here);
-		$this->db->where($visArr);
+		$this->db->where('mediaType', 'picture');
 		//Only limit to vintage or nonvintage when proper value
 		if($vintage !== NULL){
 			$this->db->where('vintage', intval($vintage));
@@ -99,47 +95,27 @@ class Media_model extends MY_Model{
 		if($logged !== NULL){
 			$this->db->where('loggedOnly', intval($logged));
 		}
-		//Pagination
-		if($resultLimit !== NULL){
-			if($offset!==NULL && intval($offset)>0){
-				$this->db->limit(intval($resultLimit), intval($offset));
-			}
-			else {
-				$this->db->limit(intval($resultLimit));
-			}
-						
-		}
-		
-		return $this->get($id);
+		return $this->getCommonMedia($id, $resultLimit, $offset, $here, true);
 	}
 	
 	public function getPhotoCount($vintage=0, $logged=1, $here=null){
-		$now=date('Y-m-d H:i:s');	
-		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
 		$this->db->where('fileLoc !=', '');
-		$this->restrictSect($here);
-		$this->db->where($visArr);
+		$this->db->where('mediaType', 'picture');
 		if($vintage !== NULL){
 			$this->db->where('vintage', intval($vintage));
 		}
 		if($logged !== NULL){
 			$this->db->where('loggedOnly', intval($vintage));
 		}
-		return $this->db->count_all_results($this->_table_name);
+		return $this->getCommonCount($here, true);
 	}
 		
 	//---------------------------------------------------------------------------------------------------------------------------
-	//Get only embeds from database, use limit 
+	//Get only embeds (video only) from database, use limit 
 	//---------------------------------------------------------------------------------------------------------------------------
 	public function getEmbeds($id=NULL ,$vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
-		
-		$now=date('Y-m-d H:i:s');	
-		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
-		
 		$this->db->where('embed !=', '');
-		$this->db->where($visArr);
-		
-		$this->restrictSect($here);
+		$this->db->where('mediaType', 'video');
 		//Only limit to vintage or nonvintage when proper value
 		if($vintage != NULL){
 			$this->db->where('vintage', intval($vintage));
@@ -148,6 +124,43 @@ class Media_model extends MY_Model{
 		if($logged != NULL){
 			$this->db->where('loggedOnly', intval($vintage));
 		}
+		return $this->getCommonMedia($id, $resultLimit, $offset, $here, true);
+	}
+	public function getEmbedCount($vintage=0, $logged=1, $here=null){
+		$this->db->where('embed !=', '');
+		$this->db->where('mediaType', 'video');
+		if($vintage != NULL){
+			$this->db->where('vintage', intval($vintage));
+		}
+		if($logged != NULL){
+			$this->db->where('loggedOnly', intval($vintage));
+		}
+		return $this->getCommonCount($here, true);
+	}
+	//--------------------------------------------------------------------------------------------------------------------
+	//Get only avatars from database, use limit
+	//--------------------------------------------------------------------------------------------------------------------
+	public function getAvatar($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
+		$this->db->where('fileLoc !=', '');
+		$this->db->where('mediaType', 'profilePic');
+		return $this->getCommonMedia($id, $resultLimit, $offset, $here, NULL);
+	}
+	
+	public function getAvatarCount($here=null){
+		$this->db->where('fileLoc !=', '');
+		$this->db->where('mediaType', 'profilePic');
+		return $this->getCommonCount($here, NULL);
+	}
+	//---------------------------------------------------------------------------------------------------
+	//Generic media functions to reduce repeated code
+	//---------------------------------------------------------------------------------------------------
+	private function getCommonMedia($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null, $timeNeed=NULL){
+		if($timeNeed!=NULL){
+			$now=date('Y-m-d H:i:s');	
+			$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
+			$this->db->where($visArr);
+		}
+		$this->restrictSect($here);
 		//Pagination
 		if($resultLimit !== NULL){
 			if($offset!==NULL && intval($offset)>0){
@@ -156,28 +169,16 @@ class Media_model extends MY_Model{
 			else {
 				$this->db->limit(intval($resultLimit));
 			}
-						
 		}
-		
 		return $this->get($id);
 	}
-	public function getEmbedCount($vintage=0, $logged=1, $here=null){
-		$now=date('Y-m-d H:i:s');	
-		$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
-		$this->db->where('embed !=', '');
-		
+	private function getCommonCount($here=null, $timeNeed=NULL){
+		if($timeNeed!=NULL){
+			$now=date('Y-m-d H:i:s');	
+			$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
+			$this->db->where($visArr);
+		}
 		$this->restrictSect($here);
-		
-		$this->db->where($visArr);
-		if($vintage != NULL){
-			$this->db->where('vintage', intval($vintage));
-		}
-		if($logged != NULL){
-			$this->db->where('loggedOnly', intval($vintage));
-		}
 		return $this->db->count_all_results($this->_table_name);
 	}
-	
-	
-	
 }

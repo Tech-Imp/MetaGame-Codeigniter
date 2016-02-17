@@ -12,9 +12,10 @@
 			      		<div class="panel-body">
 					      	<div class="row">
 					      		<div class="col-xs-2">Stub Notes</div>
-					      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="avatarNotes" name="title" value=""></div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="avatarNotes" name="stub" value=""></div>
 					      	</div>
 					      	<?php echo $exclusiveAvatar;?>
+					      	<br>
 							<div class='nUpload'>
 	      						<p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
 	      					</div>
@@ -44,6 +45,13 @@
 					      	<div class="row">
 					      		<div class="col-xs-2">Your Title</div>
 					      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="contactTitle" name="title" value=""></div>
+					      		<div class="col-xs-2">Current Avatar</div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="avatarUsed" name="avatar" value=""></div>
+					      	</div>
+					      	<br>
+					      	<div class="row">
+					      		<div class="col-xs-2">User Name</div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="contactName" name="name" value=""></div>
 					      	</div>
 					      	<?php echo $exclusiveProfile;?>
 							<h3>Contact Info</h3>
