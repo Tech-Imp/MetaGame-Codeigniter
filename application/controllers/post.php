@@ -451,7 +451,8 @@ class post extends CI_Controller{
 			$section = $this->input->get_post('section'); 
 			$exFlag = $this->input->get_post('exFlag');
 			//HARD CODED DUE TO SETUP
-			$mediaType="picture";
+			// $mediaType="picture";
+			$mediaType=$this->input->get_post('mediaType');
 			$this->load->model("Media_model");
 			$loc=base_url().$uploadDir.'/'.$fileName;
 			//TODO need to prevent duplicates

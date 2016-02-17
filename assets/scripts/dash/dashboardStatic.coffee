@@ -11,6 +11,7 @@ class dashboardStatic extends window.classes.dashboardIndex
      setupEvents:=>
           if @debug then console.log "dashboardStatic.setupEvents"
           
+          @saveAvatar()
           
           $("#mceContact").tinymce
                script_url : @base_url+'/assets/scripts/tinymce/tinymce.min.js',
@@ -31,7 +32,40 @@ class dashboardStatic extends window.classes.dashboardIndex
                @cleanAreas()
 
 
-
+     saveAvatar:()=>
+       $('.nUpload').plupload
+               runtimes: 'html5,flash,silverlight,html4'
+               url: @base_url+'/post/CIUpload'
+               max_file_size: '4mb'
+               chunk_size: '1mb'
+               filters: [
+                    {
+                         title: 'Image files'
+                         extensions: 'jpg,gif,png'
+                    }
+                    {
+                         title: 'Zip files'
+                         extensions: 'zip,avi'
+                    }
+               ]
+               rename: true
+               sortable: true
+               dragdrop: true
+               views:
+                    list: true
+                    thumbs: true
+                    active: 'thumbs'
+               flash_swf_url: '/plupload/js/Moxie.swf'
+               silverlight_xap_url: '/plupload/js/Moxie.xap'
+          
+          myUploader=$('.nUpload').plupload('getUploader')
+               
+          myUploader.bind 'BeforeUpload', (up, file)=> 
+               up.settings.multipart_params= 
+                    stub: $("#avatarNotes").val()
+                    mediaType: "profilePic"
+                    exFlag:  $("#exclusiveFlagAvatar").val()
+                    section:  $("#sectionAvatar").val()
    
      saveContact:()=>
           if @debug then console.log "dashboardStatic.saveContact"

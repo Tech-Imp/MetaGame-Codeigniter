@@ -12,6 +12,7 @@
 
     function dashboardStatic() {
       this.saveContact = bind(this.saveContact, this);
+      this.saveAvatar = bind(this.saveAvatar, this);
       this.setupEvents = bind(this.setupEvents, this);
       if (this.debug) {
         console.log("dashboardStatic.constructor");
@@ -24,6 +25,7 @@
       if (this.debug) {
         console.log("dashboardStatic.setupEvents");
       }
+      this.saveAvatar();
       $("#mceContact").tinymce({
         script_url: this.base_url + '/assets/scripts/tinymce/tinymce.min.js',
         theme: "modern",
@@ -39,6 +41,46 @@
       return $("#clearArticle").unbind().bind("click", (function(_this) {
         return function(event) {
           return _this.cleanAreas();
+        };
+      })(this));
+    };
+
+    dashboardStatic.prototype.saveAvatar = function() {
+      var myUploader;
+      $('.nUpload').plupload({
+        runtimes: 'html5,flash,silverlight,html4',
+        url: this.base_url + '/post/CIUpload',
+        max_file_size: '4mb',
+        chunk_size: '1mb',
+        filters: [
+          {
+            title: 'Image files',
+            extensions: 'jpg,gif,png'
+          }, {
+            title: 'Zip files',
+            extensions: 'zip,avi'
+          }
+        ],
+        rename: true,
+        sortable: true,
+        dragdrop: true,
+        views: {
+          list: true,
+          thumbs: true,
+          active: 'thumbs'
+        },
+        flash_swf_url: '/plupload/js/Moxie.swf',
+        silverlight_xap_url: '/plupload/js/Moxie.xap'
+      });
+      myUploader = $('.nUpload').plupload('getUploader');
+      return myUploader.bind('BeforeUpload', (function(_this) {
+        return function(up, file) {
+          return up.settings.multipart_params = {
+            stub: $("#avatarNotes").val(),
+            mediaType: "profilePic",
+            exFlag: $("#exclusiveFlagAvatar").val(),
+            section: $("#sectionAvatar").val()
+          };
         };
       })(this));
     };

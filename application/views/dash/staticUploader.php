@@ -18,10 +18,11 @@
 							<div class='nUpload'>
 	      						<p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
 	      					</div>
+	      					<br>
 					      	<div class='panel panel-default'>
 								<div class="panel-heading" >
 				      				<h4 class="panel-title text-center">
-					        			Existing Contact Info
+					        			Existing Avatar Images
 					      			</h4>
 					    		</div>
 				      			<div class="panel-body">
@@ -41,7 +42,7 @@
 				    <div id="articleController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mceContactAdd">
 			      		<div class="panel-body">
 					      	<div class="row">
-					      		<div class="col-xs-2">Title</div>
+					      		<div class="col-xs-2">Your Title</div>
 					      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="contactTitle" name="title" value=""></div>
 					      	</div>
 					      	<?php echo $exclusiveProfile;?>

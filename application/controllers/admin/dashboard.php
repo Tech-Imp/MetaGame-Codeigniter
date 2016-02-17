@@ -501,6 +501,8 @@ class dashboard extends admin_controller {
 			</div>
 		</div>";
 		
+		$data['exclusiveAvatar']=$this->exclusiveSelector("Avatar");
+		$data['exclusiveProfile']=$this->exclusiveSelector("Profile");
 		
 		$contacts=$this->Staticpages_model->getContact();
 		$data['contactTable']=$this->Dataprep_model->gatherItemsAdmin($contacts, "static items", "static_id", "editProfile");
