@@ -16,24 +16,28 @@ class Migration_update_profile_avatars extends CI_Migration {
 				'unsigned' => TRUE
 			)
 		);
-		$this->dbforge->add_column('static_database', $fields);
+		$this->dbforge->add_column('contacts_database', $fields);
 		
 		$update = array(
                 'stub' => array(
                  	'name' => 'profileName',
+                 	'type' => 'VARCHAR',
+                 	'constraint' => 120,
         	)
 		);
-		$this->dbforge->modify_column('static_database', $update);
+		$this->dbforge->modify_column('contacts_database', $update);
 	}
 
 	public function down()
 	{
-		$this->dbforge->drop_column('static_database', 'avatarID');
+		$this->dbforge->drop_column('contacts_database', 'avatarID');
 		$update = array(
                 'profileName' => array(
                  	'name' => 'stub',
+                 	'type' => 'VARCHAR',
+                 	'constraint' => 120,
         	)
 		);
-		$this->dbforge->modify_column('static_database', $update);
+		$this->dbforge->modify_column('contacts_database', $update);
 	}
 }

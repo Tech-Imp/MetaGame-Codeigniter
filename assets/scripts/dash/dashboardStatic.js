@@ -76,7 +76,7 @@
       return myUploader.bind('BeforeUpload', (function(_this) {
         return function(up, file) {
           return up.settings.multipart_params = {
-            stub: $("#avatarNotes").val(),
+            title: $("#avatarNotes").val(),
             mediaType: "profilePic",
             exFlag: $("#exclusiveFlagAvatar").val(),
             section: $("#sectionAvatar").val()

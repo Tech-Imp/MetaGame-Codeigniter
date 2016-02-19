@@ -27,7 +27,7 @@
 					      			</h4>
 					    		</div>
 				      			<div class="panel-body">
-						        	<?php echo $contactTable?>
+						        	<?php echo $avatarTable?>
 					      		</div>
 			      			</div>
 				      	

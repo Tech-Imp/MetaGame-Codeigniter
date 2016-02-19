@@ -13,37 +13,27 @@ class Media_model extends MY_Model{
 	}
 	
 	//-------------------------------------------------------------------------------------------------------
-	//Get Media from database, primarily used on backend, no media type distinction
+	//Get Media from database, primarily used on backend, no media type distinction, except profile pic
 	//-------------------------------------------------------------------------------------------------------
 	public function getMedia($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
-		
-		$this->restrictSect($here);
-			
+		$this->db->where('mediaType !=', 'profilePic');
 		//Only limit view if not superadmin
 		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('author_id =', $myID);
 		}
-		
-		if($resultLimit !== NULL && $offset!==NULL){
-			$this->db->limit(intval($resultLimit), intval($offset));			
-		}
-		
-		return $this->get($id);
-		
+		return $this->getCommonMedia($id, $resultLimit=NULL, $offset=NULL, $here=null, $timeNeed=NULL);
 	}
-	
 	public function getMediaCount($here=null){
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
-			
+		$this->db->where('mediaType !=', 'profilePic');
 		//Only limit view if not superadmin
 		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('author_id =', $myID);
 		}
-		$this->restrictSect($here);
-		return $this->db->count_all_results($this->_table_name);
+		return $this->getCommonCount($here=null, $timeNeed=NULL);
 	}
 	//-------------------------------------------------------------------------------------------------------
 	//Save normal uploads to server

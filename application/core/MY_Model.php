@@ -143,7 +143,6 @@ class MY_Model extends CI_Model{
 		if($here===null){
 			$here=$this->uri->segment(1, $this->config->item('mainPage'));
 		}
-		//TODO Account for the issue with paging being considered the uri rather than the current page
 		$excludeLoc=$this->config->item('excludeLoc');
 		
 		// $here=explode('/', uri_string());

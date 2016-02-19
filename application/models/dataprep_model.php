@@ -308,6 +308,9 @@ class dataprep_model extends CI_Controller{
 						case 'sound':
 							$mediaClass="<div><span class='glyphicon glyphicon-headphones'></span><strong> Audio </strong></div>";
 							break;
+						case 'profilePic':
+							$mediaClass="<div><span class='glyphicon glyphicon-user'></span><strong> Avatar </strong></div>";
+							break;
 						default:
 							$mediaClass="<div><span class='glyphicon glyphicon-ban-circle'></span><strong> UNKNOWN </strong></div>";
 							break;
@@ -371,7 +374,7 @@ class dataprep_model extends CI_Controller{
 				$vintage="";
 				if(array_key_exists('vintage', $row)){
 					if(intval($row->vintage) == 1){
-						$vintage="<div><span class='glyphicon glyphicon-flag'></span><strong> VAULT </strong></div>";
+						$vintage="<div><span class='glyphicon glyphicon-flag'></span><strong> PINNED </strong></div>";
 					}
 					else{
 						$vintage="<div><span class='glyphicon glyphicon-fire'></span><strong> NEW! </strong></div>";

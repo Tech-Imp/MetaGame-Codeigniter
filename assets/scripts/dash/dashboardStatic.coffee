@@ -62,7 +62,7 @@ class dashboardStatic extends window.classes.dashboardIndex
                
           myUploader.bind 'BeforeUpload', (up, file)=> 
                up.settings.multipart_params= 
-                    stub: $("#avatarNotes").val()
+                    title: $("#avatarNotes").val()
                     mediaType: "profilePic"
                     exFlag:  $("#exclusiveFlagAvatar").val()
                     section:  $("#sectionAvatar").val()
