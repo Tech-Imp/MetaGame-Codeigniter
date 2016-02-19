@@ -1,6 +1,6 @@
 <?
 
-class paging extends CI_Controller{
+class Paging extends CI_Controller{
 
 	function __construct(){
 		parent::__construct();
@@ -10,9 +10,9 @@ class paging extends CI_Controller{
 	//--------------------------------------------------------------------
 	function nextPage(){
 		header('content-type: text/javascript');
-		$offset = intval($this->input->get_post('offset')); 
-		$database = $this->input->get_post('database'); 
-		$type = $this->input->get_post('type');
+		$offset = intval($this->input->post('offset')); 
+		$database = $this->input->post('database'); 
+		$type = $this->input->post('type');
 		if(!(isset($offset))||!(isset($database))||!(isset($type))){
 			$data=array('error' => "Error in intial data");
 		} 
@@ -32,9 +32,9 @@ class paging extends CI_Controller{
 	
 	function prevPage(){
 		header('content-type: text/javascript');
-		$offset = intval($this->input->get_post('offset')); 
-		$database = $this->input->get_post('database'); 
-		$type = $this->input->get_post('type'); 
+		$offset = intval($this->input->post('offset')); 
+		$database = $this->input->post('database'); 
+		$type = $this->input->post('type'); 
 		
 		if(!(isset($offset))||!(isset($database))||!(isset($type))){
 			$data=array('error' => "Error in intial data");
@@ -120,9 +120,9 @@ class paging extends CI_Controller{
 	// TODO Need to adjust this for any auto jump to page
 	function specificPage(){
 		header('content-type: text/javascript');
-		$offset = intval($this->input->get_post('offset')); 
-		$database = $this->input->get_post('database'); 
-		$type = $this->input->get_post('type'); 
+		$offset = intval($this->input->post('offset')); 
+		$database = $this->input->post('database'); 
+		$type = $this->input->post('type'); 
 		
 		if(!(isset($offset))||!(isset($database))||!(isset($type))){
 			$data=array('error' => "Error in intial data");

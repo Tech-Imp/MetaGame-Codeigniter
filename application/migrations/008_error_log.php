@@ -49,6 +49,6 @@ class Migration_error_log extends CI_Migration {
 
 	public function down()
 	{
-		$this->dbforge->drop_table('error_log');
+		$this->dbforge->drop_table('error_log', TRUE);
 	}
 }

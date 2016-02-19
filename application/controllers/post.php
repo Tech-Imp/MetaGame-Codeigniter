@@ -1,6 +1,6 @@
 <?
 
-class post extends CI_Controller{
+class Post extends CI_Controller{
 
 	function __construct(){
 		parent::__construct();
@@ -14,7 +14,7 @@ class post extends CI_Controller{
 		$myRole=$this->session->userdata('role');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$uncleanText = $this->input->get_post('bodyText');
+		$uncleanText = $this->input->post('bodyText');
 		$author = $this->session->userdata('id');
 		
 		if($myRole< $this->config->item('contributor')){
@@ -53,9 +53,9 @@ class post extends CI_Controller{
 		$myID=$this->session->userdata('id');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$contactID = $this->input->get_post('staticID'); 
-		$title = $this->input->get_post('title'); 
-		$uncleanText = $this->input->get_post('body');
+		$contactID = $this->input->post('staticID'); 
+		$title = $this->input->post('title'); 
+		$uncleanText = $this->input->post('body');
 
 		
 		$this->load->helper('htmlpurifier');
@@ -110,7 +110,7 @@ class post extends CI_Controller{
 		$myID=$this->session->userdata('id');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$contactID = intval($this->input->get_post('staticID')); 
+		$contactID = intval($this->input->post('staticID')); 
 		
 		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
@@ -155,14 +155,14 @@ class post extends CI_Controller{
 		$myRole=$this->session->userdata('role');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$title = $this->input->get_post('title'); 
-		$section = $this->input->get_post('section'); 
-		$exFlag = $this->input->get_post('exFlag'); 
-		$stub = $this->input->get_post('stub'); 
-      	$visibleWhen = $this->input->get_post('visibleWhen');
-		$uncleanText = $this->input->get_post('bodyText');
+		$title = $this->input->post('title'); 
+		$section = $this->input->post('section'); 
+		$exFlag = $this->input->post('exFlag'); 
+		$stub = $this->input->post('stub'); 
+      	$visibleWhen = $this->input->post('visibleWhen');
+		$uncleanText = $this->input->post('bodyText');
 		$author = $this->session->userdata('id');
-		$type=$this->input->get_post('type');
+		$type=$this->input->post('type');
 		
 		if($myRole < $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges");
@@ -203,16 +203,16 @@ class post extends CI_Controller{
 		header('content-type: text/javascript');
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
-		$type=$this->input->get_post('type');
+		$type=$this->input->post('type');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$newsID = $this->input->get_post('newsID'); 
-		$title = $this->input->get_post('title');
-		$section = $this->input->get_post('section'); 
-		$exFlag = $this->input->get_post('exFlag'); 
-		$stub = $this->input->get_post('stub'); 
-      	$visibleWhen = $this->input->get_post('visibleWhen');
-		$uncleanText = $this->input->get_post('body');
+		$newsID = $this->input->post('newsID'); 
+		$title = $this->input->post('title');
+		$section = $this->input->post('section'); 
+		$exFlag = $this->input->post('exFlag'); 
+		$stub = $this->input->post('stub'); 
+      	$visibleWhen = $this->input->post('visibleWhen');
+		$uncleanText = $this->input->post('body');
 
 		$section=preg_replace('/\s+/', '', $section);
 		if($section==null){$section="";}
@@ -272,7 +272,7 @@ class post extends CI_Controller{
 		$myID=$this->session->userdata('id');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$newsID = intval($this->input->get_post('newsID')); 
+		$newsID = intval($this->input->post('newsID')); 
 		
 		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
@@ -444,15 +444,15 @@ class post extends CI_Controller{
 		
 		if ($chunk==0){
 			$fileMD5hash=md5_file($filePath);
-			$title = $this->input->get_post('title'); 
-			$stub = $this->input->get_post('stub'); 
-      		$visibleWhen = $this->input->get_post('visibleWhen');
-			$loggedOnly = intval($this->input->get_post('loggedOnly'));
-			$section = $this->input->get_post('section'); 
-			$exFlag = $this->input->get_post('exFlag');
+			$title = $this->input->post('title'); 
+			$stub = $this->input->post('stub'); 
+      		$visibleWhen = $this->input->post('visibleWhen');
+			$loggedOnly = intval($this->input->post('loggedOnly'));
+			$section = $this->input->post('section'); 
+			$exFlag = $this->input->post('exFlag');
 			//HARD CODED DUE TO SETUP
 			// $mediaType="picture";
-			$mediaType=$this->input->get_post('mediaType');
+			$mediaType=$this->input->post('mediaType');
 			$this->load->model("Media_model");
 			$loc=base_url().$uploadDir.'/'.$fileName;
 			//TODO need to prevent duplicates
@@ -477,14 +477,14 @@ class post extends CI_Controller{
 		$myRole=$this->session->userdata('role');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$title = $this->input->get_post('title'); 
-		$stub = $this->input->get_post('stub'); 
-		$mediaType = $this->input->get_post('mediaType'); 
-		$loggedOnly = intval($this->input->get_post('loggedOnly'));
-      	$visibleWhen = $this->input->get_post('visibleWhen');
-		$uncleanText = $this->input->get_post('embed');
-		$section = $this->input->get_post('section'); 
-		$exFlag = $this->input->get_post('exFlag'); 
+		$title = $this->input->post('title'); 
+		$stub = $this->input->post('stub'); 
+		$mediaType = $this->input->post('mediaType'); 
+		$loggedOnly = intval($this->input->post('loggedOnly'));
+      	$visibleWhen = $this->input->post('visibleWhen');
+		$uncleanText = $this->input->post('embed');
+		$section = $this->input->post('section'); 
+		$exFlag = $this->input->post('exFlag'); 
 		
 		if($myRole<$this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
@@ -536,15 +536,15 @@ class post extends CI_Controller{
 		$myID=$this->session->userdata('id');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$mediaID = $this->input->get_post('mediaID'); 
-		$title = $this->input->get_post('title'); 
-		$stub = $this->input->get_post('stub'); 
-		$mediaType = $this->input->get_post('mediaType'); 
-      	$visibleWhen = $this->input->get_post('visibleWhen');
-		$loggedOnly = intval($this->input->get_post('loggedOnly'));
-		$vintage = intval($this->input->get_post('vintage')); 
-		$section = $this->input->get_post('section'); 
-		$exFlag = $this->input->get_post('exFlag'); 
+		$mediaID = $this->input->post('mediaID'); 
+		$title = $this->input->post('title'); 
+		$stub = $this->input->post('stub'); 
+		$mediaType = $this->input->post('mediaType'); 
+      	$visibleWhen = $this->input->post('visibleWhen');
+		$loggedOnly = intval($this->input->post('loggedOnly'));
+		$vintage = intval($this->input->post('vintage')); 
+		$section = $this->input->post('section'); 
+		$exFlag = $this->input->post('exFlag'); 
 		
 		if($myRole<$this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
@@ -597,7 +597,7 @@ class post extends CI_Controller{
 		$myID=$this->session->userdata('id');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$mediaID = intval($this->input->get_post('mediaID')); 
+		$mediaID = intval($this->input->post('mediaID')); 
 		
 		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 

@@ -40,6 +40,6 @@ class Migration_page_visibility extends CI_Migration {
 
 	public function down()
 	{
-		$this->dbforge->drop_table('page_visibility');
+		$this->dbforge->drop_table('page_visibility', TRUE);
 	}
 }

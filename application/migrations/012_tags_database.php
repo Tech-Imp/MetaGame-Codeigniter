@@ -44,6 +44,6 @@ class Migration_tags_database extends CI_Migration {
 
 	public function down()
 	{
-		$this->dbforge->drop_table('tags_database');
+		$this->dbforge->drop_table('tags_database', TRUE);
 	}
 }

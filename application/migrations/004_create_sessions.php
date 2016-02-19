@@ -8,7 +8,7 @@ class Migration_create_sessions extends CI_Migration {
 		
 		
 		$this->dbforge->add_field(array(
-			'session_id' => array(
+			'id' => array(
 				'type' => 'VARCHAR',
 				'constraint' => 40,
 				'default'=> '0',
@@ -20,31 +20,26 @@ class Migration_create_sessions extends CI_Migration {
 				'default'=> '0',
 				'null' => FALSE,
 			),
-			'user_agent'=>array(
-				'type' => 'VARCHAR',
-				'constraint' => 120,
-				'null'=>FALSE,
-			),
-			'last_activity' => array(
+			'timestamp' => array(
 				'type' => 'INT',
 				'constraint' => '10',
 				'unsigned' => TRUE,
 				'default'=>0,
 				'null'=>FALSE,
 			),
-			'user_data' => array(
-				'type' => 'text',
+			'data' => array(
+				'type' => 'BLOB',
 				'null'=>FALSE,
 			),
 		));
 		
 		$this->dbforge->add_key('session_id', true);
 		$this->dbforge->create_table('ci_sessions');
-		$this->db->query('ALTER TABLE `ci_sessions` ADD KEY `last_activity_idx` (`last_activity`)');
+		$this->db->query('ALTER TABLE `ci_sessions` ADD KEY `timestamp_idx` (`timestamp`)');
 	}
 
 	public function down()
 	{
-		$this->dbforge->drop_table('ci_sessions');
+		$this->dbforge->drop_table('ci_sessions', TRUE);
 	}
 }

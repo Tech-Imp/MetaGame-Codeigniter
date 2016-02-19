@@ -58,6 +58,6 @@ class Migration_news_database extends CI_Migration {
 
 	public function down()
 	{
-		$this->dbforge->drop_table('news_database');
+		$this->dbforge->drop_table('news_database', TRUE);
 	}
 }

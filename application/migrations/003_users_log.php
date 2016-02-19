@@ -45,6 +45,6 @@ class Migration_users_log extends CI_Migration {
 
 	public function down()
 	{
-		$this->dbforge->drop_table('user_log');
+		$this->dbforge->drop_table('user_log', TRUE);
 	}
 }

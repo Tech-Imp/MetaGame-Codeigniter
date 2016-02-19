@@ -59,6 +59,6 @@ class Migration_static_database extends CI_Migration {
 
 	public function down()
 	{
-		$this->dbforge->drop_table('static_database');
+		$this->dbforge->drop_table('static_database', TRUE);
 	}
 }

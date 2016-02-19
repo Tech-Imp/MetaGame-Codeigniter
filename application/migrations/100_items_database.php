@@ -65,6 +65,6 @@ class Migration_items_database extends CI_Migration {
 
 	public function down()
 	{
-		$this->dbforge->drop_table('items_database');
+		$this->dbforge->drop_table('items_database', TRUE);
 	}
 }

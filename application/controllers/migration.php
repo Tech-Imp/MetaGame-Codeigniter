@@ -1,5 +1,5 @@
 <?php
-	class migration extends admin_controller{ 
+	class Migration extends admin_controller{ 
 		
 		public function __construct()
 		{

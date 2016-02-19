@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Welcome extends frontend_controller {
+class Index extends frontend_controller {
 	function __construct(){
 		parent::__construct();
 	}

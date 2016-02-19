@@ -14,8 +14,8 @@ class Migration_section_split extends CI_Migration {
 
 	public function down()
 	{
-		$this->dbforge->drop_table('extra_subsites');
-		$this->dbforge->drop_table('sub_auth');
+		$this->dbforge->drop_table('extra_subsites', TRUE);
+		$this->dbforge->drop_table('sub_auth', TRUE);
 	}
 	
 	

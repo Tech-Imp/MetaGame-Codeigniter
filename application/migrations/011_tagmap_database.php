@@ -45,6 +45,6 @@ class Migration_tagmap_database extends CI_Migration {
 
 	public function down()
 	{
-		$this->dbforge->drop_table('tagmap_database');
+		$this->dbforge->drop_table('tagmap_database', TRUE);
 	}
 }

@@ -37,6 +37,6 @@ class Migration_auth_users extends CI_Migration {
 
 	public function down()
 	{
-		$this->dbforge->drop_table('auth_role');
+		$this->dbforge->drop_table('auth_role', TRUE);
 	}
 }
