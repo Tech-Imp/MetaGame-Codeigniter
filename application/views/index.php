@@ -19,7 +19,7 @@
 				<br>
 				<h3 class="text-center">Bringing you Reviews, Games, and Awesome</h3>
 				<br>
-				<h4>Site access: Down for maintenance</h4>
+				<h4 class="text-center">Site access: Down for maintenance</h4>
 				<!-- <div class="progress">
 			  		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100" style="width: 96%">
 		    			<span class="sr-only">97% Complete</span>

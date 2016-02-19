@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Photos extends common_frontend {
+class Photos extends Common_frontend {
 	
 	function __construct(){
 		parent::__construct();

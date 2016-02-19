@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Articles extends common_frontend {
+class Articles extends Common_frontend {
 	
 	function __construct(){
 		parent::__construct();
