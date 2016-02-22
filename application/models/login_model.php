@@ -7,12 +7,12 @@ class Login_model extends MY_Model{
 		'email'=>array(
 			'field'=>'email', 
 			'label'=>'Email', 
-			'rules'=>'trim|required|valid_email|xss_clean|max_length[130]'
+			'rules'=>'trim|required|valid_email|max_length[130]'
 		),
 		'password'=>array(
 			'field'=>'password', 
 			'label'=>'Password', 
-			'rules'=>'trim|required|xss_clean'
+			'rules'=>'trim|required'
 		)
 	);
 	

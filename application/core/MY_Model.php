@@ -31,19 +31,21 @@ class MY_Model extends CI_Model{
 		
 		// Handles case where I need to reference multiple different tables for join functions
 		if($altTable === FALSE){
-			if(!count($this->db->ar_orderby)){
-				$this->db->order_by($this->_order_by);
-			}
-			return $this->db->get($this->_table_name)->$method();
+			//Had to replace errant function for this longer winded one
+			// if(strpos(strtolower($this->db->get_compiled_select($this->_table_name, FALSE)), 'order by') == false){
+				// $this->db->order_by($this->_order_by);
+			// }
+			$this->db->from($this->_table_name);
+			return $this->db->get()->$method();
 		}
 		else{
-			if(!count($this->db->ar_orderby)){
-				if($altOrder !== FALSE){
-					$this->db->order_by($altOrder);
-				}
-			}
-			
-			return $this->db->get($altTable)->$method();
+			// if(strpos(strtolower($this->db->get_compiled_select($altTable, FALSE)), 'order by') == false){
+				// if($altOrder !== FALSE){
+					// $this->db->order_by($altOrder);
+				// }
+			// }
+			$this->db->from($altTable);
+			return $this->db->get()->$method();
 		}
 	
 	}
