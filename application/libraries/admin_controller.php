@@ -1,5 +1,5 @@
 <?php
-class admin_controller extends MY_Controller{
+class Admin_controller extends MY_Controller{
 		
 	public $logoutPATH='login/logout';
 	

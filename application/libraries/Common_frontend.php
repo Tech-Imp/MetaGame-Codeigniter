@@ -1,5 +1,5 @@
 <?php
-class common_frontend extends frontend_controller{
+class Common_frontend extends Frontend_controller{
 		
 	
 	function __construct(){

@@ -1,5 +1,5 @@
 <?php
-class frontend_controller extends MY_Controller{
+class Frontend_controller extends MY_Controller{
 		
 	public $logoutPATH='login/logout';
 	function __construct(){
