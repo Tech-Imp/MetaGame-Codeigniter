@@ -33,16 +33,16 @@ class MY_Model extends CI_Model{
 		if($altTable === FALSE){
 			//Had to replace errant function for this longer winded one
 			// if(strpos(strtolower($this->db->get_compiled_select($this->_table_name, FALSE)), 'order by') == false){
-				// $this->db->order_by($this->_order_by);
+				$this->db->order_by($this->_order_by);
 			// }
 			$this->db->from($this->_table_name);
 			return $this->db->get()->$method();
 		}
 		else{
 			// if(strpos(strtolower($this->db->get_compiled_select($altTable, FALSE)), 'order by') == false){
-				// if($altOrder !== FALSE){
-					// $this->db->order_by($altOrder);
-				// }
+				if($altOrder !== FALSE){
+					$this->db->order_by($altOrder);
+				}
 			// }
 			$this->db->from($altTable);
 			return $this->db->get()->$method();

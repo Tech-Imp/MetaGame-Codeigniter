@@ -73,8 +73,8 @@ $autoload['libraries'] = array('session', 'encryption', 'database');
 |
 |	$autoload['drivers'] = array('cache');
 */
-$autoload['drivers'] = array('session');
-
+$autoload['drivers'] = array();
+// $autoload['drivers'] = array('session');
 /*
 | -------------------------------------------------------------------
 |  Auto-load Helper Files

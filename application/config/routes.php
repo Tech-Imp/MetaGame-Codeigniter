@@ -39,6 +39,7 @@
 */
 
 $route['default_controller'] = "index";
+$route['admin'] = 'admin/dashboard';
 // $route['book'] = "book/index";
 $route['404_override'] = '';
 
