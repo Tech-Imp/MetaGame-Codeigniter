@@ -1,5 +1,5 @@
 <?
-class dataprep_model extends CI_Controller{
+class Dataprep_model extends CI_Model{
     	
 	
 	function __construct(){

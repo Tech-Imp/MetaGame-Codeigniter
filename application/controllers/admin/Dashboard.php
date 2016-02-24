@@ -10,7 +10,7 @@ class Dashboard extends Admin_controller {
 //Base Page
 //--------------------------------------------------------------------------------------------------
 	public function index()
-	{	
+	{
 		$data=$this->commonHeader();
 		$this->load->model('Logging_model');
 		$this->load->model('Media_model');
@@ -18,7 +18,6 @@ class Dashboard extends Admin_controller {
 		$data['currentLocation']="<div class='navbar-brand'>Your Dashboard</div>";
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
-		
 		
 		//Logging of recent items
 		$logOutput="<div><h4>Recent activity:</h4><br>No recent activity to report.</div>";
@@ -34,11 +33,9 @@ class Dashboard extends Admin_controller {
 		//Recent Photos
 		$myMedia=$this->Media_model->getMedia(NULL, 5, 0);
 		$data['mediaTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia");
-		
 		$this->load->view('dashboard', $data);
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);
-		
 	}
 	
 //----------------------------------------------------------------------------------------------------
@@ -241,7 +238,7 @@ class Dashboard extends Admin_controller {
 		// $this->load->library('curl'); 
 		
 		$this->load->model("Vendor_model");
-		$this->load->library('curl');
+		// $this->load->library('curl');
 		
 		$rules=$this->Vendor_model->rules;
 		$this->form_validation->set_rules($rules);
