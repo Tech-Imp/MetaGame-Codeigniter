@@ -32,8 +32,8 @@
 						<div class="col-xs-2"><strong>Logged in Only?</strong></div>
 			      		<div class="col-xs-10 col-md-4">
 			      			<select id="uploadLogged">
-			      				<option selected value='1'>Yes</option>
-			      				<option value='0'>No</option>
+			      				<option selected value='0'>No</option>
+			      				<option value='1'>Yes</option>
 			      			</select>
 		      			</div>
 			      		<div class="col-xs-12 col-md-6">If yes, will only be visible to logged in members.</div>

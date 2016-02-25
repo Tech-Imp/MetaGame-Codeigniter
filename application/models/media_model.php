@@ -23,7 +23,7 @@ class Media_model extends MY_Model{
 		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('author_id =', $myID);
 		}
-		return $this->getCommonMedia($id, $resultLimit=NULL, $offset=NULL, $here=null, $timeNeed=NULL);
+		return $this->getCommonMedia($id, $resultLimit, $offset, $here, $timeNeed=NULL);
 	}
 	public function getMediaCount($here=null){
 		$myRole=$this->session->userdata('role');
@@ -33,7 +33,7 @@ class Media_model extends MY_Model{
 		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('author_id =', $myID);
 		}
-		return $this->getCommonCount($here=null, $timeNeed=NULL);
+		return $this->getCommonCount($here, $timeNeed=NULL);
 	}
 	//-------------------------------------------------------------------------------------------------------
 	//Save normal uploads to server
