@@ -18,7 +18,9 @@ class Media_model extends MY_Model{
 	public function getMedia($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
-		$this->db->where('mediaType !=', 'profilePic');
+		if($id===NULL){
+			$this->db->where('mediaType !=', 'profilePic');
+		}
 		//Only limit view if not superadmin
 		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('author_id =', $myID);
