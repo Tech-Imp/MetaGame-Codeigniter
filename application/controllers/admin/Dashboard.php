@@ -345,30 +345,19 @@ class Dashboard extends Admin_controller {
 					$data['mediaVintage']='';	
 					$data['mediaNormal']='selected';
 				}
-				
-				switch ($allData->mediaType) {
-					case 'picture':
-						$data['mediaPic']='selected';
-						$data['mediaInfo']=$data['mediaVid']=$data['mediaAud']='';
-						break;
-					
-					case 'video':
-						$data['mediaVid']='selected';
-						$data['mediaInfo']=$data['mediaPic']=$data['mediaAud']='';
-						break;
-					
-					case 'sound':
-						$data['mediaAud']='selected';
-						$data['mediaInfo']=$data['mediaPic']=$data['mediaVid']='';
-						break;
-					
-					default:
-						$data['mediaInfo']='<div id="mediaTypeError" class="col-xs-12 alert alert-danger" role="alert">
-						Warning: Media type was either not set or improperly set. Please make sure to set it appropriately before saving. 
-						</div>';
-						$data['mediaAud']=$data['mediaPic']=$data['mediaVid']='';
-						break;
+				//Determine if it saved right/show the type it is via dropdown
+				$medias=$this->config->item('recognizedMedia');
+				if(in_array($allData->mediaType, $medias)===TRUE){
+					$data['mediaOptions']=$this->dropdownOptions($allData->mediaType, $medias);
+					$data['mediaInfo']='';
 				}
+				else{
+					$data['mediaInfo']='<div id="mediaTypeError" class="col-xs-12 alert alert-danger" role="alert">
+					Warning: Media type was either not set or improperly set. Please make sure to set it appropriately before saving. 
+					</div>';
+					$data['mediaOptions']=$this->dropdownOptions($allData->mediaType, $medias);
+				}
+				
 				
 				$data['exclusive']=$this->exclusiveSelector(NULL, $allData->exclusiveSection, $allData->forSection);
 				$data['mediaWhen']=$allData->visibleWhen;
@@ -596,9 +585,6 @@ class Dashboard extends Admin_controller {
 		
 		return $typeOptions;
 	}
-
-
-
-	
+		
 }
 

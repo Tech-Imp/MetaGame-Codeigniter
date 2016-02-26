@@ -506,7 +506,8 @@ class Post extends CI_Controller{
       		exit; 
 		}
 		//Base case
-		if($mediaType=="video" || $mediaType=="picture"|| $mediaType=="sound"){
+		$medias=$this->config->item('recognizedMedia');
+		if(in_array($mediaType, $medias)===TRUE){
 			$md5=md5($uncleanText);
 			$this->load->model("Media_model");
 			$result=$this->Media_model->uploadMedia(NULL, $uncleanText, $mediaType, $md5, $visibleWhen, $title, $stub, $loggedOnly, $exFlag, $section);
@@ -560,7 +561,8 @@ class Post extends CI_Controller{
       		echo json_encode($data);
       		exit; 
 		} 
-		if(!($mediaType=="video" || $mediaType=="picture"|| $mediaType=="sound")){
+		$medias=$this->config->item('recognizedMedia');
+		if(in_array($mediaType, $medias)===FALSE){
 			$data=array('error' => "Media type was unexpected"); 
 			$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog($mediaID, 'eMed', 'Media type for'.$title.' ('.$mediaID.') was unexpected. Attempted to store: '.$mediaType); 

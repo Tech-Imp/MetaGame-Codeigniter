@@ -29,9 +29,7 @@
 						<div class="col-xs-2"><strong>Media type</strong></div>
 			      		<div class="col-xs-10 col-md-4">
 			      			<select id='mediaType'>
-								<option <?php echo $mediaPic;?> value='picture'> Picture</option>
-								<option <?php echo $mediaVid;?> value='video'>Video</option>
-								<option <?php echo $mediaAud;?> value='sound'>Audio</option>
+								<?php echo $mediaOptions;?>
 							</select>
 						</div>
 					</div>
