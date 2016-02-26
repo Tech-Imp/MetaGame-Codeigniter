@@ -77,6 +77,8 @@
         return function(up, file) {
           return up.settings.multipart_params = {
             title: $("#avatarNotes").val(),
+            stub: 'Avatar upload',
+            loggedOnly: 0,
             mediaType: "profilePic",
             exFlag: $("#exclusiveFlagAvatar").val(),
             section: $("#sectionAvatar").val()

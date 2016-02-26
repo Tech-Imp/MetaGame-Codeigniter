@@ -39,8 +39,6 @@ class Dataprep_model extends CI_Model{
 					$storedDate=new DateTime($row->visibleWhen);
 				}
 				$currDate=new DateTime("now");
-				
-				
 				$media="";
 				//Check for local media first. It has higher priority than an embed
 				if(array_key_exists('fileLoc', $row) && $row->fileLoc !== ""){
@@ -73,9 +71,6 @@ class Dataprep_model extends CI_Model{
 					.$row->body."
 					</div>";
 				}
-				
-				
-				
 				//Modified logic if it exists adds wording
 				$modified="";
 				if(array_key_exists('modified', $row)){
@@ -84,8 +79,6 @@ class Dataprep_model extends CI_Model{
 					}
 					$modified="<div>Created: ".date("M jS, Y",strtotime($row->created))."</div>";
 				}
-				
-				
 				//Create the block item based on info gathered and add to return value, Default case will assume theres only one item per slot
 				if ($perRow==1){
 					$export.="<div id=mediaItem".$newsID." class='metaBorder' >";
@@ -112,7 +105,6 @@ class Dataprep_model extends CI_Model{
                     ".$modified;
 				//Cap off the entry with ability to get permalinks or a way back to main section
                 if($items!==NULL && $myLink!==NULL){
-                	
 					if($perRow==1 && count($myMedia)==1 && $maxRows==0){
 						if($redirect==NULL){
 							$export.="<div>".anchor($area.'/'.$myLink.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
@@ -120,7 +112,6 @@ class Dataprep_model extends CI_Model{
 						else{
 							$export.="<div>".anchor($area.'/'.$redirect.'/',"<span class='glyphicon glyphicon-home'></span><strong>  Return to ".$items." list</strong>")."</div>";
 						}
-						
 					}
 					else{
 						$export.="<div>".anchor($area.'/'.$myLink.'/index/'.$newsID,"<span class='glyphicon glyphicon-search'></span><strong>  Get permanent link to ".$items." </strong>")."</div>";
@@ -279,8 +270,6 @@ class Dataprep_model extends CI_Model{
 				if(array_key_exists('visibleWhen', $row)){
 					$storedDate=new DateTime($row->visibleWhen);
 				}
-				
-				
 				// Visibility of item logic alters coloring and wording
 				if(array_key_exists('visibleWhen', $row) && $row->visibleWhen === "0000-00-00 00:00:00"){
 					$artVis="itemHidden";
@@ -294,7 +283,6 @@ class Dataprep_model extends CI_Model{
 					$artVis="itemVis";
 					$vis="Currently <span class='glyphicon glyphicon-eye-open'></span><strong>VISIBLE</strong>";
 				}
-				
 				// Give visual representation where items will go and what they are categorized as
 				$mediaClass="";
 				if(array_key_exists('mediaType', $row)){
@@ -330,8 +318,6 @@ class Dataprep_model extends CI_Model{
 					}
 				}
 				
-				
-				
 				if(array_key_exists('loggedOnly', $row) && $row->loggedOnly !== ""){
 					$vis.="<br>";
 					if ($row->loggedOnly==1){$vis.="   <span class='glyphicon glyphicon-lock'></span><strong> to Logged Only</strong>"; }
@@ -360,7 +346,6 @@ class Dataprep_model extends CI_Model{
 						</div>";	
 					}	
 				}
-				
 				//Modified logic if it exists adds wording
 				$modified="";
 				if(array_key_exists('modified', $row)){
@@ -370,7 +355,6 @@ class Dataprep_model extends CI_Model{
 					}
 					$modified="<div>Modified: ".$editted."</div>";
 				}
-				
 				$vintage="";
 				if(array_key_exists('vintage', $row)){
 					if(intval($row->vintage) == 1){
@@ -380,7 +364,6 @@ class Dataprep_model extends CI_Model{
 						$vintage="<div><span class='glyphicon glyphicon-fire'></span><strong> NEW! </strong></div>";
 					}
 				}
-				
 				// Handle the case when a stub is not used
 				if(array_key_exists('stub', $row)){
 					$content="<div><textarea disabled='disabled' rows='4' style='width: 100%; resize: none; overflow-y: scroll;' >".$row->stub."</textarea></div><br>";
