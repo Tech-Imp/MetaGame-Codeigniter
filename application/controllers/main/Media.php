@@ -46,10 +46,10 @@ class Media extends Common_frontend {
 			
 			
 			$data['mediaHeader'].=$this->prepHeader("<h3>Videos</h3>");
-			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItemsRedirect($myVids, "media", "media_id", "video", 3, $maxVideoItems, $maxLimitVid, 0, "all.videos", "media"));
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVids, "media", "media_id", "video", 3, $maxVideoItems, $maxLimitVid, 0, "all.videos"));
 			
 			$data['mediaHeader'].=$this->prepHeader("<h3>Image Gallery</h3>", 2);
-			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItemsRedirect($myPics, "media", "media_id", "photos", 3, $maxPics, $maxLimitPic, 0, "all.photos", "media"), 2);
+			$data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myPics, "media", "media_id", "photos", 3, $maxPics, $maxLimitPic, 0, "all.photos"), 2);
 			
 		// }
 		// else{

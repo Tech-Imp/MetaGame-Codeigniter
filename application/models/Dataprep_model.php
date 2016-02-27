@@ -32,7 +32,12 @@ class Dataprep_model extends CI_Model{
 			$export="";
 			//Loop through the data and make a new row for each
 			$rowCount=0;
-			$area=$this->uri->segment(1, $this->config->item('mainPage'));
+			if($redirect==NULL){
+				$area=$this->uri->segment(1, $this->config->item('mainPage'));
+			}
+			else{
+				$area=$redirect;
+			}
 			foreach ($myMedia as $row) {
 				$newsID=$row->$primary_key;
 				//Toss all the media stuff onto the growing string

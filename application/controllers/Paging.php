@@ -57,16 +57,16 @@ class Paging extends CI_Controller{
 	// Figure out which datatable to load
 	private function determineData($database, $type, $offset){
 		$loc=explode("/", $database);
-		// var_dump($loc);
+		// var_dump($loc[1]);
 		switch (end($loc)) {
 			case 'video':
-				$results=$this->getVideo($offset, $type, $loc[1], $loc[0]);
+				$results=$this->getVideo($offset, $type, $loc[1]);
 				break;
 			case 'photos':
-				$results=$this->getImage($offset, $type, $loc[1], $loc[0]);
+				$results=$this->getImage($offset, $type, $loc[1]);
 				break;
 			case 'news':
-				$results=$this->getNews($offset, $loc[1], $loc[0]);
+				$results=$this->getNews($offset, $loc[1]);
 				break;
 			case 'multimedia':
 				$results=$this->getMedia($offset, $loc[1]);
@@ -74,17 +74,17 @@ class Paging extends CI_Controller{
 			case 'media':
 				$whichType=explode(".", $type);
 				if(end($whichType)=="videos"){
-					$results=$this->getVideo($offset, $type, $loc[1], $loc[0]);
+					$results=$this->getVideo($offset, $type, $loc[1]);
 				}
 				elseif (end($whichType)=="photos") {
-					$results=$this->getImage($offset, $type, $loc[1], $loc[0]);
+					$results=$this->getImage($offset, $type, $loc[1]);
 				}
 				else{
 					$results=false;
 				}
 				break;
 			case 'articles':
-				$results=$this->getArticles($offset, $loc[1], $loc[0]);
+				$results=$this->getArticles($offset, $loc[1]);
 				break;
 			case 'written':
 				$results=$this->getWritten($offset, $loc[1]);
@@ -145,14 +145,13 @@ class Paging extends CI_Controller{
 	//-----------------------------------------------------------------------
 	
 	
-	private function getImage($paging=0, $type, $currentLoc=null, $parent=NULL){
+	private function getImage($paging=0, $type, $currentLoc=null){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxSMedia');
 		$offset=$paging*$maxLimit;
 		
 		$vintage=$this->determineVintage($type);
-		
 		// $vintage=NULL; //DEBUG LINE
 		
 		$currentRole=$this->session->userdata('role');
@@ -173,7 +172,7 @@ class Paging extends CI_Controller{
 		}
 	
 		if(count($myMedia)){
-			return $this->Dataprep_model->gatherItemsRedirect($myMedia, "media", "media_id", "photos", 3, $maxItems, $maxLimit, $paging, $type, $parent);
+			return $this->Dataprep_model->gatherItemsRedirect($myMedia, "media", "media_id", "photos", 3, $maxItems, $maxLimit, $paging, $type, $currentLoc);
 		}
 		else{
 			return "<div><h4>That image does not exist.</h4></div>";
@@ -183,7 +182,7 @@ class Paging extends CI_Controller{
 	//Video paging
 	//-----------------------------------------------------------------------
 	
-	private function getVideo($paging=0, $type, $currentLoc=null, $parent=NULL ){
+	private function getVideo($paging=0, $type, $currentLoc=null){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxMMedia');
@@ -210,7 +209,7 @@ class Paging extends CI_Controller{
 		}
 	
 		if(count($myMedia)){
-			return $this->Dataprep_model->gatherItemsRedirect($myMedia, "media", "media_id", "video", 3, $maxItems, $maxLimit, $paging, $type, $parent);
+			return $this->Dataprep_model->gatherItemsRedirect($myMedia, "media", "media_id", "video", 3, $maxItems, $maxLimit, $paging, $type, $currentLoc);
 		}
 		else{
 			return "<div><h4>That video does not exist.</h4></div>";
@@ -219,7 +218,7 @@ class Paging extends CI_Controller{
 	//------------------------------------------------------------------------------
 	//Written areas paging
 	//------------------------------------------------------------------------------
-	private function getArticles($paging=0, $currentLoc=null, $parent=NULL){
+	private function getArticles($paging=0, $currentLoc=null){
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxArticles');
@@ -228,14 +227,14 @@ class Paging extends CI_Controller{
 		$maxNewsCount=$this->Article_model->getArticlesCount(true, $currentLoc);
 		
 		if(count($articles)){
-			return $this->Dataprep_model->gatherItemsRedirect($articles, "article", "news_id", "articles", 1, $maxNewsCount, $maxLimit, $paging, $parent);
+			return $this->Dataprep_model->gatherItemsRedirect($articles, "article", "news_id", "articles", 1, $maxNewsCount, $maxLimit, $paging, $currentLoc);
 		}
 		else{
 			return "<div><h4>That article does not exist.</h4></div>";
 		}
 	}
 
-	private function getNews($paging=0, $currentLoc=null, $parent=NULL){
+	private function getNews($paging=0, $currentLoc=null){
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
 		$maxLimit=$this->config->item('maxArticles');;
@@ -246,7 +245,7 @@ class Paging extends CI_Controller{
 		
 	
 		if(count($articles)){
-			return $this->Dataprep_model->gatherItemsRedirect($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit, $paging, $parent);
+			return $this->Dataprep_model->gatherItemsRedirect($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit, $paging, $currentLoc);
 		}
 		else{
 			return "<div><h4>That article does not exist.</h4></div>";
