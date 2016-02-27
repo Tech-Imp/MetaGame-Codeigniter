@@ -32,7 +32,7 @@ class Dashboard extends Admin_controller {
 		$data['recentChanges']=$logOutput;
 		//Recent Photos
 		$myMedia=$this->Media_model->getMedia(NULL, 6, 0);
-		$data['mediaTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia");
+		$data['mediaTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia", 6, 6);
 		$this->load->view('dashboard', $data);
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);
