@@ -19,7 +19,89 @@ class Dataprep_model extends CI_Model{
 		return $this->generalPagination($existing, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
 	}
 
-
+//-------------------------------------------------------------------------------------------------------------------------
+//Prepares items for the backend
+//-------------------------------------------------------------------------------------------------------------------------
+	public function gatherItemsAdmin($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
+		//myMedia is the raw data coming back from the model
+		//Items is just a string of what these things are
+		//editFn leads over the the editing function needed on the dashboard since this is written generically
+		//maxRows is the total number of items 
+		//limitRows is the amount we want displayed at once
+		//pageOffset sets how many multiples of limitRows down we are looking 
+		$export="<strong>No ".$items." to display that you have editing rights on.</strong>";
+		if(count($myMedia)){
+			$export="";
+			//Loop through the data and make a new row for each
+			foreach ($myMedia as $row) {
+				$newsID=$row->$primary_key;
+				$visItems=$this->visFlag($row);
+				$vis=$visItems['text'];
+				//check if exclusive to logged members
+				$vis.=$this->loggedFlag($row);
+				//Create the block item based on info gathered and add to return value
+				$export.=
+				"<div id=mediaItem".$newsID." class='col-lg-4 col-md-6 col-xs-12 well ".$visItems['css']."'>
+                    <div class='titleSizer'><strong>".$row->title."</strong></div>
+                    ".$this->mediaDisplay($row)."
+                    <br>
+                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
+                    ".$this->textualContent($row)."
+                    <div>".$vis."</div>
+                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
+                    <br>
+                    ".$this->vintageFlag($row)."
+                    ".$this->modifiedCreation($row, TRUE)."
+                    <div>".anchor('admin/dashboard/'.$editFn.'/'.$newsID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
+                </div>";
+                         
+			}
+			//Handle pagination when multiple items are limited and it exceeds the limit
+			$export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
+		}
+		return $export;
+	}
+	
+	public function profileItems($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
+		//myMedia is the raw data coming back from the model
+		//Items is just a string of what these things are
+		//editFn leads over the the editing function needed on the dashboard since this is written generically
+		//maxRows is the total number of items 
+		//limitRows is the amount we want displayed at once
+		//pageOffset sets how many multiples of limitRows down we are looking 
+		$export="<strong>No ".$items." to display right now. Check back soon!</strong>";
+		if(count($myMedia)){
+			$export="";
+			//Loop through the data and make a new row for each
+			foreach ($myMedia as $row) {
+				$newsID=$row->$primary_key;
+				$visItems=$this->visFlag($row);
+				$vis=$visItems['text'];
+				//check if exclusive to logged members
+				$vis.=$this->loggedFlag($row);
+				//Create the block item based on info gathered and add to return value
+				$export.=
+				"<div id=mediaItem".$newsID." class='col-lg-4 col-md-6 col-xs-12 well'>
+                    <div class='titleSizer'><strong>".$row->title."</strong></div>
+                    ".$this->mediaDisplay($row)."
+                    <br>
+                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
+                    ".$this->textualContent($row)."
+                    <div>".$vis."</div>
+                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
+                    <br>
+                    ".$this->modifiedCreation($row, TRUE)."
+                    <div>".anchor('main/contact/'.$editFn.'/'.$newsID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
+                </div>";
+                         
+			}
+			//Handle pagination when multiple items are limited and it exceeds the limit
+			$export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
+		}
+		return $export;
+	}
+	
+	
 	private function gatherGenericItems($myMedia, $items, $primary_key, $myLink, $perRow, $maxPerRow, $redirect=NULL){
 		//myMedia is the raw data coming back from the model
 		//Items is just a string of what these things are
@@ -150,58 +232,7 @@ class Dataprep_model extends CI_Model{
 		return $export;
 	}
 
-//-------------------------------------------------------------------------------------------------------------------------
-//Prepares items for the backend
-//-------------------------------------------------------------------------------------------------------------------------
-	public function gatherItemsAdmin($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
-		//myMedia is the raw data coming back from the model
-		//Items is just a string of what these things are
-		//editFn leads over the the editing function needed on the dashboard since this is written generically
-		//maxRows is the total number of items 
-		//limitRows is the amount we want displayed at once
-		//pageOffset sets how many multiples of limitRows down we are looking 
-		$export="<strong>No ".$items." to display that you have editing rights on.</strong>";
-		if(count($myMedia)){
-			$export="";
-			//Loop through the data and make a new row for each
-			foreach ($myMedia as $row) {
-				$newsID=$row->$primary_key;
-				$visItems=$this->visFlag($row);
-				$vis=$visItems['text'];
-				//check if exclusive to logged members
-				$vis.=$this->loggedFlag($row);
-				// Handle the case when a stub is not used
-				if(array_key_exists('stub', $row)){
-					$content="<div><textarea disabled='disabled' rows='4' style='width: 100%; resize: none; overflow-y: scroll;' >".$row->stub."</textarea></div><br>";
-				}
-				elseif(array_key_exists('body', $row)){
-					$content="<div style='height:5em; width: 100%; resize: none; overflow-y: scroll;' >".$row->body."</div><br>";
-				}
-				else{
-					$content="";
-				}
-				//Create the block item based on info gathered and add to return value
-				$export.=
-				"<div id=mediaItem".$newsID." class='col-lg-4 col-md-6 col-xs-12 well ".$visItems['css']."'>
-                    <div class='titleSizer'><strong>".$row->title."</strong></div>
-                    ".$this->mediaDisplay($row)."
-                    <br>
-                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
-                    ".$content."
-                    <div>".$vis."</div>
-                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
-                    <br>
-                    ".$this->vintageFlag($row)."
-                    ".$this->modifiedCreation($row, TRUE)."
-                    <div>".anchor('admin/dashboard/'.$editFn.'/'.$newsID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
-                </div>";
-                         
-			}
-			//Handle pagination when multiple items are limited and it exceeds the limit
-			$export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
-		}
-		return $export;
-	}
+
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 //Common shared components
 //---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -282,6 +313,20 @@ class Dataprep_model extends CI_Model{
 			$vis="Currently <span class='glyphicon glyphicon-eye-open'></span><strong>VISIBLE</strong>";
 		}	
 		return array('css'=>$artVis, 'text'=>$vis);
+	}
+	//----------------------------------------------------------------------------------------------------
+	private function textualContent($row){
+		$content="";
+		if(array_key_exists('stub', $row)){
+			$content="<div><textarea disabled='disabled' rows='4' style='width: 100%; resize: none; overflow-y: scroll;' >".$row->stub."</textarea></div><br>";
+		}
+		elseif(array_key_exists('body', $row)){
+			$content="<div style='height:5em; width: 100%; resize: none; overflow-y: scroll;' >".$row->body."</div><br>";
+		}
+		else{
+			$content="";
+		}
+		return $content;
 	}
 	//------------------------------------------------------------------------------------------------
 	private function meatyContent($row, $overallCount, $myLink, $area, $perRow, $maxPerRow, $primary_key, $ctrlFunc='index', $showText=TRUE){
