@@ -11,7 +11,7 @@
     dashboardStatic.prototype.debug = true;
 
     function dashboardStatic() {
-      this.saveContact = bind(this.saveContact, this);
+      this.saveProfile = bind(this.saveProfile, this);
       this.saveAvatar = bind(this.saveAvatar, this);
       this.setupEvents = bind(this.setupEvents, this);
       if (this.debug) {
@@ -35,7 +35,7 @@
       $("#saveNewContact").unbind().bind("click", (function(_this) {
         return function(event) {
           $("#saveNewContact").prop("disabled", "disabled");
-          return _this.saveContact();
+          return _this.saveProfile();
         };
       })(this));
       return $("#clearArticle").unbind().bind("click", (function(_this) {
@@ -87,25 +87,29 @@
       })(this));
     };
 
-    dashboardStatic.prototype.saveContact = function() {
+    dashboardStatic.prototype.saveProfile = function() {
       if (this.debug) {
-        console.log("dashboardStatic.saveContact");
+        console.log("dashboardStatic.saveProfile");
       }
       if ($.trim($("#mceContact").html())) {
         return $.ajax({
-          url: this.base_url + "/post/addContact",
+          url: this.base_url + "/post/addProfile",
           type: 'post',
           dataType: 'json',
           data: {
-            title: $('#contactTitle').html(),
-            bodyText: $('#mceContact').html()
+            title: $('#contactTitle').val(),
+            bodyText: $('#mceContact').html(),
+            avatarID: $('#avatarUsed').val(),
+            profileName: $('#contactName').val(),
+            section: $('#sectionProfile').val(),
+            exFlag: $('#exclusiveFlagProfile').val()
           },
           success: (function(_this) {
             return function(response) {
               if (response.success) {
                 console.log("Success");
                 _this.cleanAreas();
-                _this.textBodyResponse("Contact Info added to the database", "#userMessage", false, "#textArea-alert", "#saveNewContact");
+                _this.textBodyResponse("Profile Info added to the database", "#userMessage", false, "#textArea-alert", "#saveNewContact");
                 return $("#saveNewContact").prop("disabled", false);
               } else if (response.debug) {
                 console.log("debug");

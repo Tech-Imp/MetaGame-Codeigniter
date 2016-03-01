@@ -74,15 +74,11 @@ class Dataprep_model extends CI_Model{
 			$export="";
 			//Loop through the data and make a new row for each
 			foreach ($myMedia as $row) {
-				$newsID=$row->$primary_key;
-				$visItems=$this->visFlag($row);
-				$vis=$visItems['text'];
-				//check if exclusive to logged members
-				$vis.=$this->loggedFlag($row);
+				$profileID=$row->$primary_key;
 				//Create the block item based on info gathered and add to return value
 				$export.=
-				"<div id=mediaItem".$newsID." class='col-lg-4 col-md-6 col-xs-12 well'>
-                    <div class='titleSizer'><strong>".$row->title."</strong></div>
+				"<div id=profile".$profileID." class='col-xs-12 well'>
+                    <div class='titleSizer'><strong>".$row->profileName." the ".$row->title."</strong></div>
                     ".$this->mediaDisplay($row)."
                     <br>
                     ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."

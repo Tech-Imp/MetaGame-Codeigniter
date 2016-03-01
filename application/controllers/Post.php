@@ -143,7 +143,48 @@ class Post extends CI_Controller{
       	exit; 
 	}
 	
-	
+	function addProfile(){
+		header('content-type: text/javascript');
+		$myRole=$this->session->userdata('role');
+		$myName=$this->session->userdata('name');
+		$myEmail=$this->session->userdata('email');
+		$avatarID = $this->input->post('avatarID');
+		$profileName = $this->input->post('profileName');
+		$title = $this->input->post('title');
+		$uncleanText = $this->input->post('bodyText');
+		$section = $this->input->post('section'); 
+		$exFlag = $this->input->post('exFlag'); 
+		
+		$author = $this->session->userdata('id');
+		
+		if($myRole< $this->config->item('contributor')){
+			$data=array('error' => "Insufficient privledges");
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog(-1, 'aCon', 'Profile item failed to upload. Insufficient privledges. User role '.$myRole);  
+      		echo json_encode($data);
+      		exit; 
+		}
+		
+		$this->load->helper('htmlpurifier');
+		$clean_html = html_purify($uncleanText);
+		
+		if(empty($clean_html)||empty($profileName)||empty($title)){
+			$data=array('error' => "Required text field is empty");
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog(-1, 'aCon', 'Profile item failed to upload. Required field empty ');  
+      		echo json_encode($data);
+      		exit; 
+		} 
+		
+		$this->load->model("Profilepages_model");
+        $result=$this->Profilepages_model->saveProfile($title, $profileName, $clean_html, $exFlag, $section, $avatarID);
+		$this->load->model("Logging_model");
+		$this->Logging_model->newLog($result, 'aCon', 'Contact item ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
+		
+		$data=array('success' => $result); 
+      	echo json_encode($data);
+      	exit; 
+	}	
 	
 	
 //----------------------------------------------------------------------------------------------------------------------------------------

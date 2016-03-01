@@ -26,7 +26,7 @@ class dashboardStatic extends window.classes.dashboardIndex
            
           $("#saveNewContact").unbind().bind "click", (event)=>
                $("#saveNewContact").prop("disabled", "disabled")    
-               @saveContact()
+               @saveProfile()
 
           $("#clearArticle").unbind().bind "click", (event)=>
                @cleanAreas()
@@ -69,23 +69,27 @@ class dashboardStatic extends window.classes.dashboardIndex
                     exFlag:  $("#exclusiveFlagAvatar").val()
                     section:  $("#sectionAvatar").val()
    
-     saveContact:()=>
-          if @debug then console.log "dashboardStatic.saveContact"
+     saveProfile:()=>
+          if @debug then console.log "dashboardStatic.saveProfile"
           
           if $.trim($("#mceContact").html())
                $.ajax
-                    url: @base_url+"/post/addContact"
+                    url: @base_url+"/post/addProfile"
                     type: 'post'
                     dataType: 'json'
                     data:
-                         title: $('#contactTitle').html()
+                         title: $('#contactTitle').val()
                          bodyText: $('#mceContact').html()
+                         avatarID: $('#avatarUsed').val()
+                         profileName: $('#contactName').val()
+                         section: $('#sectionProfile').val()
+                         exFlag: $('#exclusiveFlagProfile').val()
                               
                     success: (response)=>
                          if response.success
                               console.log "Success"
                               @cleanAreas()
-                              @textBodyResponse("Contact Info added to the database", "#userMessage", false, "#textArea-alert", "#saveNewContact")
+                              @textBodyResponse("Profile Info added to the database", "#userMessage", false, "#textArea-alert", "#saveNewContact")
                               $("#saveNewContact").prop("disabled", false)
                          else if response.debug
                               console.log "debug"
