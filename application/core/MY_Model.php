@@ -27,23 +27,16 @@ class MY_Model extends CI_Model{
 			$method='result';
 		}
 		
-		
-		
 		// Handles case where I need to reference multiple different tables for join functions
 		if($altTable === FALSE){
-			//Had to replace errant function for this longer winded one
-			// if(strpos(strtolower($this->db->get_compiled_select($this->_table_name, FALSE)), 'order by') == false){
-				$this->db->order_by($this->_order_by);
-			// }
+			$this->db->order_by($this->_order_by);
 			$this->db->from($this->_table_name);
 			return $this->db->get()->$method();
 		}
 		else{
-			// if(strpos(strtolower($this->db->get_compiled_select($altTable, FALSE)), 'order by') == false){
-				if($altOrder !== FALSE){
-					$this->db->order_by($altOrder);
-				}
-			// }
+			if($altOrder !== FALSE){
+				$this->db->order_by($altOrder);
+			}
 			$this->db->from($altTable);
 			return $this->db->get()->$method();
 		}
@@ -130,8 +123,55 @@ class MY_Model extends CI_Model{
 		$this->db->limit(1);
 		$this->db->delete($this->_table_name);
 	}
+	
+//-----------------------------------------------------------	
+	public function joinTable($secondTable, $priIndex, $secIndex, $reqPriFields="*", $reqSecFields="*", $itemID=NULL, $typeOfJoin){
+		// Join function to allow ease of use for results that need 2 tables. The current class is assumed primary
+		$priSelect=$this->selectIterator($reqPriFields, $_table_name);
+		$secSelect=$this->selectIterator($reqSecFields, $secondTable);
+		$combined=$priSelect.", ".$secSelect;
+		$this->db->select($combined);
+		//TODO May need to add from statement and then not use get
+		// if($id != NULL){
+			// $filter=$this->_primary_filter;
+			// $id=$filter($id);
+			// $method='row';
+			// $this->db->where($this->_primary_key, $id);
+		// }
+		// else{
+			// $method='result';
+		// }
+		// $this->db->order_by($this->_order_by);
+		// $this->db->from($this->_table_name);
+		//TODO May need to add from statement and then not use get
+		// Handles case where I need to reference multiple different tables for join functions
+		if($priIndex==$secIndex){
+			$joinStatement=$secondTable.'.'.$secIndex." = ".$_table_name.'.'.$priIndex;
+		}
+		else{
+			$joinStatement=$secIndex." = ".$priIndex;
+		}
+		$this->db->join($secondTable, $joinStatement);
+		// return $this->db->get()->$method();
+		return $this->get($itemID);
+	}
+//--------------------------------------------------------------------------------
+	private function selectIterator($reqFields, $table){
+		$selectArray=explode(",", $reqFields);
+		$selStatement="";
+		$length=$loc=0;
+		
+		$length=count($selectArray);
+		foreach($selectArray as $selItem){
+			$selStatement.=$table.'.'.$selItem;	
+			++$loc;
+			if($loc!=$length){$selStatement.=", ";}
+		}
+		return $selStatement;
+	}
 
-//-------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------
 
 	public function hashP($string, $salt){
 		return hash('sha512', $salt . $string . config_item('encryption_key'));
