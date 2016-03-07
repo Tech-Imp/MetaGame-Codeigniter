@@ -62,7 +62,7 @@ class Dataprep_model extends CI_Model{
 		return $export;
 	}
 	
-	public function profileItems($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
+	public function profileItemsAdmin($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
 		//myMedia is the raw data coming back from the model
 		//Items is just a string of what these things are
 		//editFn leads over the the editing function needed on the dashboard since this is written generically
@@ -83,11 +83,10 @@ class Dataprep_model extends CI_Model{
                     <br>
                     ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
                     ".$this->textualContent($row)."
-                    <div>".$vis."</div>
                     <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
                     <br>
                     ".$this->modifiedCreation($row, TRUE)."
-                    <div>".anchor('main/contact/'.$editFn.'/'.$newsID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
+                    <div>".anchor('admin/dashboard/'.$editFn.'/'.$profileID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
                 </div>";
                          
 			}

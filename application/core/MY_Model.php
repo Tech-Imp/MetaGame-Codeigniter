@@ -125,34 +125,19 @@ class MY_Model extends CI_Model{
 	}
 	
 //-----------------------------------------------------------	
-	public function joinTable($secondTable, $priIndex, $secIndex, $reqPriFields="*", $reqSecFields="*", $itemID=NULL, $typeOfJoin){
+	public function joinTable($secondTable, $priIndex, $secIndex, $reqPriFields="*", $reqSecFields="*", $itemID=NULL, $typeOfJoin='left'){
 		// Join function to allow ease of use for results that need 2 tables. The current class is assumed primary
-		$priSelect=$this->selectIterator($reqPriFields, $_table_name);
+		$priSelect=$this->selectIterator($reqPriFields, $this->_table_name);
 		$secSelect=$this->selectIterator($reqSecFields, $secondTable);
 		$combined=$priSelect.", ".$secSelect;
 		$this->db->select($combined);
-		//TODO May need to add from statement and then not use get
-		// if($id != NULL){
-			// $filter=$this->_primary_filter;
-			// $id=$filter($id);
-			// $method='row';
-			// $this->db->where($this->_primary_key, $id);
-		// }
-		// else{
-			// $method='result';
-		// }
-		// $this->db->order_by($this->_order_by);
-		// $this->db->from($this->_table_name);
-		//TODO May need to add from statement and then not use get
-		// Handles case where I need to reference multiple different tables for join functions
 		if($priIndex==$secIndex){
 			$joinStatement=$secondTable.'.'.$secIndex." = ".$_table_name.'.'.$priIndex;
 		}
 		else{
 			$joinStatement=$secIndex." = ".$priIndex;
 		}
-		$this->db->join($secondTable, $joinStatement);
-		// return $this->db->get()->$method();
+		$this->db->join($secondTable, $joinStatement, $typeOfJoin);
 		return $this->get($itemID);
 	}
 //--------------------------------------------------------------------------------

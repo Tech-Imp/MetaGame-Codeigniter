@@ -468,7 +468,7 @@ class Dashboard extends Admin_controller {
 //---------------------------------------------------------------------------------------------------------------------------------	
 	public function profile(){
 		$this->load->model('Media_model');
-		$this->load->model('Staticpages_model');
+		$this->load->model('Profilepages_model');
 		$this->load->model('Dataprep_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
@@ -496,8 +496,8 @@ class Dashboard extends Admin_controller {
 		
 		$data['avatarTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia", $maxMediaCount, $maxLimit, 0);
 		
-		$contacts=$this->Staticpages_model->getContact();
-		$data['contactTable']=$this->Dataprep_model->gatherItemsAdmin($contacts, "static items", "static_id", "editProfile");
+		$contacts=$this->Profilepages_model->getProfile();
+		$data['contactTable']=$this->Dataprep_model->profileItemsAdmin($contacts, "profiles", "static_id", "editProfile");
 		$data['travelTable']="ITEM NOT HOOKED UP TO DATABASE DO NOT USE";
 		
 		$this->load->view('templates/header', $data);

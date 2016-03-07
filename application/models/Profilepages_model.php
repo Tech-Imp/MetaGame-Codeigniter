@@ -48,7 +48,7 @@ class Profilepages_model extends MY_Model{
 			}
 		}
 	
-		return $this->get($id);
+		return $this->joinTable("media_database",  "avatarID", "media_id", "*", "fileLoc, embed, mediaType", $id);
 	}
 	//-----------------------------------------------------------------------------------------------------------
 	//
