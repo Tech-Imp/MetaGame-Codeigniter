@@ -9,7 +9,7 @@ class Contact extends Common_frontend {
 
 	public function index()
 	{
-		$this->load->model('Staticpages_model');
+		$this->load->model('Profilepages_model');
 		$this->load->model('Dataprep_model');	
 		$data=$this->commonHeader();
 		$data['css'][2]="frontend/contact.css";
@@ -17,8 +17,8 @@ class Contact extends Common_frontend {
 		// $data['js'][1]='bookIndex.js';
 		$data['title']="Contact";
 		
-		$contact=$this->Staticpages_model->getSpecificContact();
-		$data['singularContent']=$this->Dataprep_model->gatherItems($contact, 'contact info', "static_id");
+		$contact=$this->Profilepages_model->getProfile();
+		$data['singularContent']=$this->Dataprep_model->profileItems($contact, "profiles", "static_id", "contact");
 		
 		
 		$this->load->view('templates/header', $data);

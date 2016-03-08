@@ -56,4 +56,13 @@ td{
 .itemTemp{
 	background-image: linear-gradient(to bottom,#66E0C2 0,#f5f5f5 100%);
 }
-
+.shortText{
+	width: 100%; 
+	height:4em; 
+	resize: none; 
+	overflow-y: scroll;
+}
+.expandedText{
+	width: 100%; 
+	resize: none;
+}

@@ -79,10 +79,17 @@ class Dataprep_model extends CI_Model{
 				$export.=
 				"<div id=profile".$profileID." class='col-xs-12 well'>
                     <div class='titleSizer'><strong>".$row->profileName." the ".$row->title."</strong></div>
-                    ".$this->mediaDisplay($row)."
+                    Using following as avatar: ".$this->mediaDisplay($row)."
                     <br>
-                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
-                    ".$this->textualContent($row)."
+                    <div class='row'>
+	                    <div class='col-xs-3'>
+	                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
+	                    </div>
+	                    <div class='col-xs-9'>
+	                    ".$this->textualContent($row, false)."
+	                    </div>
+                    </div>
+                    <br>
                     <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
                     <br>
                     ".$this->modifiedCreation($row, TRUE)."
@@ -96,6 +103,44 @@ class Dataprep_model extends CI_Model{
 		return $export;
 	}
 	
+	public function profileItems($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
+		//myMedia is the raw data coming back from the model
+		//Items is just a string of what these things are
+		//editFn leads over the the editing function needed on the dashboard since this is written generically
+		//maxRows is the total number of items 
+		//limitRows is the amount we want displayed at once
+		//pageOffset sets how many multiples of limitRows down we are looking 
+		$area=$this->uri->segment(1, $this->config->item('mainPage'));
+		$export="<strong>No ".$items." to display right now. Check back soon!</strong>";
+		if(count($myMedia)){
+			$export="";
+			//Loop through the data and make a new row for each
+			foreach ($myMedia as $row) {
+				$profileID=$row->$primary_key;
+				//Create the block item based on info gathered and add to return value
+				$export.=
+				"<div id=profile".$profileID." class='col-xs-12 metaBorder'>
+                    <h2 class='row titleSizer'><strong>".$row->profileName." <h3 style='display:inline;'> the ".$row->title."</h3></strong></h2>
+                    <div class='row'>
+	                    <div class='col-xs-3'>
+	                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
+	                    </div>
+	                    <div class='col-xs-9'>
+	                    ".$this->textualContent($row, false)."
+	                    </div>
+                    </div>
+                    <br>
+                    <br>
+                    ".$this->modifiedCreation($row)."
+                    <div>".$this->generatePermalink($profileID, $items, $area, $editFn, NULL, $limitPerRows, $maxPerRow, count($myMedia))."</div>
+                </div>";
+                         
+			}
+			//Handle pagination when multiple items are limited and it exceeds the limit
+			$export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
+		}
+		return $export;
+	}
 	
 	private function gatherGenericItems($myMedia, $items, $primary_key, $myLink, $perRow, $maxPerRow, $redirect=NULL){
 		//myMedia is the raw data coming back from the model
@@ -310,13 +355,21 @@ class Dataprep_model extends CI_Model{
 		return array('css'=>$artVis, 'text'=>$vis);
 	}
 	//----------------------------------------------------------------------------------------------------
-	private function textualContent($row){
+	private function textualContent($row, $adminView=TRUE){
 		$content="";
+		// Setup styling on a component level so it doesnt need to be bothered
+		if($adminView){
+			$styling='class="shortText"';
+		}
+		else{
+			$styling='class="expandedText"';
+		}
+		
 		if(array_key_exists('stub', $row)){
-			$content="<div><textarea disabled='disabled' rows='4' style='width: 100%; resize: none; overflow-y: scroll;' >".$row->stub."</textarea></div><br>";
+			$content="<div><textarea disabled='disabled' {$styling}>".$row->stub."</textarea></div><br>";
 		}
 		elseif(array_key_exists('body', $row)){
-			$content="<div style='height:5em; width: 100%; resize: none; overflow-y: scroll;' >".$row->body."</div><br>";
+			$content="<div {$styling}>".$row->body."</div><br>";
 		}
 		else{
 			$content="";

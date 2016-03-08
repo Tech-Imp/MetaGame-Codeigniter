@@ -508,7 +508,7 @@ class Dashboard extends Admin_controller {
 	}
 
 	public function editProfile($id=NULL){
-		$this->load->model('Staticpages_model');
+		$this->load->model('Profilepages_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
 		$data['js'][1]= 'dash/dashboardIndex.js';
@@ -521,7 +521,7 @@ class Dashboard extends Admin_controller {
 			$this->load->view('dash/errorInfo');
 		}
 		else {
-			$allData=$this->Staticpages_model->getContact(intval($id));
+			$allData=$this->Staticpages_model->getProfile(intval($id));
 			if(count($allData)){
 				$data['staticID']=$allData->static_id;
 				$data['staticTitle']=$allData->title;
