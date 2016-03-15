@@ -25,7 +25,7 @@
       if (this.debug) {
         console.log("dashboardUpdateContact.setupEvents");
       }
-      $("#mceNewsArea").tinymce({
+      $("#mceContact").tinymce({
         script_url: this.base_url + '/assets/scripts/tinymce/tinymce.min.js',
         theme: "modern",
         plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
@@ -47,15 +47,19 @@
       if (this.debug) {
         console.log("dashboardUpdateContact.saveEdits");
       }
-      if ($.trim($("#mceNewsArea").html())) {
+      if ($.trim($("#mceContact").html())) {
         return $.ajax({
-          url: this.base_url + "/post/saveContactEdit",
+          url: this.base_url + "/post/editProfile",
           type: 'post',
           dataType: 'json',
           data: {
-            staticID: $('#newsID').val(),
-            title: $("#articleTitle").val(),
-            body: $('#mceNewsArea').html()
+            profileID: $('#profileID').val(),
+            title: $('#contactTitle').val(),
+            bodyText: $('#mceContact').html(),
+            avatarID: $('#avatarUsed').val(),
+            profileName: $('#contactName').val(),
+            section: $('#section').val(),
+            exFlag: $('#exclusiveFlag').val()
           },
           success: (function(_this) {
             return function(response) {
@@ -79,11 +83,11 @@
         console.log("dashboardUpdateContact.deleteMedia");
       }
       return $.ajax({
-        url: this.base_url + "/post/deleteSpecificContact",
+        url: this.base_url + "/post/deleteProfile",
         type: 'post',
         dataType: 'json',
         data: {
-          staticID: $('#newsID').val()
+          profileID: $('#profileID').val()
         },
         success: (function(_this) {
           return function(response) {

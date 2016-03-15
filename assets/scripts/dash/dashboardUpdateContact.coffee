@@ -11,7 +11,7 @@ class dashboardUpdateContact extends window.classes.dashboardIndex
      setupEvents:=>
           if @debug then console.log "dashboardUpdateContact.setupEvents"
           
-          $("#mceNewsArea").tinymce
+          $("#mceContact").tinymce
                script_url : @base_url+'/assets/scripts/tinymce/tinymce.min.js',
                theme : "modern",
                plugins: [
@@ -33,15 +33,19 @@ class dashboardUpdateContact extends window.classes.dashboardIndex
      saveEdits:()=>
           if @debug then console.log "dashboardUpdateContact.saveEdits"
           
-          if $.trim($("#mceNewsArea").html())
+          if $.trim($("#mceContact").html())
                $.ajax
-                    url: @base_url+"/post/saveContactEdit" 
+                    url: @base_url+"/post/editProfile" 
                     type: 'post'
                     dataType: 'json'
                     data:
-                         staticID: $('#newsID').val() 
-                         title:  $("#articleTitle").val()
-                         body: $('#mceNewsArea').html()
+                         profileID: $('#profileID').val() 
+                         title: $('#contactTitle').val()
+                         bodyText: $('#mceContact').html()
+                         avatarID: $('#avatarUsed').val()
+                         profileName: $('#contactName').val()
+                         section: $('#section').val()
+                         exFlag: $('#exclusiveFlag').val()
                          
                     success: (response)=>
                          if response.success
@@ -64,11 +68,11 @@ class dashboardUpdateContact extends window.classes.dashboardIndex
           
           
           $.ajax
-               url: @base_url+"/post/deleteSpecificContact" 
+               url: @base_url+"/post/deleteProfile" 
                type: 'post'
                dataType: 'json'
                data:
-                    staticID: $('#newsID').val() 
+                    profileID: $('#profileID').val() 
 
                          
                success: (response)=>

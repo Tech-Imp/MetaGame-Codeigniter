@@ -508,7 +508,9 @@ class Dashboard extends Admin_controller {
 	}
 
 	public function editProfile($id=NULL){
+		$this->load->model('Media_model');
 		$this->load->model('Profilepages_model');
+		$this->load->model('Dataprep_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
 		$data['js'][1]= 'dash/dashboardIndex.js';
@@ -521,12 +523,19 @@ class Dashboard extends Admin_controller {
 			$this->load->view('dash/errorInfo');
 		}
 		else {
-			$allData=$this->Staticpages_model->getProfile(intval($id));
+			//In lieu of a more succinct way to display this in the edit just use same method
+			$maxLimit=$this->config->item('maxAdmin');
+			$myMedia=$this->Media_model->getAvatar(NULL, $maxLimit, 0);
+			$maxMediaCount=$this->Media_model->getAvatarCount();
+			$data['avatarTable']=$this->Dataprep_model->simpleAvatars($myMedia, "media", "media_id", "editMedia", $maxMediaCount, $maxLimit, 0);
+			$allData=$this->Profilepages_model->getProfile(intval($id));
 			if(count($allData)){
 				$data['staticID']=$allData->static_id;
-				$data['staticTitle']=$allData->title;
+				$data['contactTitle']=$allData->title;
+				$data['avatarUsed']=$allData->avatarID;
+				$data['contactName']=$allData->profileName;
 				$data['staticBody']=$allData->body;
-				
+				$data['exclusive']=$this->exclusiveSelector(NULL, $allData->exclusiveSection, $allData->forSection);
 				$this->load->view('dash/contactEdit', $data);
 			}
 			else{

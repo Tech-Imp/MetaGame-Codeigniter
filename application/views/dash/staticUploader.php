@@ -1,5 +1,6 @@
 			
 			<div class="col-md-8  col-md-offset-1">
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 				<div class='panel panel-default'>
 					<div class="panel-heading" role="tab" id="photoAvatar">
 			      		<h4 class="panel-title text-center">
@@ -35,12 +36,12 @@
 				    </div>
 					<div class="panel-heading" role="tab" id="mceContactAdd">
 			      		<h4 class="panel-title text-center">
-				        	<a data-toggle="collapse" data-parent="#accordion" href="#articleController" aria-expanded="false" aria-controls="articleController">
+				        	<a data-toggle="collapse" data-parent="#accordion" href="#profileController" aria-expanded="true" aria-controls="articleController">
 				          		<strong class="green"><span class='glyphicon glyphicon-user'></span> Add New Contact Info </strong>
 					        </a>
 				      	</h4>
 				    </div>
-				    <div id="articleController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mceContactAdd">
+				    <div id="profileController" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="mceContactAdd">
 			      		<div class="panel-body">
 					      	<div class="row">
 					      		<div class="col-xs-2">Your Title</div>
@@ -119,5 +120,5 @@
 				    </div>
 				    
 				</div>
-				
+				</div>
 	      	</div>

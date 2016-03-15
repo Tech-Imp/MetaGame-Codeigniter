@@ -143,6 +143,10 @@ class Post extends CI_Controller{
       	exit; 
 	}
 	
+//-----------------------------------------------------------------------------------------------------
+//PROFILE RELATED FEATURES
+//
+//-------------------------------------------------------------------------------------------------------	
 	function addProfile(){
 		header('content-type: text/javascript');
 		$myRole=$this->session->userdata('role');
@@ -174,18 +178,115 @@ class Post extends CI_Controller{
 			$this->Errorlog_model->newLog(-1, 'aCon', 'Profile item failed to upload. Required field empty ');  
       		echo json_encode($data);
       		exit; 
-		} 
+		}
+		 
+		if(empty($avatarID)){
+			$avatarID=$this->config->item('defaultAvatarID');
+		}
 		
 		$this->load->model("Profilepages_model");
         $result=$this->Profilepages_model->saveProfile($title, $profileName, $clean_html, $exFlag, $section, $avatarID);
 		$this->load->model("Logging_model");
-		$this->Logging_model->newLog($result, 'aCon', 'Contact item ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
+		$this->Logging_model->newLog($result, 'aCon', 'Profile item ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
 		
 		$data=array('success' => $result); 
       	echo json_encode($data);
       	exit; 
 	}	
 	
+	function editProfile(){
+		header('content-type: text/javascript');
+		$myRole=$this->session->userdata('role');
+		$myName=$this->session->userdata('name');
+		$myEmail=$this->session->userdata('email');
+		
+		$profileID = $this->input->post('profileID');
+		$avatarID = $this->input->post('avatarID');
+		$profileName = $this->input->post('profileName');
+		$title = $this->input->post('title');
+		$uncleanText = $this->input->post('bodyText');
+		$section = $this->input->post('section'); 
+		$exFlag = $this->input->post('exFlag'); 
+		
+		$author = $this->session->userdata('id');
+		
+		if($myRole< $this->config->item('contributor')){
+			$data=array('error' => "Insufficient privledges");
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog(-1, 'aCon', 'Profile item failed to upload. Insufficient privledges. User role '.$myRole);  
+      		echo json_encode($data);
+      		exit; 
+		}
+		if(empty($profileID)){
+			$data=array('error' => "Error retrieving staticID"); 
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog(-1, 'eCon', 'Profile item failed to be reuploaded. Error retrieving profileID');  
+      		echo json_encode($data);
+      		exit; 
+		} 
+		
+		$this->load->helper('htmlpurifier');
+		$clean_html = html_purify($uncleanText);
+		
+		if(empty($clean_html)||empty($profileName)||empty($title)){
+			$data=array('error' => "Required text field is empty");
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog(-1, 'aCon', 'Profile item failed to upload. Required field empty ');  
+      		echo json_encode($data);
+      		exit; 
+		} 
+		if(empty($avatarID)){
+			$avatarID=$this->config->item('defaultAvatarID');
+		}
+		
+		$this->load->model("Profilepages_model");
+        $result=$this->Profilepages_model->saveProfile($title, $profileName, $clean_html, $exFlag, $section, $avatarID, $profileID);
+		$this->load->model("Logging_model");
+		$this->Logging_model->newLog($result, 'aCon', 'Profile item ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
+		
+		$data=array('success' => $result); 
+      	echo json_encode($data);
+      	exit; 
+	}
+	
+	function deleteProfile(){
+		header('content-type: text/javascript');
+		$myRole=$this->session->userdata('role');
+		$myID=$this->session->userdata('id');
+		$myName=$this->session->userdata('name');
+		$myEmail=$this->session->userdata('email');
+		$profileID = intval($this->input->post('profileID')); 
+		
+		if($myRole< $this->config->item('contributor')){
+			$data=array('error' => "Insufficient privledges"); 
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog($profileID, 'dCon', 'Profile delete failed. Insufficient permissions. User '.$myID.' role '.$myRole);
+      		echo json_encode($data);
+      		exit; 
+		}
+		if(empty($profileID)){
+			$data=array('error' => "Error retrieving profileID"); 
+      		echo json_encode($data);
+      		exit; 
+		} 
+		
+		$this->load->model("Profilepages_model");
+		
+		// Verify user has rights to media
+		$verify=$this->Profilepages_model->get($profileID, TRUE);
+		if($verify->author_id==$myID || $myRole> $this->config->item('sectionAdmin')){
+			$result=$this->Profilepages_model->delete($profileID);
+			$data=array('success' => $profileID);
+			$this->load->model("Logging_model");
+			$this->Logging_model->newLog($profileID, 'dCon', 'Profile item '.$verify->title.' ('.$result.') was deleted by user '.$myName.'('.$myEmail.') ');
+		}
+		else{
+			$data=array('error' => 'Cannot delete that item');
+		}
+		 
+      	echo json_encode($data);
+      	exit; 
+	}
 	
 //----------------------------------------------------------------------------------------------------------------------------------------
 // NEWS RELATED FEATURES
