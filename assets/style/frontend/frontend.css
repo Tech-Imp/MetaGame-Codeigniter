@@ -1,6 +1,7 @@
 body{
 	background: #1F0039;
     background: linear-gradient(-90deg, #08010E, #1F0039, #08010E);
+    background-image: url("../../image/Grid Tile.jpg");
 	color: white;
 }
 .metaBorder{
@@ -14,4 +15,13 @@ body{
     border-color: #79C942;
     border-width: 4px;
     border-style: ridge;
+}
+.navbar{
+	margin-bottom:0px !important;
+}
+.nav > li > a{
+	padding: 3px;
+}
+.nav.navbar-right > li > a{
+	padding: 15px;
 }

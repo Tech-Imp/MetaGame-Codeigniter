@@ -132,7 +132,7 @@ class Dataprep_model extends CI_Model{
                     <br>
                     <br>
                     ".$this->modifiedCreation($row)."
-                    <div>".$this->generatePermalink($profileID, $items, $area, $editFn, NULL, $limitPerRows, $maxPerRow, count($myMedia))."</div>
+                    <div>"/*.$this->generatePermalink($profileID, $items, $area, $editFn, NULL, $limitPerRows, $maxPerRow, count($myMedia))*/."</div>
                 </div>";
                          
 			}

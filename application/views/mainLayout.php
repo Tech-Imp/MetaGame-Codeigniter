@@ -1,31 +1,32 @@
 <div class='mainContent'>
-	<div class='imageBanner'>
-		<img src="<?php echo base_url() ; ?>assets/image/Metagame Banner HD thin.jpg" class='img-responsive' alt="Official site of Meta-Game Productions" width="100%">
-	</div>
-	<nav class="navbar navbar-inverse" role="navigation">
-	  <div class="container-fluid">
-	    <!-- Brand and toggle get grouped for better mobile display -->
-	    <div class="navbar-header">
-	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#NavContent">
-	        <span class="sr-only">Toggle navigation</span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	      </button>
-	      <!-- <a class="navbar-brand" href="#">Meta-Game</a> -->
-	    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-	    <div class="collapse navbar-collapse " id="NavContent">
-	      
-	      <ul class="nav navbar-nav navbar-left">
-	      		<?php echo $userOptions; ?>
-	      </ul>
-	      <?php echo $dashboard; ?>
-	    </div><!-- /.navbar-collapse -->
-	  </div><!-- /.container-fluid -->
-	</nav>
 	<div class="container-fluid">
+		<div class="row">
+			<div class='imageBanner metaBorder col-md-10 col-md-offset-1'>
+				<img src="<?php echo base_url() ; ?>assets/image/Metagame Banner Text.png" class='img-responsive' alt="Official site of Meta-Game Productions" width="100%">
+			
+				<nav class="navbar" role="navigation">
+				  <div class="container-fluid">
+				    <!-- Brand and toggle get grouped for better mobile display -->
+				    <div class="navbar-header">
+				      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#NavContent">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="glyphicon glyphicon-th-list"></span>
+				      </button>
+				      <!-- <a class="navbar-brand" href="#">Meta-Game</a> -->
+				    </div>
+				    <!-- Collect the nav links, forms, and other content for toggling -->
+				    <div class="collapse navbar-collapse " id="NavContent">
+				      
+				      <ul class="nav navbar-nav navbar-left">
+				      		<?php echo $userOptions; ?>
+				      </ul>
+				      <?php echo $dashboard; ?>
+				    </div><!-- /.navbar-collapse -->
+				  </div><!-- /.container-fluid -->
+				</nav>
+			</div>
+		</div>
+		<br>
 	
 		<div class="row">
 			<div id="mediaDatabase" class="col-md-8 col-md-offset-1">

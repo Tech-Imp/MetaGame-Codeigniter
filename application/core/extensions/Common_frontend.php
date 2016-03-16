@@ -62,20 +62,20 @@ class Common_frontend extends Frontend_controller{
 		if($currentRole===FALSE){
 			$currentRole=0;
 			return "<ul class='nav navbar-nav navbar-right'>
-	      			<li>".anchor('signup', "Sign up")."</li>
-	      			<li>".anchor('login', "Log In")."</li>
+	      			<li>".anchor('signup', "<span class='glyphicon glyphicon-plus'></span>Sign up")."</li>
+	      			<li>".anchor('login', "<span class='glyphicon glyphicon-log-in' title='Log In'></span>")."</li>
 	      		</ul>";
 		}
 		if($currentRole>=$this->config->item('contributor')){
 			return "<ul class='nav navbar-nav navbar-right'>
-	      			<li>".anchor('admin/dashboard', "Dashboard")."</li>
-	      			<li>".anchor('login/logout', "Logout")."</li>
+	      			<li>".anchor('admin/dashboard', "<span class='glyphicon glyphicon-dashboard' title='Dashboard'></span> Dash")."</li>
+	      			<li>".anchor('login/logout', "<span class='glyphicon glyphicon-log-out' title='Log Out'></span> Logout")."</li>
 	      		</ul>";
 		}
 		else{
 			return "<ul class='nav navbar-nav navbar-right'>
-	      			<li>".anchor('admin/dashboard', "My Dashboard")."</li>
-	      			<li>".anchor('login/logout', "Logout")."</li>
+	      			<li>".anchor('admin/dashboard', "<span class='glyphicon glyphicon-dashboard' title='Dashboard'></span> Dash")."</li>
+	      			<li>".anchor('login/logout', "<span class='glyphicon glyphicon-log-out' title='Log Out'></span> Logout")."</li>
 	      		</ul>";
 		}
 		
