@@ -48,6 +48,7 @@ class Dataprep_model extends CI_Model{
                     ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
                     ".$this->textualContent($row)."
                     <div>".$vis."</div>
+                    ".$this->whereShown($row->forSection, $row->exclusiveSection)."
                     <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
                     <br>
                     ".$this->vintageFlag($row)."
@@ -90,6 +91,7 @@ class Dataprep_model extends CI_Model{
 	                    </div>
                     </div>
                     <br>
+                    ".$this->whereShown($row->forSection, $row->exclusiveSection)."
                     <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
                     <br>
                     ".$this->modifiedCreation($row, TRUE)."
@@ -166,8 +168,9 @@ class Dataprep_model extends CI_Model{
                     ".$this->mediaDisplay($row)."
                     <br>
                     ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
-                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
                     <br>
+                    ".$this->whereShown($row->forSection, $row->exclusiveSection)."
+                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
                     ".$this->modifiedCreation($row, TRUE)."
                     <div>".anchor('admin/dashboard/'.$editFn.'/'.$avatarID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
                 </div>";
@@ -553,4 +556,20 @@ class Dataprep_model extends CI_Model{
 		}
 		return $mediaClass;
 	}
+	//-------------------------------------------------------------------------------------------------------------------------------
+	private function whereShown($section, $exclusive, $default="main"){
+		$where="";
+		//Only in the exclusive case
+		if(!empty($section) and $exclusive){
+			$where="EXCLUSIVE to <strong>".$section."</strong>";
+		}
+		elseif(!empty($section)){
+			$where="Appears in <strong>".$default."</strong> and <strong>".$section."</strong>";
+		}
+		else{
+			$where="Appears only in <strong>".$default."</strong>";
+		}
+		return $where;
+	}
+
 }
