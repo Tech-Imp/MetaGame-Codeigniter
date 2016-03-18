@@ -1,10 +1,10 @@
 <?
-class Staticpages_model extends MY_Model{
+class Subpages_model extends MY_Model{
     	
-    protected $_table_name='static_database';
-	protected $_primary_key='static_id';
-	protected $_primary_filter='intval';
-	protected $_order_by='static_id DESC';
+    protected $_table_name='sub_info_database';
+	protected $_primary_key='sub_dir';
+	protected $_primary_filter='varchar';
+	protected $_order_by='sub_dir DESC';
 	public $rules=array();
 	protected $_timestamp=TRUE;
 	
@@ -14,14 +14,19 @@ class Staticpages_model extends MY_Model{
 	
 	
 	
-	public function saveContact($body, $title='', $id=NULL){
+	public function saveSocial($facebook='', $youtube='', $twitter='', $tumblr='', $body, $logoID, $exFlag, $section, $id=NULL){
 		$myID=$this->session->userdata('id');
-			
+				
 		$data=array(
-			'title'=>$title,
-			'page'=>'contact',
-			'author_id'=>$myID,
+			'facebook_url'=>$facebook,
+			'youtube_url'=>$youtube,
+			'twitter_url'=>$twitter,
+			'tumblr_url'=>$tumblr,
 			'body'=>$body,
+			'logoID'=>$logoID,
+			'author_id' => $myID,
+			'forSection' => $section,
+			'exclusiveSection'=>$exFlag,
 		); 
 		
 
@@ -32,13 +37,11 @@ class Staticpages_model extends MY_Model{
 	
 
 	//------------------------------------------------------------------------------------------------------
-	//Display limited list of recent activites
+	//Display limited list of subdirectory social information
 	//-----------------------------------------------------------------------------------------------------
-	public function getContact($id=NULL, $limit=NULL, $offset=NULL)
+	public function getSocial($id=NULL, $limit=NULL, $offset=NULL)
 	{
-		
-		$this->db->where('page =', 'contact');
-		
+		$this->restrictSect($here);
 		if($limit !== NULL){
 			if($offset!==NULL && intval($offset)>0){
 				$this->db->limit(intval($resultLimit), intval($offset));
@@ -46,23 +49,12 @@ class Staticpages_model extends MY_Model{
 			else {
 				$this->db->limit(intval($limit));
 			}
-						
 		}
-	
+		$this->joinTable("media_database",  "logoID", "media_id", "*", "fileLoc, embed, mediaType", $id);
+		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", NULL, "sub_name, visible", $id);
 		return $this->get($id);
 	}
 	//-----------------------------------------------------------------------------------------------------------
 	//
 	//---------------------------------------------------------------------------------------------------------
-	public function getSpecificContact($category=NULL)
-	{
-		$this->db->where('page =', 'contact');
-		
-		if($category !== NULL){
-			$this->db->where('category =', $category);
-		}
-		$this->db->limit(1);
-		return $this->get();
-	}
-	
 }

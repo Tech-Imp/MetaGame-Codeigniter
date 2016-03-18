@@ -138,19 +138,21 @@ class MY_Model extends CI_Model{
 			$joinStatement=$secIndex." = ".$priIndex;
 		}
 		$this->db->join($secondTable, $joinStatement, $typeOfJoin);
-		return $this->get($itemID);
+		return $itemID;
 	}
 //--------------------------------------------------------------------------------
 	private function selectIterator($reqFields, $table){
 		$selectArray=explode(",", $reqFields);
 		$selStatement="";
-		$length=$loc=0;
-		
-		$length=count($selectArray);
-		foreach($selectArray as $selItem){
-			$selStatement.=$table.'.'.$selItem;	
-			++$loc;
-			if($loc!=$length){$selStatement.=", ";}
+		if($reqFields!==NULL){
+			$length=$loc=0;
+			
+			$length=count($selectArray);
+			foreach($selectArray as $selItem){
+				$selStatement.=$table.'.'.$selItem;	
+				++$loc;
+				if($loc!=$length){$selStatement.=", ";}
+			}
 		}
 		return $selStatement;
 	}

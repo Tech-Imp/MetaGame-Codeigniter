@@ -47,8 +47,8 @@ class Profilepages_model extends MY_Model{
 				$this->db->limit(intval($limit));
 			}
 		}
-	
-		return $this->joinTable("media_database",  "avatarID", "media_id", "*", "fileLoc, embed, mediaType", $id);
+		$this->joinTable("media_database",  "avatarID", "media_id", "*", "fileLoc, embed, mediaType", $id);
+		return $this->get($id);
 	}
 	//-----------------------------------------------------------------------------------------------------------
 	//
