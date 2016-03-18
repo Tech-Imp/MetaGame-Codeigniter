@@ -1,6 +1,6 @@
 <?
 
-class Post extends CI_Controller{
+class Post extends MY_Controller{
 
 	function __construct(){
 		parent::__construct();
@@ -152,12 +152,12 @@ class Post extends CI_Controller{
 		$myRole=$this->session->userdata('role');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$avatarID = $this->input->post('avatarID');
-		$profileName = $this->input->post('profileName');
-		$title = $this->input->post('title');
+		$avatarID = $this->simplePurify($this->input->post('avatarID'));
+		$profileName = $this->simplePurify($this->input->post('profileName'));
+		$title = $this->simplePurify($this->input->post('title'));
 		$uncleanText = $this->input->post('bodyText');
-		$section = $this->input->post('section'); 
-		$exFlag = $this->input->post('exFlag'); 
+		$section = $this->simplePurify($this->input->post('section')); 
+		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
 		
 		$author = $this->session->userdata('id');
 		
@@ -200,13 +200,13 @@ class Post extends CI_Controller{
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
 		
-		$profileID = $this->input->post('profileID');
-		$avatarID = $this->input->post('avatarID');
-		$profileName = $this->input->post('profileName');
-		$title = $this->input->post('title');
+		$profileID = $this->simplePurify($this->input->post('profileID'));
+		$avatarID = $this->simplePurify($this->input->post('avatarID'));
+		$profileName = $this->simplePurify($this->input->post('profileName'));
+		$title = $this->simplePurify($this->input->post('title'));
 		$uncleanText = $this->input->post('bodyText');
-		$section = $this->input->post('section'); 
-		$exFlag = $this->input->post('exFlag'); 
+		$section = $this->simplePurify($this->input->post('section')); 
+		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
 		
 		$author = $this->session->userdata('id');
 		
@@ -242,7 +242,7 @@ class Post extends CI_Controller{
 		$this->load->model("Profilepages_model");
         $result=$this->Profilepages_model->saveProfile($title, $profileName, $clean_html, $exFlag, $section, $avatarID, $profileID);
 		$this->load->model("Logging_model");
-		$this->Logging_model->newLog($result, 'aCon', 'Profile item ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
+		$this->Logging_model->newLog($result, 'aCon', 'Profile item ('.$result.') updated successfully by '.$myName.'('.$myEmail.')');  
 		
 		$data=array('success' => $result); 
       	echo json_encode($data);
@@ -297,14 +297,14 @@ class Post extends CI_Controller{
 		$myRole=$this->session->userdata('role');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$title = $this->input->post('title'); 
-		$section = $this->input->post('section'); 
-		$exFlag = $this->input->post('exFlag'); 
-		$stub = $this->input->post('stub'); 
-      	$visibleWhen = $this->input->post('visibleWhen');
+		$title = $this->simplePurify($this->input->post('title')); 
+		$section = $this->simplePurify($this->input->post('section')); 
+		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
+		$stub = $this->simplePurify($this->input->post('stub')); 
+      	$visibleWhen = $this->simplePurify($this->input->post('visibleWhen'));
 		$uncleanText = $this->input->post('bodyText');
-		$author = $this->session->userdata('id');
-		$type=$this->input->post('type');
+		$author =$this->simplePurify( $this->session->userdata('id'));
+		$type=$this->simplePurify($this->input->post('type'));
 		
 		if($myRole < $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges");
@@ -345,15 +345,15 @@ class Post extends CI_Controller{
 		header('content-type: text/javascript');
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
-		$type=$this->input->post('type');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$newsID = $this->input->post('newsID'); 
-		$title = $this->input->post('title');
-		$section = $this->input->post('section'); 
-		$exFlag = $this->input->post('exFlag'); 
-		$stub = $this->input->post('stub'); 
-      	$visibleWhen = $this->input->post('visibleWhen');
+		$type=$this->simplePurify($this->input->post('type'));
+		$newsID = $this->simplePurify($this->input->post('newsID')); 
+		$title = $this->simplePurify($this->input->post('title'));
+		$section = $this->simplePurify($this->input->post('section')); 
+		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
+		$stub = $this->simplePurify($this->input->post('stub')); 
+      	$visibleWhen = $this->simplePurify($this->input->post('visibleWhen'));
 		$uncleanText = $this->input->post('body');
 
 		$section=preg_replace('/\s+/', '', $section);
@@ -586,15 +586,15 @@ class Post extends CI_Controller{
 		
 		if ($chunk==0){
 			$fileMD5hash=md5_file($filePath);
-			$title = $this->input->post('title'); 
-			$stub = $this->input->post('stub'); 
-      		$visibleWhen = $this->input->post('visibleWhen');
-			$loggedOnly = intval($this->input->post('loggedOnly'));
-			$section = $this->input->post('section'); 
-			$exFlag = $this->input->post('exFlag');
+			$title = $this->simplePurify($this->input->post('title')); 
+			$stub = $this->simplePurify($this->input->post('stub')); 
+      		$visibleWhen = $this->simplePurify($this->input->post('visibleWhen'));
+			$loggedOnly = $this->simplePurify(intval($this->input->post('loggedOnly')));
+			$section = $this->simplePurify($this->input->post('section')); 
+			$exFlag = $this->simplePurify($this->input->post('exFlag'));
 			//HARD CODED DUE TO SETUP
 			// $mediaType="picture";
-			$mediaType=$this->input->post('mediaType');
+			$mediaType=$this->simplePurify($this->input->post('mediaType'));
 			$this->load->model("Media_model");
 			$loc=base_url().$uploadDir.'/'.$fileName;
 			//TODO need to prevent duplicates
@@ -619,14 +619,14 @@ class Post extends CI_Controller{
 		$myRole=$this->session->userdata('role');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$title = $this->input->post('title'); 
-		$stub = $this->input->post('stub'); 
-		$mediaType = $this->input->post('mediaType'); 
-		$loggedOnly = intval($this->input->post('loggedOnly'));
-      	$visibleWhen = $this->input->post('visibleWhen');
+		$title = $this->simplePurify($this->input->post('title')); 
+		$stub = $this->simplePurify($this->input->post('stub')); 
+		$mediaType = $this->simplePurify($this->input->post('mediaType')); 
+		$loggedOnly = $this->simplePurify(intval($this->input->post('loggedOnly')));
+      	$visibleWhen = $this->simplePurify($this->input->post('visibleWhen'));
 		$uncleanText = $this->input->post('embed');
-		$section = $this->input->post('section'); 
-		$exFlag = $this->input->post('exFlag'); 
+		$section = $this->simplePurify($this->input->post('section')); 
+		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
 		
 		if($myRole<$this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
@@ -679,15 +679,15 @@ class Post extends CI_Controller{
 		$myID=$this->session->userdata('id');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$mediaID = $this->input->post('mediaID'); 
-		$title = $this->input->post('title'); 
-		$stub = $this->input->post('stub'); 
-		$mediaType = $this->input->post('mediaType'); 
-      	$visibleWhen = $this->input->post('visibleWhen');
-		$loggedOnly = intval($this->input->post('loggedOnly'));
-		$vintage = intval($this->input->post('vintage')); 
-		$section = $this->input->post('section'); 
-		$exFlag = $this->input->post('exFlag'); 
+		$mediaID = $this->simplePurify($this->input->post('mediaID')); 
+		$title = $this->simplePurify($this->input->post('title')); 
+		$stub = $this->simplePurify($this->input->post('stub')); 
+		$mediaType = $this->simplePurify($this->input->post('mediaType')); 
+      	$visibleWhen = $this->simplePurify($this->input->post('visibleWhen'));
+		$loggedOnly = $this->simplePurify(intval($this->input->post('loggedOnly')));
+		$vintage = $this->simplePurify(intval($this->input->post('vintage'))); 
+		$section = $this->simplePurify($this->input->post('section')); 
+		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
 		
 		if($myRole<$this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 

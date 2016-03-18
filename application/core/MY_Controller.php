@@ -24,4 +24,7 @@ class MY_Controller extends CI_Controller{
 			return $options;
 		}
 	}
+	protected function simplePurify($input){
+		return htmlspecialchars(strip_tags($input));
+	}
 }
