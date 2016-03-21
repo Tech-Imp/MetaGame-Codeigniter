@@ -2,6 +2,7 @@
 			<div class="col-md-8  col-md-offset-1">
 				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 				<div class='panel panel-default'>
+					<!-- Avatar section -->
 					<div class="panel-heading" role="tab" id="photoAvatar">
 			      		<h4 class="panel-title text-center">
 				        	<a data-toggle="collapse" data-parent="#accordion" href="#avatarController" aria-expanded="false" aria-controls="articleController">
@@ -34,6 +35,7 @@
 				      	
 				      	</div>
 				    </div>
+				    <!-- Profile section -->
 					<div class="panel-heading" role="tab" id="mceContactAdd">
 			      		<h4 class="panel-title text-center">
 				        	<a data-toggle="collapse" data-parent="#accordion" href="#profileController" aria-expanded="true" aria-controls="articleController">
@@ -77,6 +79,70 @@
 				      	
 				      	</div>
 				    </div>
+				    <!-- Social company section -->
+				    <div class="panel-heading" role="tab" id="mceSocialAdd">
+			      		<h4 class="panel-title text-center">
+				        	<a data-toggle="collapse" data-parent="#accordion" href="#socialController" aria-expanded="false" aria-controls="travelController">
+				          		<strong class="green"><span class='glyphicon glyphicon-phone'></span> Add New Social Info </strong>
+					        </a>
+				      	</h4>
+				    </div>
+				    <div id="socialController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mceSocialAdd">
+			      		<div class="panel-body">
+					      	<div class="row">
+					      		<div class="col-xs-2">Social Info for</div>
+					      		<div class="col-xs-10 col-md-4">
+					      			<select class='textReq' id="socialTarget">
+					      				<option value="self">Yourself</option>
+					      				<?php echo $validSections?>
+				      				</select>
+				      			</div>
+					      	</div>
+					      	<br>
+					      	<div class="row">
+					      		<div class="col-xs-2">Facebook:</div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" id="facebookSocial" value=""></div>
+					      		<div class="col-xs-2">Youtube:</div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" id="youtubeSocial" value=""></div>
+					      	</div>
+							<br>
+							<div class="row">
+					      		<div class="col-xs-2">Twitter:</div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" id="twitterSocial" value=""></div>
+					      		<div class="col-xs-2">Tumblr:</div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" id="tumblrSocial" value=""></div>
+					      	</div>
+					      	<br>
+					      	<div class="row">
+					      		<div class="col-xs-2">Email:</div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" id="emailSocial" value=""></div>
+					      		<div class="col-xs-2">Twitch:</div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" id="twitchSocial" value=""></div>
+					      	</div>
+					      	<?php echo $exclusiveSocial;?>
+							<h3>Social Info</h3>
+							<div class="alert alert-danger noshow" id="textArea-alert">
+    							<button type="button" class="close" data-dismiss="alert">x</button>
+    							<strong id="userMessage">You need to add Social Info </strong>
+							</div>
+					      	<textarea name="MCEarea" class='cleanMe' cols="40" rows="10" id="mceSocial" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
+					       	<br>
+					       	<button id="saveNewSocial" class="btn btn-success" >Save to Database</button>
+					       	<button id="clearSocial" class="btn btn-warning">Clear</button>
+					      	<div class='panel panel-default'>
+								<div class="panel-heading" >
+				      				<h4 class="panel-title text-center">
+					        			Existing Social Info
+					      			</h4>
+					    		</div>
+				      			<div class="panel-body">
+						        	<?php echo $socialTable?>
+					      		</div>
+			      			</div>
+				      	
+				      	</div>
+				    </div>
+				    <!-- Travel section -->
 				    <div class="panel-heading" role="tab" id="mceTravelAdd">
 			      		<h4 class="panel-title text-center">
 				        	<a data-toggle="collapse" data-parent="#accordion" href="#travelController" aria-expanded="false" aria-controls="travelController">

@@ -39,7 +39,7 @@ class Subpages_model extends MY_Model{
 	//------------------------------------------------------------------------------------------------------
 	//Display limited list of subdirectory social information
 	//-----------------------------------------------------------------------------------------------------
-	public function getSocial($id=NULL, $limit=NULL, $offset=NULL)
+	public function getSocial($here=NULL, $id=NULL, $limit=NULL, $offset=NULL)
 	{
 		$this->restrictSect($here);
 		if($limit !== NULL){

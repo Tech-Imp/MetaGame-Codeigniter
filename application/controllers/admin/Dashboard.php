@@ -469,6 +469,8 @@ class Dashboard extends Admin_controller {
 	public function profile(){
 		$this->load->model('Media_model');
 		$this->load->model('Profilepages_model');
+		$this->load->model('Subpages_model');
+		$this->load->model('Subauth_model');
 		$this->load->model('Dataprep_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
@@ -478,6 +480,28 @@ class Dashboard extends Admin_controller {
 		$data['js'][4]= 'dash/dashboardStatic.js';
 		$data['css'][1]='plupload/jquery.ui.plupload.css';
 		
+		
+		//TODO NEED TO alter dropdowns to accept value inputs
+		$data['authSections']=$this->dropdownOptions($selected, $arrayOpts);
+		
+		$data['exclusiveAvatar']=$this->exclusiveSelector("Avatar");
+		$data['exclusiveProfile']=$this->exclusiveSelector("Profile");
+		$data['exclusiveSocial']=$this->exclusiveSelector("Social");
+		
+		$maxLimit=$this->config->item('maxAdmin');
+		// Get Avatars
+		$myMedia=$this->Media_model->getAvatar(NULL, $maxLimit, 0);
+		$maxMediaCount=$this->Media_model->getAvatarCount();
+		$data['avatarTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia", $maxMediaCount, $maxLimit, 0);
+		// Get profile
+		$contacts=$this->Profilepages_model->getProfile();
+		$data['contactTable']=$this->Dataprep_model->profileItemsAdmin($contacts, "profiles", "static_id", "editProfile");
+		// Get Social
+		$social=$this->Subpages_model->getSocial();
+		$data['socialTable']=$this->Dataprep_model->socialItemsAdmin();
+		$data['travelTable']="ITEM NOT HOOKED UP TO DATABASE DO NOT USE";
+		
+		
 		$data['currentLocation']="<div class='navbar-brand'>Profile Dashboard</div>";		
 		//To cover bases, any additional outside tech is documented
 		$data['additionalTech']="<div class='row'>
@@ -486,19 +510,6 @@ class Dashboard extends Admin_controller {
 				<div> This page uses tinyMCE for text editing and Plupload for the file upload interface. </div>
 			</div>
 		</div>";
-		
-		$data['exclusiveAvatar']=$this->exclusiveSelector("Avatar");
-		$data['exclusiveProfile']=$this->exclusiveSelector("Profile");
-		
-		$maxLimit=$this->config->item('maxAdmin');
-		$myMedia=$this->Media_model->getAvatar(NULL, $maxLimit, 0);
-		$maxMediaCount=$this->Media_model->getAvatarCount();
-		
-		$data['avatarTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia", $maxMediaCount, $maxLimit, 0);
-		
-		$contacts=$this->Profilepages_model->getProfile();
-		$data['contactTable']=$this->Dataprep_model->profileItemsAdmin($contacts, "profiles", "static_id", "editProfile");
-		$data['travelTable']="ITEM NOT HOOKED UP TO DATABASE DO NOT USE";
 		
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);

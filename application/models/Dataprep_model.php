@@ -182,6 +182,10 @@ class Dataprep_model extends CI_Model{
 		return $export;
 	}
 	
+	public function socialItemsAdmin(){
+		return "FUNCTION NOT YET MADE";
+	}
+	
 	private function gatherGenericItems($myMedia, $items, $primary_key, $myLink, $perRow, $maxPerRow, $redirect=NULL){
 		//myMedia is the raw data coming back from the model
 		//Items is just a string of what these things are
