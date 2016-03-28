@@ -120,7 +120,7 @@
 					      		<div class="col-xs-10 col-md-4"><input type="text" id="twitchSocial" value=""></div>
 					      	</div>
 					      	<?php echo $exclusiveSocial;?>
-							<h3>Social Info</h3>
+							<h3>Social Info (Used only for subsections)</h3>
 							<div class="alert alert-danger noshow" id="textArea-alert">
     							<button type="button" class="close" data-dismiss="alert">x</button>
     							<strong id="userMessage">You need to add Social Info </strong>

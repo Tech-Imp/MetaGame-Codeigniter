@@ -125,20 +125,19 @@ class MY_Model extends CI_Model{
 	}
 	
 //-----------------------------------------------------------	
-	public function joinTable($secondTable, $priIndex, $secIndex, $reqPriFields="*", $reqSecFields="*", $itemID=NULL, $typeOfJoin='left'){
+	public function joinTable($secondTable, $priIndex, $secIndex, $reqPriFields="*", $reqSecFields="*", $typeOfJoin='left'){
 		// Join function to allow ease of use for results that need 2 tables. The current class is assumed primary
 		$priSelect=$this->selectIterator($reqPriFields, $this->_table_name);
 		$secSelect=$this->selectIterator($reqSecFields, $secondTable);
 		$combined=$priSelect.", ".$secSelect;
 		$this->db->select($combined);
 		if($priIndex==$secIndex){
-			$joinStatement=$secondTable.'.'.$secIndex." = ".$_table_name.'.'.$priIndex;
+			$joinStatement=$secondTable.'.'.$secIndex." = ".$this->_table_name.'.'.$priIndex;
 		}
 		else{
 			$joinStatement=$secIndex." = ".$priIndex;
 		}
 		$this->db->join($secondTable, $joinStatement, $typeOfJoin);
-		return $itemID;
 	}
 //--------------------------------------------------------------------------------
 	private function selectIterator($reqFields, $table){

@@ -7,9 +7,24 @@ class MY_Controller extends CI_Controller{
 		$data['errors']=array();
 		// $data['site_name']=config_item('site_name');
 	}
-	protected function dropdownOptions($selected, $arrayOpts){
-		if(count($arrayOpts)==1){
+	protected function dropdownOptions($selected=NULL, $arrayOpts, $arrayVals=NULL){
+		if(count($arrayOpts)==1 && $selected!=NULL){
 		 	return "<option selected value='".$selected."'> ".$arrayOpts." </option>";	
+		}
+		elseif (count($arrayOpts)==count($arrayVals)) {
+			$options="";
+			$arrCounter=0;
+			foreach($arrayOpts as $item){
+				if ($selected==$arrayVals[$arrCounter]){
+					$options.="<option selected value='".$arrayVals[$arrCounter]."'> ".strtoupper($item)."</option>";
+				}
+				else{
+					$options.="<option value='".$arrayVals[$arrCounter]."'> ".strtoupper($item)."</option>";
+				}
+				$arrCounter++;
+			}
+			return $options;
+			
 		}
 		else{
 			$options="";

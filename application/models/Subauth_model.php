@@ -43,7 +43,7 @@ class Subauth_model extends MY_Model{
 				$this->db->limit(intval($limit));
 			}
 		}
-		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible, usage", $id);
+		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible, usage");
 		return $this->get($id);
 	}
 	//-----------------------------------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ class Subauth_model extends MY_Model{
 		
 		if($this->session->userdata('role') >= $this->config->item('contributor')){
 			$this->db->where("user_id", $myID);
-			$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible", $id);
+			$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible");
 			return $this->get();
 		}
 		else{

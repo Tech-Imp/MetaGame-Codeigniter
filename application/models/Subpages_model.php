@@ -50,8 +50,8 @@ class Subpages_model extends MY_Model{
 				$this->db->limit(intval($limit));
 			}
 		}
-		$this->joinTable("media_database",  "logoID", "media_id", "*", "fileLoc, embed, mediaType", $id);
-		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", NULL, "sub_name, visible", $id);
+		$this->joinTable("media_database",  "logoID", "media_id", "*", "fileLoc, embed, mediaType");
+		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", NULL, "sub_name, visible");
 		return $this->get($id);
 	}
 	//-----------------------------------------------------------------------------------------------------------
