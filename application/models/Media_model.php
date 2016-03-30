@@ -143,6 +143,24 @@ class Media_model extends MY_Model{
 		$this->db->where('mediaType', 'profilePic');
 		return $this->getCommonCount($here, NULL);
 	}
+	//----------------------------------------------------------------------------------------------------------------------
+	//Generic function used to get all media for the frontend without profile pics
+	//--------------------------------------------------------------------------------------------------------------------
+	public function getFrontMedia($id=NULL ,$vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
+		if($id===NULL){
+			$this->db->where('mediaType !=', 'profilePic');
+		}
+		//Only limit to vintage or nonvintage when proper value
+		if($vintage != NULL){
+			$this->db->where('vintage', intval($vintage));
+		}
+		//Only limit when logging needs to limit
+		if($logged != NULL){
+			$this->db->where('loggedOnly', intval($vintage));
+		}
+		return $this->getCommonMedia($id, $resultLimit, $offset, $here, true);
+	}
+	
 	//---------------------------------------------------------------------------------------------------
 	//Generic media functions to reduce repeated code
 	//---------------------------------------------------------------------------------------------------

@@ -43,7 +43,7 @@ class Common_frontend extends Frontend_controller{
 	public function baseTemplate(){
 		$section=$this->uri->segment(1, $this->config->item('mainPage'));
 		// TODO Need to adjust this to the multisection model dynamically
-		$menu='<li>'.anchor($section.'/index', "Home").'</li>';
+		$menu='<li>'.anchor($section.'/index', "<img src='/assets/image/Metagame Home Button2.png' class='icon-header img-responsive' alt='Home'>").'</li>';
 		$menu.='<li>'.anchor($section.'/news', "<img src='/assets/image/News Button.png' class='icon-header img-responsive' alt='News'>").'</li>';
 		$menu.='<li>'.anchor($section.'/media', "<img src='/assets/image/Media Button.png' class='icon-header img-responsive' alt='Media'>").'</li>';
 		$menu.='<li>'.anchor($section.'/articles', "<img src='/assets/image/Articles Button.png' class='icon-header img-responsive' alt='Articles'>").'</li>';

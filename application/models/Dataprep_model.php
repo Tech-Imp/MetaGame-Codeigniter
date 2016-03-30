@@ -227,8 +227,13 @@ class Dataprep_model extends CI_Model{
 //-------------------------------------------------------------------------------------------------------
 	public function createCarousel($data, $siteLogo=FALSE, $captions=NULL){
 		$text=array();
-		if($captions!==NULL && count($data)==count($captions)){
-			$start=0;
+		//If there are explicit static captions that arent in the database
+		if ($captions===TRUE) {
+			foreach ($data as $item) {
+				array_push($text, $item->title);	
+			}
+		}
+		elseif ($captions!==NULL && count($data)==count($captions)) {
 			foreach ($captions as $item) {
 				array_push($text, $item);	
 			}
@@ -238,8 +243,8 @@ class Dataprep_model extends CI_Model{
 				array_push($text, '');	
 			}
 		}
-		$images="";	
-		$header="";
+		
+		$images=$header="";	
 		if($siteLogo==TRUE){
 			$start=1;
 			$images.='<div class="item active">
@@ -253,62 +258,33 @@ class Dataprep_model extends CI_Model{
 		else{
 			$start=0;
 		}
-		
-		
-		
+		$area=$this->uri->segment(1, $this->config->item('mainPage'));
 		foreach ($data as $row) {
-			if($start==0){
-				$active='active';
-			}
-			else{
-				$active='';
-			}
-			if($siteLogo==TRUE){
-				$capText=$text[$start-1];
-			}
-			else{
-				$capText=$text[$start];
-			}
+			// Set the active pane	
+			if($start==0){$active='active';}
+			else{$active='';}
+			// Sync the captions to the images in the event the logo was used
+			if($siteLogo==TRUE){$capText=$text[$start-1];}
+			else{$capText=$text[$start];}
+			//Append the image setup and increment the counter
 			$images.='<div class="item '.$active.'">
-			      <img class="img-responsive center-block" src="'.$row->fileLoc.'">
-			      <div class="carousel-caption">'
-			       .$capText. 
-			      '</div>
+			      '.$this->simpleContent($row, $this->senseMediaController($row->mediaType), $area, "media_id").'
+			      <div class="carousel-caption">
+			       <strong>'.$capText.'</strong> 
+			      </div>
 			    </div>';
 			$header.='<li data-target="#carousel-images" data-slide-to="'.$start.'" class="'.$active.'"></li>';
 			++$start;
 		} 
 		
 		if (count($data)){
-			// $export='<div id="carousel-images" class="carousel slide" data-ride="carousel">
-			  // <!-- Indicators -->
-			  // <ol class="carousel-indicators">
-			    // '.$header.'
-			  // </ol>
-// 	
-			  // <!-- Wrapper for slides -->
-			  // <div class="carousel-inner" role="listbox">
-			    // '.$images.'
-			  // </div>
-// 			
-			  // <!-- Controls -->
-			  // <a class="left carousel-control" href="#carousel-images" role="button" data-slide="prev">
-			    // <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-			    // <span class="sr-only">Previous</span>
-			  // </a>
-			  // <a class="right carousel-control" href="#carousel-images" role="button" data-slide="next">
-			    // <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-			    // <span class="sr-only">Next</span>
-			  // </a>
-			// </div>';
+			//if there were images created, display them, otherwise show message
 			$export='
 			<div id="carousel-images" class="carousel slide" data-ride="carousel">
-			<!-- Wrapper for slides -->
-			  <div class="carousel-inner" role="listbox">
-			    '.$images.'
-			  </div>
-			  </div>';
-			
+			  	<div class="carousel-inner" role="listbox">
+			    	'.$images.'
+			  	</div>
+		  </div>';
 		}
 		else{
 			$export="<div>No photos to display. Check back soon!</div>";
@@ -384,11 +360,11 @@ class Dataprep_model extends CI_Model{
 			$storedDate=new DateTime($row->visibleWhen);
 		}
 		// Visibility of item logic alters coloring and wording
-		if(array_key_exists('visibleWhen', $row) && $row->visibleWhen === "0000-00-00 00:00:00"){
+		if(array_key_exists('visibleWhen', $row) && $row->visibleWhen === "0000-00-00 00:00:00" && $row->mediaType!="profilePic"){
 			$artVis="itemHidden";
 			$vis="Currently <span class='glyphicon glyphicon-eye-close'></span><strong>HIDDEN</strong>";
 		}
-		elseif (array_key_exists('visibleWhen', $row) && $currDate < $storedDate) {
+		elseif (array_key_exists('visibleWhen', $row) && $currDate < $storedDate && $row->mediaType!="profilePic") {
 			$artVis="itemTemp";
 			$vis="<span class='glyphicon glyphicon-exclamation-sign'></span> Visible on ".date("M jS, Y",strtotime($row->visibleWhen));
 		}
@@ -423,16 +399,17 @@ class Dataprep_model extends CI_Model{
 	//------------------------------------------------------------------------------------------------
 	private function meatyContent($row, $overallCount, $myLink, $area, $perRow, $maxPerRow, $primary_key, $ctrlFunc='index', $showText=TRUE){
 		$media="";
+		
 		if(array_key_exists('fileLoc', $row) && $row->fileLoc !== ""){
 			//TODO Need to verify file exists
+			
 			if($perRow==1){
 				$media="<div>";
 			}
 			else {
 				$media="<div class='embed-responsive embed-responsive-16by9'>"; //Forces image to fit a confined form factor
 			}
-			$media.="<img class='img-responsive center-block' alt='{$row->title}' src='".$row->fileLoc."'></img>
-			</div>";
+			$media.=$this->simpleContent($row, $myLink, $area, $primary_key)."</div>";
 		}
 		elseif (array_key_exists('embed', $row) && $row->embed !== "") {
 			// Determine if video is alone on page, and if so just show it. Otherwise, thumbnail
@@ -440,7 +417,7 @@ class Dataprep_model extends CI_Model{
 				$embedItem=$row->embed;
 			}
 			else{
-				$embedItem=$this->checkYoutube($row->embed, $area.'/'.$myLink.'/'.$ctrlFunc, $row->$primary_key);
+				$embedItem=$this->simpleContent($row, $myLink, $area, $primary_key);
 			}
 			$media="<div class='embed-responsive embed-responsive-16by9'>"
 			.$embedItem."
@@ -448,10 +425,24 @@ class Dataprep_model extends CI_Model{
 		}
 		elseif (array_key_exists('body', $row) && $row->body !== "" && $showText) {
 			$media="<div>"
-			.$row->body."
+			.$this->simpleContent($row, $myLink, $area, $primary_key)."
 			</div>";
 		}
 		return $media;
+	}
+	private function simpleContent($row, $myLink, $area, $primary_key, $ctrlFunc='index', $showText=TRUE){
+		if(array_key_exists('fileLoc', $row) && $row->fileLoc !== ""){
+			return "<img class='img-responsive center-block' alt='{$row->title}' src='".$row->fileLoc."'></img>";
+		}
+		elseif (array_key_exists('embed', $row) && $row->embed !== "") {
+			// Determine if video is alone on page, and if so just show it. Otherwise, thumbnail
+			return $this->checkYoutube($row->embed, $area.'/'.$myLink.'/'.$ctrlFunc, $row->$primary_key);
+		}
+		elseif (array_key_exists('body', $row) && $row->body !== "" && $showText) {
+			return $row->body;
+		}
+		return "";
+	
 	}
 	//--------------------------------------------------------------------------------------------------------------
 	private function generateRows($newsID, $perRow, $rowCount){
@@ -574,6 +565,23 @@ class Dataprep_model extends CI_Model{
 			$where="Appears only in <strong>".$default."</strong>";
 		}
 		return $where;
+	}
+	//-------------------------------------------------------------------------------------------------------------------------------
+	private function senseMediaController($type=NULL){
+		switch ($type) {
+			case 'picture':
+				return "photo";
+				break;
+			case 'video':
+				return "video";
+				break;
+			case 'sound':
+				return "audio";
+				break;
+			default:
+				return "";
+				break;
+		}
 	}
 
 }
