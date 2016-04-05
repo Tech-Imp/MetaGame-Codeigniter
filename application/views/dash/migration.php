@@ -4,6 +4,8 @@
 				<br>
 				<br>
 				<h4>Current version: <?php echo $currentVersion;?></h4>
+				<?php echo $versionControl;?>
+				<br>
 				<?php echo $migrationName;?>
 			</div>
 		</div>
