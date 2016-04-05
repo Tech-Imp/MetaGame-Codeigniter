@@ -7,7 +7,7 @@
 		}
 		public function index()
 		{
-			$data=$this->commonHeader();
+			$data=$this->adminHeader();
 			$this->load->model('Dataprep_model');
 			$data['currentLocation']="<div class='navbar-brand'>Migration Dashboard</div>";
 			$this->load->view('templates/header', $data);

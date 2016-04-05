@@ -80,6 +80,21 @@ class Subauth_model extends MY_Model{
 			return "";
 		}
 	}
+	//------------------------------------------------------------------------------------------------------
+	//Get ID of entry based on user and section
+	//------------------------------------------------------------------------------------------------------
+	public function getIDBySecUser($user, $section){
+		$this->db->where("user_id",$user);
+		$this->db->where("sub_dir",$section);
+		return $this->get();
+	}
+	//-----------------------------------------------------------------------------------------------------
+	//Get all users within a subsection
+	//------------------------------------------------------------------------------------------------------
+	public function getBySection($section){
+		$this->db->where("sub_dir",$section);
+		return $this->get();
+	}
 	
 	
 }

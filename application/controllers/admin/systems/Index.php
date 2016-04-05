@@ -11,7 +11,7 @@ class Index extends Dash_backend{
 //--------------------------------------------------------------------------------------------------
 	public function index()
 	{
-		$data=$this->commonHeader();
+		$data=$this->adminHeader();
 		$this->load->model('Logging_model');
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');

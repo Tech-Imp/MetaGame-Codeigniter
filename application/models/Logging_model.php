@@ -47,11 +47,7 @@ class Logging_model extends MY_Model{
 			'ip_of_transact'=>$this->input->ip_address(),
 			
 		); 
-		
-
-
 		$rowId=$this->save($data);
-		
 		return $rowId;
 	}
 	//-------------------------------------------------------------------------------------------------------
@@ -73,15 +69,9 @@ class Logging_model extends MY_Model{
 			'ip_of_transact'=>$this->input->ip_address(),
 			
 		); 
-		
-
-
 		$rowId=$this->save($data, $updateID);
-		
 		return $rowId;
 	}
-	
-	
 	
 	//------------------------------------------------------------------------------------------------------
 	//Display limited list of recent activites
@@ -98,10 +88,24 @@ class Logging_model extends MY_Model{
 		if($limit !== NULL && $offset!==NULL){
 			$this->db->limit(intval($limit), intval($offset));			
 		}
-		
-	
 		return $this->get();
 	}
-	
-	
+	//--------------------------------------------------------------------------------------------------------
+	//Grab a specific type or types of logs
+	//-------------------------------------------------------------------------------------------------------
+	public function getTypeLogs($type=NULL, $limit=NULL, $offset=NULL){
+		if($type!=NULL){
+			$numItem=0;
+			foreach($type as $item){
+				if($numItem==0){
+					$this->db->where("change_category", $item);
+				}
+				else{
+					$this->db->or_where("change_category", $item);
+				}
+				++$numItem;
+			}
+		}
+		return $this->getQuickLogs($limit, $offset);
+	}
 }

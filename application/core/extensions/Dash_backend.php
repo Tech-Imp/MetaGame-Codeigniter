@@ -94,11 +94,50 @@ class Dash_backend extends Admin_controller{
 	            	
 		}
 		if($this->session->userdata('role') >= $this->config->item('superAdmin')){
-			$userOptions.=anchor('admin/dashboard/tools',"<span class='glyphicon glyphicon-alert'></span> Admin Tools", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'metaTools'));
+			$userOptions.=anchor('admin/systems/',"<span class='glyphicon glyphicon-alert'></span> Admin Tools", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'metaTools'));
 		}
 		$userOptions.=anchor('admin/dashboard/users',"<span class='glyphicon glyphicon-cog'></span> Change Settings", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'cSettings'));
 	
 		return $userOptions;
 	}
+//--------------------------------------------------------------------------------------
+//Admin Functions
+//---------------------------------------------------------------------------------------	
+	protected function adminHeader()
+	{
+		if($this->session->userdata('role') >= $this->config->item('superAdmin')){
+			$data['css'][0]="main.css";
+			$data['site_name']=config_item('site_name');
+			$data['title']="System Management";
+			$data['additionalTech']="";
+			$who=$this->session->userdata('name');
+			$data['logout']=$this->logoutPATH;
+			$data['userName'] = "<li class='invertColor'>Welcome back, ".$who. "</li>";
+			$data['userOptions']=$this->toolMenu();
+			return $data;
+		}
+		else{
+			redirect('admin/dashboard');	
+		}
+	}
+	
+	
+	protected function toolMenu()
+	{
+		// Determine menu options based on role
+		$userOptions=anchor('main/index',"<span class='glyphicon glyphicon-arrow-left'></span> Back to Site", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'retSite'));
+		$userOptions.=anchor('admin/dashboard',"<span class='glyphicon glyphicon-home'></span> Back to Dashboard", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'retHome'));
+		if($this->session->userdata('role') >= $this->config->item('superAdmin')){
+			
+			$userOptions.=anchor('admin/systems/migration',"<span class='glyphicon glyphicon-level-up'></span> Migration", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'migrate'));
+			$userOptions.=anchor('admin/systems/tools',"<span class='glyphicon glyphicon-wrench'></span> Section Control", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'secControl'));
+			$userOptions.=anchor('admin/systems/logs',"<span class='glyphicon glyphicon-folder-open'></span> Error Logs", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'editProfileElements'));
+			$userOptions.=anchor('admin/dashboard/users/listUsers',"<span class='glyphicon glyphicon-user'></span> Lookup Users", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'vUsers'));
+	            	
+		}
+	
+		return $userOptions;
+	}
+	
 	
 }
