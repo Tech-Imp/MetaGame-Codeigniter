@@ -59,7 +59,14 @@ class SectionAuth_model extends MY_Model{
 		$this->load->model("Subauth_model");
 		return $this->Subauth_model->getSubSelects();
 	}
-	
+	public function whoIAssigned(){
+		$this->load->model("Subauth_model");
+		return $this->Subauth_model->getSecAssigned();
+	}
+	public function whereImAssigned(){
+		$this->load->model("Subauth_model");
+		return $this->Subauth_model->getMySection();
+	}
 	//----------------------------------------------------------------------------------------
 	//Removal functions
 	//----------------------------------------------------------------------------------------

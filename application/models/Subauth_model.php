@@ -95,6 +95,21 @@ class Subauth_model extends MY_Model{
 		$this->db->where("sub_dir",$section);
 		return $this->get();
 	}
-	
-	
+	//-----------------------------------------------------------------------------------------------------
+	//Get all sudirectory assignments made by user
+	//-----------------------------------------------------------------------------------------------------
+	public function getSecAssigned(){
+		$myID=$this->session->userdata('id');
+		$this->db->where("sub_auth.author_id", $myID);
+		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible");
+		return $this->get();
+	}
+	//----------------------------------------------------------------------------------------------------
+	//Get all sections user is in
+	//----------------------------------------------------------------------------------------------------
+	public function getMySection(){
+		$myID=$this->session->userdata('id');
+		// $this->db->where("user_id", $myID);
+		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible");
+	}
 }

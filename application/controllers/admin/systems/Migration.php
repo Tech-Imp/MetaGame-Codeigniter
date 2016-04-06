@@ -25,7 +25,7 @@
 				}
 				$data['versionControl']=$this->minilinks();
 				$data['migrationName']="<pre>".implode(" \n ", $this->migration->find_migrations())."</pre>";
-				$this->load->view('dash/migration', $data);
+				$this->load->view('sys/migration', $data);
 			}
 			else{
 				$this->load->view('dash/errorInfo');
@@ -60,7 +60,7 @@
 				}
 				$data['versionControl']=$this->minilinks();
 				$data['migrationName']="<pre>".implode(" \n ", $this->migration->find_migrations())."</pre>";
-				$this->load->view('dash/migration', $data);
+				$this->load->view('sys/migration', $data);
 			}
 			else{
 				$this->load->view('dash/errorInfo');
@@ -86,7 +86,7 @@
 				}
 				$data['versionControl']=$this->minilinks();
 				$data['migrationName']="<pre>".implode(" \n ", $this->migration->find_migrations())."</pre>";
-				$this->load->view('dash/migration', $data);
+				$this->load->view('sys/migration', $data);
 			}
 			else{
 				$this->load->view('dash/errorInfo');

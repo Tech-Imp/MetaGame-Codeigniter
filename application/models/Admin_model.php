@@ -242,9 +242,16 @@ class Admin_model extends MY_Model{
 			$this->Errorlog_model->newLog($newID, 'aUsr', 'Critical Failure. Was unable to retrieve ID of user in database.');
 			return FALSE;
 		}
-		
-		
-		
 	}
-	
+//-------------------------------------------------------------------------------------------------------
+//Get users that are above a rank
+//-------------------------------------------------------------------------------------------------------	
+	public function getByMinRank($rank=0){
+		$myRole=$this->session->userdata('role');
+		if(!(abs($rank)<=$myRole)){
+			$rank=0;
+		}
+		$this->db->where('auth_role.role >=', $rank);
+		return $this->getUsers();
+	} 
 }
