@@ -12,7 +12,7 @@ class Tools extends Dash_backend{
 	public function index()
 	{
 		$data=$this->adminHeader();
-		$this->load->model('SectionAuth_model');
+		
 		$this->load->model('Dataprep_model');
 		$data['currentLocation']="<div class='navbar-brand'>Tools Dashboard</div>";
 		$this->load->view('templates/header', $data);
@@ -20,12 +20,14 @@ class Tools extends Dash_backend{
 		
 		//Logging of recent items
 		$data['recentChanges']=$this->getSectionLogs();
+		//My Current Roles tab
 		$data['myRole']=$this->getMyRoles();
+		//Add new Roles Section
 		$data['personList']=$this->getUnderlings();
-		
-		$data['sectionList']=$this->getSections();
-		//People you have assigned
+		$data['sectionList']=$this->getSectionsList();
 		$data['sectionAccess']=$this->getWhoAssigned();
+		//Add new section tab
+		$data['sectionTable']=$this->getSectionControlled();
 		
 		$this->load->view('sys/tools', $data);
 		$this->load->view('inc/dash_footer', $data);
@@ -49,7 +51,7 @@ class Tools extends Dash_backend{
 			return "<option value='0'>Nobody</option>";
 		}
 	}
-	private function getSections(){
+	private function getSectionsList(){
 		$this->load->model('SectionAuth_model');
 		$sections=$this->SectionAuth_model->getValidSections();
 		$name=$id=array();
@@ -106,5 +108,21 @@ class Tools extends Dash_backend{
 			return "<div><h4>Assigned to:</h4><br>You are not in any special sections.</div>";
 		}
 	}
-	
+	private function getSectionControlled(){
+		$this->load->model('SectionAuth_model');
+		$controlled=$this->SectionAuth_model->getSectionControl();
+		if(count($controlled)){
+			$logOutput='<ul>';
+			foreach ($controlled as $row) {
+				$logOutput.='<li>'.$row->sub_name.' created by '.$row->name. ' ('.$row->email.')</li>';	
+			}
+			$logOutput.='</ul>';
+			return $logOutput;
+		}
+		else{
+			return "<div>You dont control any sections.</div>";
+		}
+		
+		
+	}
 }

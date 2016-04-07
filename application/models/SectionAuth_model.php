@@ -29,7 +29,15 @@ class SectionAuth_model extends MY_Model{
 		
 		return $rowId;
 	}
-	
+	public function getSectionControl(){
+		$myID=$this->session->userdata('id');
+		$myRole=$this->session->userdata('role');
+		if($myRole< $this->config->item('superAdmin')){
+			$this->db->where("author_id", $myID);
+		}
+		$this->joinTable("users",  "author_id", "id", "*", "name, email");
+		return $this->get();
+	}
 	//--------------------------------------------------------------------------------------------------------
 	//Get info on who has access to what using additional models
 	//essentially acting as a security wrapper around other classes
