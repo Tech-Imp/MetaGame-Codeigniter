@@ -20,7 +20,7 @@ class Tools extends Dash_backend{
 		
 		//Logging of recent items
 		$data['recentChanges']=$this->getSectionLogs();
-		$data['myRole']="FIX ME";//$this->getMyRoles();
+		$data['myRole']=$this->getMyRoles();
 		$data['personList']=$this->getUnderlings();
 		
 		$data['sectionList']=$this->getSections();
