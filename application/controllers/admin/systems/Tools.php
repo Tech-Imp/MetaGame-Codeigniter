@@ -15,8 +15,15 @@ class Tools extends Dash_backend{
 		
 		$this->load->model('Dataprep_model');
 		$data['currentLocation']="<div class='navbar-brand'>Tools Dashboard</div>";
+		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
+		$data['js'][1]= 'dash/dashboardIndex.js';
+		$data['js'][2]= 'dash/sys/adminTools.js';
+		$data['js'][3]='commonShared.js';
+		
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
+		
+		
 		
 		//Logging of recent items
 		$data['recentChanges']=$this->getSectionLogs();
@@ -86,8 +93,9 @@ class Tools extends Dash_backend{
 		$delegation="";
 		if(count($assignments)){
 			foreach($assignments as $area){
-				array_push($name, $area->sub_name);
-				array_push($id, $area->sub_dir);
+				// array_push($name, $area->sub_name);
+				// array_push($id, $area->sub_dir);
+				$delegation.="<li>".$area->sub_name." FIX ME</li>";
 			}
 			return "<ul>".$delegation."</ul>";
 		}

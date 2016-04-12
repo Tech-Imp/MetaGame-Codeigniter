@@ -22,6 +22,12 @@ class Migration_section_split extends CI_Migration {
 	//-------------------------------------------------------------------------------------------------
 	private function createSubsite(){
 		$this->dbforge->add_field(array(
+			'id' => array(
+				'type' => 'INT',
+				'constraint' => 12,
+				'unsigned' => TRUE,
+				'auto_increment' => TRUE
+			),
 			'sub_name'=> array(
 				'type' => 'VARCHAR',
 				'constraint' => 128
@@ -49,8 +55,8 @@ class Migration_section_split extends CI_Migration {
 				'default' => 0
 			)
 		));
-		
-		$this->dbforge->add_key('sub_dir', true);
+		$this->dbforge->add_key('id', true);
+		$this->dbforge->add_key('sub_dir');
 		$this->dbforge->create_table('extra_subsites');
 	}
 	//----------------------------------------------------------------------------------------------------

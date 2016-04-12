@@ -2,9 +2,9 @@
 class SectionAuth_model extends MY_Model{
     	
     protected $_table_name='subsite_database';
-	protected $_primary_key='sub_dir';
-	protected $_primary_filter='varchar';
-	protected $_order_by='sub_dir DESC';
+	protected $_primary_key='subsite_id';
+	protected $_primary_filter='intval';
+	protected $_order_by='subsite_id DESC';
 	public $rules=array();
 	protected $_timestamp=TRUE;
 	
@@ -18,12 +18,11 @@ class SectionAuth_model extends MY_Model{
 		$myID=$this->session->userdata('id');
 				
 		$data=array(
-			'sub_dir'=>$section,
 			'sub_name'=>$name,
-			'usage'=>$name,
+			'sub_dir'=>$section,
+			'usage'=>$about,
 			'author_id' => $myID,
 		); 
-		
 
 		$rowId=$this->save($data, $id);
 		
@@ -42,21 +41,19 @@ class SectionAuth_model extends MY_Model{
 	//Get info on who has access to what using additional models
 	//essentially acting as a security wrapper around other classes
 	//------------------------------------------------------------------------------------------------------
-	public function addUserToSection($user, $section){
+	public function sectionExists(){
 		$result=$this->get($section);
 		if(count($result)){
-			$this->load->model("Subauth_model");
-			$id=$this->Subauth_model->saveSubAuth($user, $section);	
-			if(isset($id)){
-				return "User added successfully";
-			}
-			else{
-				return "Error adding user";
-			}
+			return true;
 		}
 		else{
-			return "Section does not exist. Please add section first";	
+			return false;
 		}
+	}
+	
+	public function addUserToSection($user, $section){
+		$this->load->model("Subauth_model");
+		return $this->Subauth_model->saveSubAuth($user, $section);	
 	}
 	
 	public function isSelfAuthorized($section){

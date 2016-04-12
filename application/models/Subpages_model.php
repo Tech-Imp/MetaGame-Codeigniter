@@ -2,9 +2,9 @@
 class Subpages_model extends MY_Model{
     	
     protected $_table_name='sub_info_database';
-	protected $_primary_key='sub_dir';
-	protected $_primary_filter='varchar';
-	protected $_order_by='sub_dir DESC';
+	protected $_primary_key='info_id';
+	protected $_primary_filter='intval';
+	protected $_order_by='info_id DESC';
 	public $rules=array();
 	protected $_timestamp=TRUE;
 	

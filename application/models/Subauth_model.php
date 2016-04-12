@@ -2,9 +2,9 @@
 class Subauth_model extends MY_Model{
     	
     protected $_table_name='sub_auth';
-	protected $_primary_key='id';
+	protected $_primary_key='subauth_id';
 	protected $_primary_filter='intval';
-	protected $_order_by='id DESC';
+	protected $_order_by='subauth_id DESC';
 	public $rules=array();
 	protected $_timestamp=TRUE;
 	

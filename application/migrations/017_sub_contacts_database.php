@@ -11,6 +11,12 @@ class Migration_sub_contacts_database extends CI_Migration {
 	public function up()
 	{
 		$this->dbforge->add_field(array(
+			'id' => array(
+				'type' => 'INT',
+				'constraint' => 12,
+				'unsigned' => TRUE,
+				'auto_increment' => TRUE
+			),
 			'sub_dir'=> array(
 				'type' => 'VARCHAR',
 				'constraint' => 128
@@ -64,16 +70,22 @@ class Migration_sub_contacts_database extends CI_Migration {
 				'default' => 0
 			)
 		));
-		
-		$this->dbforge->add_key('sub_dir', true);
+		$this->dbforge->add_key('id', true);
+		$this->dbforge->add_key('sub_dir');
 		$this->dbforge->create_table('sub_info_database', TRUE);
-		if ($this->db->table_exists('extra_subsites')){$this->dbforge->rename_table('extra_subsites', 'subsite_database');}
+		
+		//conditional to handle odd case where this needs to be spun back up but database still exists
+		if ($this->db->table_exists('extra_subsites')){
+			$this->dbforge->drop_table('subsite_database', TRUE);
+			$this->dbforge->rename_table('extra_subsites', 'subsite_database');
+		}
 		$this->dbforge->drop_table('static_database', TRUE);
 	}
 
 	public function down()
 	{
 		$this->dbforge->drop_table('sub_info_database', TRUE);
+		if ($this->db->table_exists('subsite_database')){$this->dbforge->rename_table('subsite_database', 'extra_subsites');}
 	}
 
 	

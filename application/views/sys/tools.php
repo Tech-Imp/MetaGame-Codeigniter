@@ -11,7 +11,7 @@
 				      	</h4>
 				    </div>
 				    <div id="recentController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="recentController">
-			      		<div class="panel-body">
+			      		<div id="recentChanges" class="panel-body">
 					      	<?php echo $recentChanges;?>
 				      	</div>
 				    </div>
@@ -24,7 +24,7 @@
 				      	</h4>
 				    </div>
 				    <div id="myRolesController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="myRoleController">
-			      		<div class="panel-body">
+			      		<div id="myRoles" class="panel-body">
 					      	<?php echo $myRole?>
 				      	</div>
 				    </div>
@@ -38,6 +38,10 @@
 				    </div>
 				    <div id="addRoleController" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="mceContactAdd">
 			      		<div class="panel-body">
+			      			<div class="alert alert-danger noshow" id="roleArea-alert">
+    							<button type="button" class="close" data-dismiss="alert">x</button>
+    							<strong id="roleMessage">You need to add Info </strong>
+							</div>
 					      	<div class="row">
 					      		<div class="col-xs-2"><strong>Add person:</strong></div>
 					      		<div class="col-xs-10 col-md-4">
@@ -64,7 +68,7 @@
 					        			Users you have granted access
 					      			</h4>
 					    		</div>
-				      			<div class="panel-body">
+				      			<div id="sectionAccess" class="panel-body">
 						        	<?php echo $sectionAccess?>
 					      		</div>
 			      			</div>
@@ -84,20 +88,20 @@
 					      	
 					      	<div class="row">
 					      		<div class="col-xs-2">Name of new section:</div>
-					      		<div class="col-xs-10 col-md-4"><input type="text" id="secName" value=""></div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" id="secName" class="textReq" value=""></div>
 					      		<div class="col-xs-12 col-md-6">This is the name as it will appear in the dropdowns.</div>
 					      	</div>
 							<br>
 							<div class="row">
 					      		<div class="col-xs-2">www.meta-game.net/</div>
-					      		<div class="col-xs-10 col-md-4"><input type="text" id="secDir" placeholder="YOUR STUFF"></div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" id="secDir" class="textReq" placeholder="YOUR STUFF"></div>
 					      		<div class="col-xs-12 col-md-6">The sudirectory address to reach your stuff directly. (ie meta-game.net/main)</div>
 					      	</div>
 					      	<br>
 							<h3>Usage (what this section is for):</h3>
-							<div class="alert alert-danger noshow" id="textArea-alert">
+							<div class="alert alert-danger noshow" id="sectionArea-alert">
     							<button type="button" class="close" data-dismiss="alert">x</button>
-    							<strong id="userMessage">You need to add Usage Info </strong>
+    							<strong id="sectionMessage">You need to add Usage Info </strong>
 							</div>
 					      	<textarea name="MCEarea" class='cleanMe' cols="40" rows="10" id="sectionUsage" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
 					       	<br>
@@ -109,7 +113,7 @@
 					        			Existing sections you control
 					      			</h4>
 					    		</div>
-				      			<div class="panel-body">
+				      			<div id="sectionTable" class="panel-body">
 						        	<?php echo $sectionTable?>
 					      		</div>
 			      			</div>
