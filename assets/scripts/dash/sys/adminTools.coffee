@@ -25,6 +25,10 @@ class adminTools extends window.classes.dashboardIndex
           $("#saveNewSection").unbind().bind "click", (event)=>
                $("#saveNewSection").prop("disabled", "disabled")    
                @saveSection()
+            
+          $("#saveNewContact").unbind().bind "click", (event)=>
+               $("#saveNewContact").prop("disabled", "disabled")    
+               @addUser()
 
           $("#clearSection").unbind().bind "click", (event)=>
                @cleanAreas()
@@ -61,7 +65,31 @@ class adminTools extends window.classes.dashboardIndex
           else
                @textBodyResponse("You need fill in all the fields!", "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection")
      
-                          
+     addUser:()=>
+          if @debug then console.log "adminTools.addUser"
+          
+          $.ajax
+               url: @base_url+"/admin/securepost/addUserToSection"
+               type: 'post'
+               dataType: 'json'
+               data:
+                    section: $('#addToSection').val()
+                    user: $('#addPerson').val()
+                         
+               success: (response)=>
+                    if response.success
+                         console.log "Success"
+                         @cleanAreas()
+                         @textBodyResponse("Profile Info added to the database", "#roleMessage", false, "#roleArea-alert", "#saveNewContact")
+                         $("#saveNewContact").prop("disabled", false)
+                    else if response.debug
+                         console.log "debug"
+                         $("#saveNewContact").prop("disabled", false)
+                    else if response.error
+                         console.log "error"
+                         @textBodyResponse(response.error,  "#roleMessage", true, "#roleArea-alert", "#saveNewContact")  
+                         $("#saveNewContact").prop("disabled", false)
+
      
 window.classes ?= {}
 window.classes.adminTools = adminTools

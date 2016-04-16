@@ -44,8 +44,8 @@ class Tools extends Dash_backend{
 //helper functions
 //------------------------------------------------------------------------------------------------------------------
 	private function getUnderlings(){
-		$this->load->model('Admin_model');
-		$myUnderlings=$this->Admin_model->getByMinRank($this->config->item('contributor'));
+		$this->load->model('User_model');
+		$myUnderlings=$this->User_model->getByMinRank($this->config->item('contributor'));
 		$name=$id=array();
 		if(count($myUnderlings)){
 			foreach($myUnderlings as $person){

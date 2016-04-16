@@ -11,6 +11,7 @@
     adminTools.prototype.debug = true;
 
     function adminTools() {
+      this.addUser = bind(this.addUser, this);
       this.saveSection = bind(this.saveSection, this);
       this.setupEvents = bind(this.setupEvents, this);
       if (this.debug) {
@@ -34,6 +35,12 @@
         return function(event) {
           $("#saveNewSection").prop("disabled", "disabled");
           return _this.saveSection();
+        };
+      })(this));
+      $("#saveNewContact").unbind().bind("click", (function(_this) {
+        return function(event) {
+          $("#saveNewContact").prop("disabled", "disabled");
+          return _this.addUser();
         };
       })(this));
       return $("#clearSection").unbind().bind("click", (function(_this) {
@@ -78,6 +85,38 @@
       } else {
         return this.textBodyResponse("You need fill in all the fields!", "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection");
       }
+    };
+
+    adminTools.prototype.addUser = function() {
+      if (this.debug) {
+        console.log("adminTools.addUser");
+      }
+      return $.ajax({
+        url: this.base_url + "/admin/securepost/addUserToSection",
+        type: 'post',
+        dataType: 'json',
+        data: {
+          section: $('#addToSection').val(),
+          user: $('#addPerson').val()
+        },
+        success: (function(_this) {
+          return function(response) {
+            if (response.success) {
+              console.log("Success");
+              _this.cleanAreas();
+              _this.textBodyResponse("Profile Info added to the database", "#roleMessage", false, "#roleArea-alert", "#saveNewContact");
+              return $("#saveNewContact").prop("disabled", false);
+            } else if (response.debug) {
+              console.log("debug");
+              return $("#saveNewContact").prop("disabled", false);
+            } else if (response.error) {
+              console.log("error");
+              _this.textBodyResponse(response.error, "#roleMessage", true, "#roleArea-alert", "#saveNewContact");
+              return $("#saveNewContact").prop("disabled", false);
+            }
+          };
+        })(this)
+      });
     };
 
     return adminTools;

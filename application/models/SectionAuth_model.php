@@ -41,8 +41,9 @@ class SectionAuth_model extends MY_Model{
 	//Get info on who has access to what using additional models
 	//essentially acting as a security wrapper around other classes
 	//------------------------------------------------------------------------------------------------------
-	public function sectionExists(){
-		$result=$this->get($section);
+	public function sectionExists($section=NULL){
+	     $this->db->where("sub_dir", $section);
+		$result=$this->get();
 		if(count($result)){
 			return true;
 		}
@@ -50,7 +51,16 @@ class SectionAuth_model extends MY_Model{
 			return false;
 		}
 	}
-	
+	public function isNewUser($user, $section){
+          $this->load->model("Subauth_model");
+	     $result=$this->Subauth_model->getIDBySecUser($user, $section);
+	     if(count($result)){
+	         return false; 
+	     }
+          else{
+              return true; 
+          }
+	}
 	public function addUserToSection($user, $section){
 		$this->load->model("Subauth_model");
 		return $this->Subauth_model->saveSubAuth($user, $section);	

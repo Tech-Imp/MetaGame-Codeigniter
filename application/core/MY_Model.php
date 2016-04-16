@@ -18,7 +18,7 @@ class MY_Model extends CI_Model{
 			$filter=$this->_primary_filter;
 			$id=$filter($id);
 			$method='row';
-			$this->db->where($this->_primary_key, $id);
+			$this->db->where($this->_table_name.'.'.$this->_primary_key, $id);
 		}
 		elseif ($single) {
 			$method='row';
@@ -29,7 +29,7 @@ class MY_Model extends CI_Model{
 		
 		// Handles case where I need to reference multiple different tables for join functions
 		if($altTable === FALSE){
-			$this->db->order_by($this->_order_by);
+			$this->db->order_by($this->_table_name.'.'.$this->_order_by);
 			$this->db->from($this->_table_name);
 			return $this->db->get()->$method();
 		}

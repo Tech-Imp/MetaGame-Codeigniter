@@ -157,40 +157,59 @@ class Securepost extends MY_Controller{
 		$myEmail=$this->session->userdata('email');
 		$author = $this->session->userdata('id');
 		
+		$user = $this->simplePurify($this->input->post('user'));
 		$section = $this->simplePurify($this->input->post('section'));
-		$sub_dir = $this->simplePurify($this->input->post('sub_dir'));
-		$uncleanUsage = $this->simplePurify($this->input->post('profileName'));
-		
+		//Verify user is valid to add users
 		if($myRole< $this->config->item('sectionAdmin')){
 			$data=array('error' => "Insufficient privledges");
 			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'aSec', 'Failed to create section. Insufficient privledges. User role '.$myRole);  
+			$this->Errorlog_model->newLog(-1, 'uAdd', 'Failed to add user to section. Insufficient privledges. User role '.$myRole);  
       		echo json_encode($data);
       		exit; 
 		}
-		
-		$this->load->helper('htmlpurifier');
-		$clean_html = html_purify($uncleanUsage);
-		
-		if(empty($clean_html)||empty($section)||empty($sub_dir)){
+		//Determine that the items are not empty
+		if(empty($user)||empty($section)){
 			$data=array('error' => "Required text field is empty");
 			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'aSec', 'Failed to create section. Required field empty ');  
+			$this->Errorlog_model->newLog(-1, 'uAdd', 'Failed to add user to section. Required field empty ');  
       		echo json_encode($data);
       		exit; 
 		}
-		
-		
+		//Verify added member qualifications
+		$this->load->model("User_model");
 		$this->load->model("SectionAuth_model");
-        $result=$this->SectionAuth_model->saveSubsection($sub_dir, $section, $clean_html);
-		
-		
-		$this->load->model("Logging_model");
-		$this->Logging_model->newLog($result, 'aSec', 'Section '.$section.' ('.$sub_dir.') created by '.$myName.'('.$myEmail.')');  
-		
-		$data=array('success' => $result); 
-      	echo json_encode($data);
-      	exit; 
+		$userRecord=$this->User_model->getUsers($user);
+          if($userRecord->role < $this->config->item('contributor')){
+               $data=array('error' => "Invalid member");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user to section. User invalid. User role '.$myRole);  
+               echo json_encode($data);
+               exit; 
+          }
+          //Verify user isnt already in list
+		if(!($this->SectionAuth_model->isNewUser($user, $section))){
+		    $data=array('error' => "User already a member");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user to section. User already a member. User role '.$myRole);  
+               echo json_encode($data);
+               exit;  
+		}
+		//Verify section exists and if so add user to it
+          if($this->SectionAuth_model->sectionExists($section)){
+               $result=$this->SectionAuth_model->addUserToSection($user, $section);
+               $this->load->model("Logging_model");
+               $this->Logging_model->newLog($result, 'uAdd', 'User '.$user.' added to section '.$section.'  by '.$myName.'('.$myEmail.')');
+               $data=array('success' => $result); 
+               echo json_encode($data);
+               exit;
+          }
+          else{
+               $data=array('error' => "Invalid section ");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user to section. Section invalid. User role '.$myRole.' Section '.$section);  
+               echo json_encode($data);
+               exit; 
+          } 
 	}	
 
 //---------------------------------------------------------------------------------
