@@ -102,6 +102,7 @@ class Subauth_model extends MY_Model{
 		$myID=$this->session->userdata('id');
 		$this->db->where("sub_auth.author_id", $myID);
 		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible");
+          $this->joinTable("users", "user_id", "id", NULL, "name, email");
 		return $this->get();
 	}
 	//----------------------------------------------------------------------------------------------------

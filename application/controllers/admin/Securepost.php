@@ -198,7 +198,7 @@ class Securepost extends MY_Controller{
           if($this->SectionAuth_model->sectionExists($section)){
                $result=$this->SectionAuth_model->addUserToSection($user, $section);
                $this->load->model("Logging_model");
-               $this->Logging_model->newLog($result, 'uAdd', 'User '.$user.' added to section '.$section.'  by '.$myName.'('.$myEmail.')');
+               $this->Logging_model->newLog($result, 'uAdd', 'User '.$userRecord->name.' ('.$user.') added to section '.$section.'  by '.$myName.'('.$myEmail.')');
                $data=array('success' => $result); 
                echo json_encode($data);
                exit;
