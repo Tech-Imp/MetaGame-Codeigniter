@@ -13,7 +13,6 @@ class Profile extends Dash_backend{
 		$this->load->model('Media_model');
 		$this->load->model('Profilepages_model');
 		$this->load->model('Subpages_model');
-		$this->load->model('Subauth_model');
 		$this->load->model('Dataprep_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
@@ -25,10 +24,7 @@ class Profile extends Dash_backend{
 		
 		
 		//TODO NEED TO alter dropdowns to accept value inputs
-		$myAuths=$this->Subauth_model->getSubSelects();
-		if(count($myAuths)){
-			$data['validSections']=$this->dropdownOptions(NULL, $myAuths->sub_name, $myAuths->sub_dir);
-		}
+		$data['validSections']=$this->dropdownSections();
 		
 		
 		$data['exclusiveAvatar']=$this->exclusiveSelector("Avatar");

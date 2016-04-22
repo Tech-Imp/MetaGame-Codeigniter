@@ -82,6 +82,10 @@ class SectionAuth_model extends MY_Model{
 		$this->load->model("Subauth_model");
 		return $this->Subauth_model->getMySection();
 	}
+     public function getAuthInfo($id){ //TODO Weak point, Examine
+          $this->load->model("Subauth_model");
+          return $this->Subauth_model->getSubAuth($id);
+     }
 	//----------------------------------------------------------------------------------------
 	//Removal functions
 	//----------------------------------------------------------------------------------------

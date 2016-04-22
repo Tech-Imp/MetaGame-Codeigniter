@@ -42,4 +42,17 @@ class MY_Controller extends CI_Controller{
 	protected function simplePurify($input){
 		return htmlspecialchars(strip_tags($input));
 	}
+     protected function dropdownSections(){
+          $this->load->model('Subauth_model');
+          $sections=$this->Subauth_model->getSubSelects();
+          $name=$id=array();
+          if(count($sections)){
+               foreach($sections as $area){
+                    array_push($name, $area->sub_name);
+                    array_push($id, $area->sub_dir);
+               }
+               return $this->dropdownOptions(NULL, $name, $id);
+          }
+          return "";
+     }
 }

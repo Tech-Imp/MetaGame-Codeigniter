@@ -53,7 +53,7 @@ class Tools extends Dash_backend{
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);
 	}
-     public function removeuser()
+     public function removeuser($id=NULL)
      {
           $data=$this->adminHeader();
           $this->load->model('SectionAuth_model');
@@ -70,34 +70,28 @@ class Tools extends Dash_backend{
           $this->load->view('templates/header', $data);
           $this->load->view('inc/dash_header', $data);
           
+          if($id===NULL){
+               $this->load->view('dash/errorInfo');
+          }
+          else {
+               $allData=$this->SectionAuth_model->getAuthInfo(intval($id));
+               if(count($allData)){
+                    $data['assocID']=$id;
+                    $data['userEmailAssoc']=$allData->email;
+                    $data['groupName']=$allData->sub_name;
+                    $data['userNameAssoc']=$allData->name;
+                    
+                    $this->load->view('sys/removeUser', $data);
+               }
+               else{
+                    $this->load->view('dash/errorInfo');
+               }    
+          }
           
-          
-          //Logging of recent items
-          $types=array("aSec", "dSec", "uAdd", "uDel");
-          $logs=$this->Logging_model->getTypeLogs($types,15,0);
-          $data['recentChanges']=$this->Adminprep_model->getSectionLogs($logs);
-          //My Current Roles tab
-          $secRoles=$this->SectionAuth_model->whereImAssigned();
-          $data['myRole']=$this->Adminprep_model->getMyRoles($secRoles);
-          //Add new Roles Section
-          //--who you can assign
-          $myUnderlings=$this->User_model->getByMinRank($this->config->item('contributor'));
-          $data['personList']=$this->getUnderlings($myUnderlings);
-          //--where you can assign
-          $sections=$this->SectionAuth_model->getValidSections();
-          $data['sectionList']=$this->getSectionsList($sections);
-          //--what you have already assigned
-          $assignments=$this->SectionAuth_model->whoIAssigned();
-          $data['sectionAccess']=$this->Adminprep_model->getWhoAssigned($assignments);
-          //Add new section tab
-          $controlled=$this->SectionAuth_model->getSectionControl();
-          $data['sectionTable']=$this->Adminprep_model->getSectionControlled($controlled);
-          
-          $this->load->view('sys/tools', $data);
           $this->load->view('inc/dash_footer', $data);
           $this->load->view('templates/footer', $data);
      }
-     public function removesection()
+     public function removesection($id=NULL)
      {
           $data=$this->adminHeader();
           $this->load->model('SectionAuth_model');

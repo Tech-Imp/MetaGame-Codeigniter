@@ -227,7 +227,7 @@ class Paging extends CI_Controller{
 		$maxNewsCount=$this->Article_model->getArticlesCount(true, $currentLoc);
 		
 		if(count($articles)){
-			return $this->Dataprep_model->gatherItemsRedirect($articles, "article", "news_id", "articles", 1, $maxNewsCount, $maxLimit, $paging, $currentLoc);
+			return $this->Dataprep_model->gatherItemsRedirect($articles, "article", "news_id", "articles", 1, $maxNewsCount, $maxLimit, $paging, "primary", $currentLoc);
 		}
 		else{
 			return "<div><h4>That article does not exist.</h4></div>";
@@ -245,7 +245,7 @@ class Paging extends CI_Controller{
 		
 	
 		if(count($articles)){
-			return $this->Dataprep_model->gatherItemsRedirect($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit, $paging, $currentLoc);
+			return $this->Dataprep_model->gatherItemsRedirect($articles, "news", "news_id", "news", 1, $maxItems, $maxLimit, $paging, "primary", $currentLoc);
 		}
 		else{
 			return "<div><h4>That article does not exist.</h4></div>";
@@ -267,7 +267,7 @@ class Paging extends CI_Controller{
 		
 	
 		if(count($articles)){
-			return $this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "editNews", $maxNewsCount, $maxLimit, $paging);
+			return $this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "written/editWritten", $maxNewsCount, $maxLimit, $paging);
 		}
 		else{
 			return "<div><h4>That article does not exist.</h4></div>";
@@ -287,7 +287,7 @@ class Paging extends CI_Controller{
 		
 	
 		if(count($myMedia)){
-			return $this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "editMedia", $maxMediaCount, $maxLimit, $paging);
+			return $this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, $paging);
 		}
 		else{
 			return "<div><h4>That video does not exist.</h4></div>";

@@ -44,15 +44,17 @@ class Subauth_model extends MY_Model{
 			}
 		}
 		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible, usage");
+          $this->joinTable("users", "user_id", "id", NULL, "name, email");
 		return $this->get($id);
 	}
 	//-----------------------------------------------------------------------------------------------------------
 	//Check if user is authorized
 	//---------------------------------------------------------------------------------------------------------
+	//TODO evaluate this further!!
 	public function isAuthorized($here=null){
 		$myID=$this->session->userdata('id');
 		
-		if($here===null || $this->session->userdata('role') >= $this->config->item('contributor')){
+		if($here===null || $this->session->userdata('role') <= $this->config->item('contributor')){
 			return false;
 		}
 		
