@@ -40,8 +40,7 @@ class Tools extends Dash_backend{
 		$myUnderlings=$this->User_model->getByMinRank($this->config->item('contributor'));
 		$data['personList']=$this->getUnderlings($myUnderlings);
           //--where you can assign
-          $sections=$this->SectionAuth_model->getValidSections();
-		$data['sectionList']=$this->getSectionsList($sections);
+		$data['sectionList']=$this->dropdownSections("void", "The Void");
           //--what you have already assigned
           $assignments=$this->SectionAuth_model->whoIAssigned();
 		$data['sectionAccess']=$this->Adminprep_model->getWhoAssigned($assignments);
@@ -122,8 +121,7 @@ class Tools extends Dash_backend{
           $myUnderlings=$this->User_model->getByMinRank($this->config->item('contributor'));
           $data['personList']=$this->getUnderlings($myUnderlings);
           //--where you can assign
-          $sections=$this->SectionAuth_model->getValidSections();
-          $data['sectionList']=$this->getSectionsList($sections);
+          $data['sectionList']=$this->dropdownSections("void", "The Void");
           //--what you have already assigned
           $assignments=$this->SectionAuth_model->whoIAssigned();
           $data['sectionAccess']=$this->Adminprep_model->getWhoAssigned($assignments);
@@ -153,18 +151,5 @@ class Tools extends Dash_backend{
                return "<option value='0'>Nobody</option>";
           }
      }
-     private function getSectionsList($sections){
-          $name=$id=array();
-          if(count($sections)){
-               foreach($sections as $area){
-                    array_push($name, $area->sub_name);
-                    array_push($id, $area->sub_dir);
-               }
-               return $this->dropdownOptions(NULL, $name, $id);
-          }
-          return "<option value='void'>The Void</option>";
-     }
-
-
 
 }

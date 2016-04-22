@@ -42,9 +42,9 @@ class MY_Controller extends CI_Controller{
 	protected function simplePurify($input){
 		return htmlspecialchars(strip_tags($input));
 	}
-     protected function dropdownSections(){
-          $this->load->model('Subauth_model');
-          $sections=$this->Subauth_model->getSubSelects();
+     protected function dropdownSections($defaultVal=NULL, $defaultName=NULL){
+          $this->load->model('SectionAuth_model');
+          $sections=$this->SectionAuth_model->getValidSections();
           $name=$id=array();
           if(count($sections)){
                foreach($sections as $area){
@@ -53,6 +53,11 @@ class MY_Controller extends CI_Controller{
                }
                return $this->dropdownOptions(NULL, $name, $id);
           }
-          return "";
+          if($defaultName!==NULL&&$defaultVal!==NULL){
+               return "<option value='".$defaultVal."'>".$defaultName."</option>";
+          }
+          else{
+               return "";
+          }
      }
 }
