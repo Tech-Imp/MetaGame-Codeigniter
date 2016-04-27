@@ -103,33 +103,36 @@ class Tools extends Dash_backend{
           $data['js'][1]= 'dash/dashboardIndex.js';
           $data['js'][2]= 'dash/sys/adminTools.js';
           $data['js'][3]='commonShared.js';
+
           
           $this->load->view('templates/header', $data);
           $this->load->view('inc/dash_header', $data);
           
+          if($id===NULL){
+               $this->load->view('dash/errorInfo');
+          }
+          else {
+               $allData=$this->SectionAuth_model->getSectionControl(intval($id));
+               if(count($allData)){
+                    //Group
+                    $data['assocID']=$id;
+                    $data['groupURL']=$allData->sub_dir;
+                    $data['groupName']=$allData->sub_name;
+                    $data['groupUsage']=$allData->usage;
+                    //Creator
+                    $data['creationDate']=$allData->created;
+                    $data['creator']=$allData->name;
+                    $data['creatorEmail']=$allData->email;
+                    //User in group
+                    $people=$this->SectionAuth_model->getUsersBySection($allData->sub_dir);
+                    $data['sectionAccess']=$this->Adminprep_model->getWhoAssigned($people);
+                    $this->load->view('sys/removeGroup', $data);
+               }
+               else{
+                    $this->load->view('dash/errorInfo');
+               }    
+          }
           
-          
-          //Logging of recent items
-          $types=array("aSec", "dSec", "uAdd", "uDel");
-          $logs=$this->Logging_model->getTypeLogs($types,15,0);
-          $data['recentChanges']=$this->Adminprep_model->getSectionLogs($logs);
-          //My Current Roles tab
-          $secRoles=$this->SectionAuth_model->whereImAssigned();
-          $data['myRole']=$this->Adminprep_model->getMyRoles($secRoles);
-          //Add new Roles Section
-          //--who you can assign
-          $myUnderlings=$this->User_model->getByMinRank($this->config->item('contributor'));
-          $data['personList']=$this->getUnderlings($myUnderlings);
-          //--where you can assign
-          $data['sectionList']=$this->dropdownSections("void", "The Void");
-          //--what you have already assigned
-          $assignments=$this->SectionAuth_model->whoIAssigned();
-          $data['sectionAccess']=$this->Adminprep_model->getWhoAssigned($assignments);
-          //Add new section tab
-          $controlled=$this->SectionAuth_model->getSectionControl();
-          $data['sectionTable']=$this->Adminprep_model->getSectionControlled($controlled);
-          
-          $this->load->view('sys/tools', $data);
           $this->load->view('inc/dash_footer', $data);
           $this->load->view('templates/footer', $data);
      }

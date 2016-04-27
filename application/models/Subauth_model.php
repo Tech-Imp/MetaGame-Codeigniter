@@ -94,7 +94,9 @@ class Subauth_model extends MY_Model{
 	//Get all users within a subsection
 	//------------------------------------------------------------------------------------------------------
 	public function getBySection($section){
-		$this->db->where("sub_dir",$section);
+		$this->db->where("sub_auth.sub_dir",$section);
+          $this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible");
+          $this->joinTable("users", "user_id", "id", NULL, "name, email");
 		return $this->get();
 	}
 	//-----------------------------------------------------------------------------------------------------

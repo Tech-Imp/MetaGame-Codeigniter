@@ -13,7 +13,6 @@ class SectionAuth_model extends MY_Model{
 	}
 	
 	
-	
 	public function saveSubsection($section, $name=NULL, $about=NULL, $id=NULL){
 		$myID=$this->session->userdata('id');
 				
@@ -28,14 +27,14 @@ class SectionAuth_model extends MY_Model{
 		
 		return $rowId;
 	}
-	public function getSectionControl(){
+	public function getSectionControl($id=NULL){
 		$myID=$this->session->userdata('id');
 		$myRole=$this->session->userdata('role');
 		if($myRole< $this->config->item('superAdmin')){
 			$this->db->where("author_id", $myID);
 		}
 		$this->joinTable("users",  "author_id", "id", "*", "name, email");
-		return $this->get();
+		return $this->get($id);
 	}
 	//--------------------------------------------------------------------------------------------------------
 	//Get info on who has access to what using additional models
@@ -65,7 +64,12 @@ class SectionAuth_model extends MY_Model{
 		$this->load->model("Subauth_model");
 		return $this->Subauth_model->saveSubAuth($user, $section);	
 	}
-	
+     
+	public function getUsersBySection($section){
+	     $this->load->model("Subauth_model");
+          return $this->Subauth_model->getBySection($section);  
+	}
+     
 	public function isSelfAuthorized($section){
 		$this->load->model("Subauth_model");
 		return $this->Subauth_model->isAuthorized($section);
