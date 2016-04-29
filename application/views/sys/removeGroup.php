@@ -7,6 +7,10 @@
                </h4>
           </div>
                <div class="panel-body">
+                    <div class="alert alert-danger noshow" id="textArea-alert">
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    <strong id="userMessage">Unable to comply </strong>
+                    </div>
                      <div class="row">
                          <div class="col-xs-2"><strong>Group Name </strong></div>
                          <div class="col-xs-10 col-md-4"><?php echo $groupName;?></div>
@@ -34,7 +38,6 @@
                          <div class="col-xs-12"><strong>This will affect the following users:</strong></div>
                          <div class="col-xs-12"><?php echo $sectionAccess?></div>
                     </div><br>
-                    <button id="cancelDelete" class="btn btn-success">Return to Tools</button>
                     <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#deleteAssoc" aria-expanded="false" aria-controls="deleteAssoc">
                     Delete Association
                     </button>

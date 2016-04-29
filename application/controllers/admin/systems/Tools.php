@@ -63,7 +63,7 @@ class Tools extends Dash_backend{
           $data['currentLocation']="<div class='navbar-brand'>Remove User?</div>";
           $data['js'][0]= 'tinymce/jquery.tinymce.min.js';
           $data['js'][1]= 'dash/dashboardIndex.js';
-          $data['js'][2]= 'dash/sys/adminTools.js';
+          $data['js'][2]= 'dash/sys/adminUserDelete.js';
           $data['js'][3]='commonShared.js';
           
           $this->load->view('templates/header', $data);
@@ -101,7 +101,7 @@ class Tools extends Dash_backend{
           $data['currentLocation']="<div class='navbar-brand'>Remove Section?</div>";
           $data['js'][0]= 'tinymce/jquery.tinymce.min.js';
           $data['js'][1]= 'dash/dashboardIndex.js';
-          $data['js'][2]= 'dash/sys/adminTools.js';
+          $data['js'][2]= 'dash/sys/adminSectionDelete.js';
           $data['js'][3]='commonShared.js';
 
           
