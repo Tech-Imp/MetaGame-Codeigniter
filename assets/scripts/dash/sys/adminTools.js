@@ -43,11 +43,27 @@
           return _this.addUser();
         };
       })(this));
-      return $("#clearSection").unbind().bind("click", (function(_this) {
+      $("#clearSection").unbind().bind("click", (function(_this) {
         return function(event) {
           return _this.cleanAreas();
         };
       })(this));
+      return $('#sectionController').keyup(function() {
+        var empty;
+        empty = false;
+        $('.textReq').each(function() {
+          if ($(this).val() === '') {
+            return empty = true;
+          }
+        });
+        if (empty) {
+          console.log("remain locked");
+          return $("#saveNewSection").prop("disabled", "disabled");
+        } else {
+          console.log("open");
+          return $("#saveNewSection").prop("disabled", false);
+        }
+      });
     };
 
     adminTools.prototype.saveSection = function() {

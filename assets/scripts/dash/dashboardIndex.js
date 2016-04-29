@@ -34,6 +34,7 @@
       $('.cleanMe').html("");
       $('.cleanMe').val("");
       $(".textReq").val("");
+      $(".textReq").trigger("keyup");
       return $(".when").datepicker("setDate", new Date());
     };
 

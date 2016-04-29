@@ -33,7 +33,17 @@ class adminTools extends window.classes.dashboardIndex
           $("#clearSection").unbind().bind "click", (event)=>
                @cleanAreas()
 
-
+          $('#sectionController').keyup ->
+               empty = false
+               $('.textReq').each ->
+                    if $(this).val() == ''
+                         empty = true
+               if empty
+                    console.log "remain locked"
+                    $("#saveNewSection").prop("disabled", "disabled")
+               else
+                    console.log "open"
+                    $("#saveNewSection").prop("disabled", false)
      
    
      saveSection:()=>

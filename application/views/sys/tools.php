@@ -104,7 +104,7 @@
 							</div>
 					      	<textarea name="MCEarea" class='cleanMe' cols="40" rows="10" id="sectionUsage" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
 					       	<br>
-					       	<button id="saveNewSection" class="btn btn-success" >Create Section</button>
+					       	<button id="saveNewSection" class="btn btn-success" disabled="disabled">Create Section</button>
 					       	<button id="clearSection" class="btn btn-warning">Clear</button>
 					      	<div class='panel panel-default'>
 								<div class="panel-heading" >
