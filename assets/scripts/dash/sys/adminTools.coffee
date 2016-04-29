@@ -61,7 +61,7 @@ class adminTools extends window.classes.dashboardIndex
                          else if response.error
                               console.log "error"
                               @textBodyResponse(response.error,  "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection")  
-                              $("#saveNewArticle").prop("disabled", false)
+                              $("#saveNewContact").prop("disabled", false)
           else
                @textBodyResponse("You need fill in all the fields!", "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection")
      

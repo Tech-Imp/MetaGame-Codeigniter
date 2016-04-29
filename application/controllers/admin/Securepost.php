@@ -53,95 +53,42 @@ class Securepost extends MY_Controller{
       	exit; 
 	}	
 	
-	function editProfile(){
-		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
-		
-		$profileID = $this->simplePurify($this->input->post('profileID'));
-		$avatarID = $this->simplePurify($this->input->post('avatarID'));
-		$profileName = $this->simplePurify($this->input->post('profileName'));
-		$title = $this->simplePurify($this->input->post('title'));
-		$uncleanText = $this->input->post('bodyText');
-		$section = $this->simplePurify($this->input->post('section')); 
-		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
-		
-		$author = $this->session->userdata('id');
-		
-		if($myRole< $this->config->item('contributor')){
-			$data=array('error' => "Insufficient privledges");
-			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'aCon', 'Profile item failed to upload. Insufficient privledges. User role '.$myRole);  
-      		echo json_encode($data);
-      		exit; 
-		}
-		if(empty($profileID)){
-			$data=array('error' => "Error retrieving staticID"); 
-			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'eCon', 'Profile item failed to be reuploaded. Error retrieving profileID');  
-      		echo json_encode($data);
-      		exit; 
-		} 
-		
-		$this->load->helper('htmlpurifier');
-		$clean_html = html_purify($uncleanText);
-		
-		if(empty($clean_html)||empty($profileName)||empty($title)){
-			$data=array('error' => "Required text field is empty");
-			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'aCon', 'Profile item failed to upload. Required field empty ');  
-      		echo json_encode($data);
-      		exit; 
-		} 
-		if(empty($avatarID)){
-			$avatarID=$this->config->item('defaultAvatarID');
-		}
-		
-		$this->load->model("Profilepages_model");
-        $result=$this->Profilepages_model->saveProfile($title, $profileName, $clean_html, $exFlag, $section, $avatarID, $profileID);
-		$this->load->model("Logging_model");
-		$this->Logging_model->newLog($result, 'aCon', 'Profile item ('.$result.') updated successfully by '.$myName.'('.$myEmail.')');  
-		
-		$data=array('success' => $result); 
-      	echo json_encode($data);
-      	exit; 
-	}
-	
 	function deleteSection(){
 		header('content-type: text/javascript');
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$profileID = intval($this->input->post('profileID')); 
-		
-		if($myRole< $this->config->item('superAdmin')){
-			$data=array('error' => "Insufficient privledges"); 
-			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog($profileID, 'dCon', 'Section delete failed. Insufficient permissions. User '.$myID.' role '.$myRole);
-      		echo json_encode($data);
-      		exit; 
-		}
-		if(empty($profileID)){
+		$sectionID = intval($this->input->post('sectionID')); 
+
+		if(empty($sectionID) || !is_int($sectionID)){
 			$data=array('error' => "Error retrieving section ID"); 
       		echo json_encode($data);
       		exit; 
 		} 
+          
+		$this->load->model("SectionAuth_model");
+		// Verify user has rights to section and section exists
+		$verify=$this->SectionAuth_model->getSectionControl($sectionID);
+          if(count($verify)){
+              if(($verify->author_id==$myID && $myRole> $this->config->item('contributor')) || $myRole> $this->config->item('sectionAdmin')){
+     			$result=$this->SectionAuth_model->removeSubDir($sectionID);
+     			$data=array('success' => $result);
+     			$this->load->model("Logging_model");
+     			$this->Logging_model->newLog($sectionID, 'dSec', $result.' by user '.$myName.'('.$myEmail.') ');
+     		}
+     		else{
+     			$data=array('error' => "Insufficient privledges"); 
+                    $this->load->model("Errorlog_model");
+                    $this->Errorlog_model->newLog($sectionID, 'dSec', 'Section '.$verify->sub_name.'('.$verify->subsite_id.') delete failed. Insufficient permissions. User '.$myID.' role '.$myRole);
+     		} 
+          }
+          else{
+               $data=array('error' => "Section does not exist"); 
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog($sectionID, 'dSec', 'Section ('.$sectionID.') delete failed. ID does not exist. User '.$myID.' role '.$myRole);
+          }
 		
-		$this->load->model("Profilepages_model");
-		
-		// Verify user has rights to media
-		$verify=$this->Profilepages_model->get($profileID, TRUE);
-		if($verify->author_id==$myID || $myRole> $this->config->item('sectionAdmin')){
-			$result=$this->Profilepages_model->delete($profileID);
-			$data=array('success' => $profileID);
-			$this->load->model("Logging_model");
-			$this->Logging_model->newLog($profileID, 'dCon', 'Profile item '.$verify->title.' ('.$result.') was deleted by user '.$myName.'('.$myEmail.') ');
-		}
-		else{
-			$data=array('error' => 'Cannot delete that item');
-		}
 		 
       	echo json_encode($data);
       	exit; 
@@ -211,6 +158,50 @@ class Securepost extends MY_Controller{
                exit; 
           } 
 	}	
+
+     function deleteUserFromSection(){
+          header('content-type: text/javascript');
+          $myRole=$this->session->userdata('role');
+          $myID=$this->session->userdata('id');
+          $myName=$this->session->userdata('name');
+          $myEmail=$this->session->userdata('email');
+          $entryID = intval($this->input->post('entryID')); 
+
+          if(empty($entryID) || !is_int($entryID)){
+               $data=array('error' => "Error retrieving entry ID"); 
+               echo json_encode($data);
+               exit; 
+          } 
+          
+          $this->load->model("SectionAuth_model");
+          // Verify user has rights to section and section exists
+          $verify=$this->SectionAuth_model->getAuthInfo($entryID);
+          
+          if(count($verify)){
+               //only the original assigner or someone with greater rank than section admin can remove user
+              if(($verify->author_id==$myID && $myRole> $this->config->item('contributor')) || $myRole> $this->config->item('sectionAdmin')){
+                         
+                    $result=$this->SectionAuth_model->removeUserFromSection($entryID);
+                    $data=array('success' => $result);
+                    $this->load->model("Logging_model");
+                    $this->Logging_model->newLog($sectionID, 'uDel', $result.' by user '.$myName.'('.$myEmail.') ');
+               }
+               else{
+                    $data=array('error' => "Insufficient privledges"); 
+                    $this->load->model("Errorlog_model");
+                    $this->Errorlog_model->newLog($sectionID, 'uDel', 'User '.$verify->name.'('.$verify->user_id.') deallocation failed. Insufficient permissions. User '.$myID.' role '.$myRole);
+               } 
+          }
+          else{
+               $data=array('error' => "Entry does not exist"); 
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog($sectionID, 'uDel', 'User ('.$sectionID.') deallocation failed. ID does not exist. User '.$myID.' role '.$myRole);
+          }
+          
+           
+          echo json_encode($data);
+          exit; 
+     }
 
 //---------------------------------------------------------------------------------
 //shared functions

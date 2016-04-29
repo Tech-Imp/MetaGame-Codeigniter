@@ -50,7 +50,7 @@ class Post extends MY_Controller{
 		$this->load->model("Profilepages_model");
         $result=$this->Profilepages_model->saveProfile($title, $profileName, $clean_html, $exFlag, $section, $avatarID);
 		$this->load->model("Logging_model");
-		$this->Logging_model->newLog($result, 'aCon', 'Profile item ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
+		$this->Logging_model->newLog($result, 'aCon', 'Profile item '.$title.' ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
 		
 		$data=array('success' => $result); 
       	echo json_encode($data);
@@ -105,7 +105,7 @@ class Post extends MY_Controller{
 		$this->load->model("Profilepages_model");
         $result=$this->Profilepages_model->saveProfile($title, $profileName, $clean_html, $exFlag, $section, $avatarID, $profileID);
 		$this->load->model("Logging_model");
-		$this->Logging_model->newLog($result, 'aCon', 'Profile item ('.$result.') updated successfully by '.$myName.'('.$myEmail.')');  
+		$this->Logging_model->newLog($result, 'aCon', 'Profile item '.$title.' ('.$result.') updated successfully by '.$myName.'('.$myEmail.')');  
 		
 		$data=array('success' => $result); 
       	echo json_encode($data);

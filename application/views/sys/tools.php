@@ -61,7 +61,6 @@
 					      	</div>
 					       	<br>
 					       	<button id="saveNewContact" class="btn btn-success" >Save to Database</button>
-					       	<button id="clearArticle" class="btn btn-warning">Clear</button>
 					      	<div class='panel panel-default'>
 								<div class="panel-heading" >
 				      				<h4 class="panel-title text-center">

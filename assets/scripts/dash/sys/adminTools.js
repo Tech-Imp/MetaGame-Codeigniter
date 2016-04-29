@@ -77,7 +77,7 @@
               } else if (response.error) {
                 console.log("error");
                 _this.textBodyResponse(response.error, "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection");
-                return $("#saveNewArticle").prop("disabled", false);
+                return $("#saveNewContact").prop("disabled", false);
               }
             };
           })(this)

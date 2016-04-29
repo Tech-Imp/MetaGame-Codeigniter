@@ -108,20 +108,28 @@ class SectionAuth_model extends MY_Model{
 		else{
 			return "Error: Data missing";
 		}
-		return "Removal successful";
+		return "User removal successful";
 	}
-	public function removeSubDir($section){
+     
+	public function removeSubDir($id){
+	     $actions="Failed user deprovisioning of section (".$id.")";
+	     $entry=$this->get($id);
 		$this->load->model("Subauth_model");
 		
-		if ($section!==NULL){
-			$results=$this->Subauth_model->getBySection($section);
+		if ($entry->sub_dir!==NULL){
+			$results=$this->Subauth_model->getBySection($entry->sub_dir);
+               $numUsers=0;
 			foreach($results as $row){
 				$this->Subauth_model->delete(intval($row->user_id));
+                    $numUsers++;
 			}
+               $actions=$numUsers."/".count($results)." Users removed";
 		}
-		$result=$this->get($section);
+		$result=$this->get($id);
 		if(count($result)){
-			$this->delete($section);
+			$this->delete($id);
+               $actions.=" and section ".$section." removed";
 		}
+          return $actions;
 	}
 }
