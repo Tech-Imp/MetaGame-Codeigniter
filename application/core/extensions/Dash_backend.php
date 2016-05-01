@@ -23,7 +23,10 @@ class Dash_backend extends Admin_controller{
 		$exclusive='<br><div class="row">
 						<div class="col-xs-2"><strong>Show in section</strong></div>
 						<div class="col-xs-10 col-md-4 ui-widget">
-							<input type="text" id="section'.$multi.'" value='.$exPage.'>
+							<select id="section'.$multi.'" >
+							   <option value=""></option>'
+							   .$this->dropdownSections(NULL, NULL, $exPage).
+							'</select>
 						</div>
 		      			<div class="col-xs-12 col-md-6">Always displays to main as well, unless exclusive</div>
 					</div><br><div class="row">

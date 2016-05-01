@@ -42,7 +42,7 @@ class Securepost extends MY_Controller{
 		
 		
 		$this->load->model("SectionAuth_model");
-        $result=$this->SectionAuth_model->saveSubsection($sub_dir, $section, $clean_html);
+          $result=$this->SectionAuth_model->saveSubsection($sub_dir, $section, $clean_html);
 		$this->SectionAuth_model->addUserToSection($author, $sub_dir);
 		
 		$this->load->model("Logging_model");
@@ -184,18 +184,18 @@ class Securepost extends MY_Controller{
                     $result=$this->SectionAuth_model->removeUserFromSection($entryID);
                     $data=array('success' => $result);
                     $this->load->model("Logging_model");
-                    $this->Logging_model->newLog($sectionID, 'uDel', $result.' by user '.$myName.'('.$myEmail.') ');
+                    $this->Logging_model->newLog($entryID, 'uDel', $result.' by user '.$myName.'('.$myEmail.') ');
                }
                else{
                     $data=array('error' => "Insufficient privledges"); 
                     $this->load->model("Errorlog_model");
-                    $this->Errorlog_model->newLog($sectionID, 'uDel', 'User '.$verify->name.'('.$verify->user_id.') deallocation failed. Insufficient permissions. User '.$myID.' role '.$myRole);
+                    $this->Errorlog_model->newLog($entryID, 'uDel', 'User '.$verify->name.'('.$verify->user_id.') deallocation failed. Insufficient permissions. User '.$myID.' role '.$myRole);
                } 
           }
           else{
                $data=array('error' => "Entry does not exist"); 
                $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog($sectionID, 'uDel', 'User ('.$sectionID.') deallocation failed. ID does not exist. User '.$myID.' role '.$myRole);
+               $this->Errorlog_model->newLog($entryID, 'uDel', 'User ('.$sectionID.') deallocation failed. ID does not exist. User '.$myID.' role '.$myRole);
           }
           
            
