@@ -42,6 +42,27 @@ class MY_Controller extends CI_Controller{
 	protected function simplePurify($input){
 		return htmlspecialchars(strip_tags($input));
 	}
+     
+     protected function verifySection($section){
+          //account for the default of nothing which means main
+          $section=preg_replace('/\s+/', '', $section);
+          if($section==null){$section="";}
+          if($section==""){return true;}
+          //check if exists and authorized
+          $this->load->model('SectionAuth_model');
+          if ($this->SectionAuth_model->sectionExists($section)) {
+               if($this->SectionAuth_model->isSelfAuthorized($section)){
+                    return true;
+               }
+               else{
+                    return false;
+               }
+          }
+          else{
+               return false;
+          }
+     }
+     
      protected function dropdownSections($defaultVal=NULL, $defaultName=NULL, $selected=NULL){
           $this->load->model('SectionAuth_model');
           $sections=$this->SectionAuth_model->getValidSections();

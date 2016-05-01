@@ -15,7 +15,7 @@ class Post extends MY_Controller{
 		$myRole=$this->session->userdata('role');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$avatarID = $this->simplePurify($this->input->post('avatarID'));
+		$avatarID = intval($this->simplePurify($this->input->post('avatarID')));
 		$profileName = $this->simplePurify($this->input->post('profileName'));
 		$title = $this->simplePurify($this->input->post('title'));
 		$uncleanText = $this->input->post('bodyText');
@@ -23,7 +23,7 @@ class Post extends MY_Controller{
 		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
 		
 		$author = $this->session->userdata('id');
-		
+
 		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges");
 			$this->load->model("Errorlog_model");
@@ -31,7 +31,13 @@ class Post extends MY_Controller{
       		echo json_encode($data);
       		exit; 
 		}
-		
+		if(!$this->verifySection($section)){
+               $data=array('error' => "Section invalid or does not exist");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog(-1, 'aCon', 'Profile item failed to upload. Section ('.$section.') invalid. User role '.$myRole);  
+               echo json_encode($data);
+               exit; 
+          }
 		$this->load->helper('htmlpurifier');
 		$clean_html = html_purify($uncleanText);
 		
@@ -63,8 +69,8 @@ class Post extends MY_Controller{
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
 		
-		$profileID = $this->simplePurify($this->input->post('profileID'));
-		$avatarID = $this->simplePurify($this->input->post('avatarID'));
+		$profileID = intval($this->simplePurify($this->input->post('profileID')));
+		$avatarID = intval($this->simplePurify($this->input->post('avatarID')));
 		$profileName = $this->simplePurify($this->input->post('profileName'));
 		$title = $this->simplePurify($this->input->post('title'));
 		$uncleanText = $this->input->post('bodyText');
@@ -73,20 +79,28 @@ class Post extends MY_Controller{
 		
 		$author = $this->session->userdata('id');
 		
-		if($myRole< $this->config->item('contributor')){
-			$data=array('error' => "Insufficient privledges");
-			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'aCon', 'Profile item failed to upload. Insufficient privledges. User role '.$myRole);  
-      		echo json_encode($data);
-      		exit; 
-		}
 		if(empty($profileID)){
 			$data=array('error' => "Error retrieving staticID"); 
 			$this->load->model("Errorlog_model");
 			$this->Errorlog_model->newLog(-1, 'eCon', 'Profile item failed to be reuploaded. Error retrieving profileID');  
       		echo json_encode($data);
       		exit; 
-		} 
+		}
+		if($myRole< $this->config->item('contributor')){
+			$data=array('error' => "Insufficient privledges");
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog($profileID, 'eCon', 'Profile item failed to upload. Insufficient privledges. User role '.$myRole);  
+      		echo json_encode($data);
+      		exit; 
+		}
+		if(!$this->verifySection($section)){
+               $data=array('error' => "Section invalid or does not exist");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog($profileID, 'eCon', 'Profile item failed to upload. Section ('.$section.') invalid. User role '.$myRole);  
+               echo json_encode($data);
+               exit; 
+          }
+		 
 		
 		$this->load->helper('htmlpurifier');
 		$clean_html = html_purify($uncleanText);
@@ -94,7 +108,7 @@ class Post extends MY_Controller{
 		if(empty($clean_html)||empty($profileName)||empty($title)){
 			$data=array('error' => "Required text field is empty");
 			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'aCon', 'Profile item failed to upload. Required field empty ');  
+			$this->Errorlog_model->newLog($profileID, 'aCon', 'Profile item failed to upload. Required field empty ');  
       		echo json_encode($data);
       		exit; 
 		} 
@@ -120,6 +134,11 @@ class Post extends MY_Controller{
 		$myEmail=$this->session->userdata('email');
 		$profileID = intval($this->input->post('profileID')); 
 		
+		if(empty($profileID)){
+			$data=array('error' => "Error retrieving profileID"); 
+      		echo json_encode($data);
+      		exit; 
+		} 
 		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
 			$this->load->model("Errorlog_model");
@@ -127,11 +146,7 @@ class Post extends MY_Controller{
       		echo json_encode($data);
       		exit; 
 		}
-		if(empty($profileID)){
-			$data=array('error' => "Error retrieving profileID"); 
-      		echo json_encode($data);
-      		exit; 
-		} 
+		
 		
 		$this->load->model("Profilepages_model");
 		
@@ -177,8 +192,15 @@ class Post extends MY_Controller{
       		exit; 
 		}
 		
-		$section=preg_replace('/\s+/', '', $section);
-		if($section==null){$section="";}
+          if(!$this->verifySection($section)){
+               $data=array('error' => "Section invalid or does not exist");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog(-1, 'aNew', 'News item failed to upload. Section ('.$section.') invalid. User role '.$myRole);  
+               echo json_encode($data);
+               exit; 
+          }
+		// $section=preg_replace('/\s+/', '', $section);
+		// if($section==null){$section="";}
 		
 		$this->load->helper('htmlpurifier');
 		$clean_html = html_purify($uncleanText);
@@ -211,7 +233,7 @@ class Post extends MY_Controller{
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
 		$type=$this->simplePurify($this->input->post('type'));
-		$newsID = $this->simplePurify($this->input->post('newsID')); 
+		$newsID = intval($this->simplePurify($this->input->post('newsID'))); 
 		$title = $this->simplePurify($this->input->post('title'));
 		$section = $this->simplePurify($this->input->post('section')); 
 		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
@@ -225,6 +247,13 @@ class Post extends MY_Controller{
 		$this->load->helper('htmlpurifier');
 		$clean_html = html_purify($uncleanText);
 		
+		if(empty($newsID)){
+			$data=array('error' => "Error retrieving NewsID"); 
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog(-1, 'eNew', 'News item failed to be reuploaded. Error retrieving newsID');  
+      		echo json_encode($data);
+      		exit; 
+		}
 		if($myRole < $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges");
 			$this->load->model("Errorlog_model");
@@ -232,13 +261,14 @@ class Post extends MY_Controller{
       		echo json_encode($data);
       		exit; 
 		}
-		if(empty($newsID)){
-			$data=array('error' => "Error retrieving NewsID"); 
-			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'eNew', 'News item failed to be reuploaded. Error retrieving newsID');  
-      		echo json_encode($data);
-      		exit; 
-		} 
+          if(!$this->verifySection($section)){
+               $data=array('error' => "Section invalid or does not exist");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog($newsID, 'eNew', 'News item failed to reupload. Section ('.$section.') invalid. User role '.$myRole);  
+               echo json_encode($data);
+               exit; 
+          }
+		 
 		
 		$this->load->helper('htmlpurifier');
 		$clean_html = html_purify($uncleanText);
@@ -246,7 +276,7 @@ class Post extends MY_Controller{
 		if(empty($clean_html) || empty($title) || empty($stub)){
 			$data=array('error' => "Required text field is empty"); 
 			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'eNew', 'News item failed to upload. Required field empty ');  
+			$this->Errorlog_model->newLog($newsID, 'eNew', 'News item failed to upload. Required field empty ');  
       		echo json_encode($data);
       		exit; 
 		} 
@@ -279,6 +309,12 @@ class Post extends MY_Controller{
 		$myEmail=$this->session->userdata('email');
 		$newsID = intval($this->input->post('newsID')); 
 		
+		if(empty($newsID)){
+			$data=array('error' => "Error retrieving NewsID"); 
+      		echo json_encode($data);
+      		exit; 
+		} 
+
 		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
 			$this->load->model("Errorlog_model");
@@ -286,12 +322,7 @@ class Post extends MY_Controller{
       		echo json_encode($data);
       		exit; 
 		}
-		if(empty($newsID)){
-			$data=array('error' => "Error retrieving NewsID"); 
-      		echo json_encode($data);
-      		exit; 
-		} 
-		
+				
 		$this->load->model("Article_model");
 		
 		// Verify user has rights to media
@@ -326,7 +357,18 @@ class Post extends MY_Controller{
 		$myID=$this->session->userdata('id');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		
+		$section = $this->simplePurify($this->input->post('section')); 
+          
+          if(!$this->verifySection($section)){
+               $data=array('error' => "Section invalid or does not exist");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog(-1, 'aMed', 'Profile item failed to upload. Section ('.$section.') invalid. User role '.$myRole);  
+               echo json_encode($data);
+               exit; 
+          }
+          
+          
+          
 		/* 
 		// Support CORS
 		header("Access-Control-Allow-Origin: *");
@@ -453,10 +495,7 @@ class Post extends MY_Controller{
 			$stub = $this->simplePurify($this->input->post('stub')); 
       		$visibleWhen = $this->simplePurify($this->input->post('visibleWhen'));
 			$loggedOnly = $this->simplePurify(intval($this->input->post('loggedOnly')));
-			$section = $this->simplePurify($this->input->post('section')); 
 			$exFlag = $this->simplePurify($this->input->post('exFlag'));
-			//HARD CODED DUE TO SETUP
-			// $mediaType="picture";
 			$mediaType=$this->simplePurify($this->input->post('mediaType'));
 			$this->load->model("Media_model");
 			$loc=base_url().$uploadDir.'/'.$fileName;
@@ -498,7 +537,13 @@ class Post extends MY_Controller{
       		echo json_encode($data);
       		exit; 
 		}
-		
+		if(!$this->verifySection($section)){
+               $data=array('error' => "Section invalid or does not exist");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog(-1, 'aEmb', 'Embed item failed to upload. Section ('.$section.') invalid. User role '.$myRole);  
+               echo json_encode($data);
+               exit; 
+          }
 		
 		// $this->load->helper('htmlpurifier');
 		// $clean_html = html_purify($uncleanText);
@@ -542,7 +587,7 @@ class Post extends MY_Controller{
 		$myID=$this->session->userdata('id');
 		$myName=$this->session->userdata('name');
 		$myEmail=$this->session->userdata('email');
-		$mediaID = $this->simplePurify($this->input->post('mediaID')); 
+		$mediaID = intval($this->simplePurify($this->input->post('mediaID'))); 
 		$title = $this->simplePurify($this->input->post('title')); 
 		$stub = $this->simplePurify($this->input->post('stub')); 
 		$mediaType = $this->simplePurify($this->input->post('mediaType')); 
@@ -552,13 +597,6 @@ class Post extends MY_Controller{
 		$section = $this->simplePurify($this->input->post('section')); 
 		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
 		
-		if($myRole<$this->config->item('contributor')){
-			$data=array('error' => "Insufficient privledges"); 
-      		echo json_encode($data);
-			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog($mediaID, 'eMed', 'Media item '.$title.' ('.$mediaID.') failed to be reuploaded. Insufficient privledges. User '.$myID.' role '.$myRole); 
-      		exit; 
-		}
 		if(empty($mediaID)){
 			$data=array('error' => "Error retrieving MediaID"); 
 			$this->load->model("Errorlog_model");
@@ -566,6 +604,21 @@ class Post extends MY_Controller{
       		echo json_encode($data);
       		exit; 
 		} 
+		if($myRole<$this->config->item('contributor')){
+			$data=array('error' => "Insufficient privledges"); 
+      		echo json_encode($data);
+			$this->load->model("Errorlog_model");
+			$this->Errorlog_model->newLog($mediaID, 'eMed', 'Media item '.$title.' ('.$mediaID.') failed to be reuploaded. Insufficient privledges. User '.$myID.' role '.$myRole); 
+      		exit; 
+		}
+          if(!$this->verifySection($section)){
+               $data=array('error' => "Section invalid or does not exist");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog($mediaID, 'eMed', 'Media item failed to reupload. Section ('.$section.') invalid. User role '.$myRole);  
+               echo json_encode($data);
+               exit; 
+          }
+		
 		$medias=$this->config->item('recognizedMedia');
 		if(in_array($mediaType, $medias)===FALSE){
 			$data=array('error' => "Media type was unexpected"); 
@@ -606,6 +659,11 @@ class Post extends MY_Controller{
 		$myEmail=$this->session->userdata('email');
 		$mediaID = intval($this->input->post('mediaID')); 
 		
+		if(empty($mediaID)){
+			$data=array('error' => "Error retrieving MediaID"); 
+      		echo json_encode($data);
+      		exit; 
+		}
 		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
       		$this->load->model("Errorlog_model");
@@ -613,13 +671,7 @@ class Post extends MY_Controller{
       		echo json_encode($data);
       		exit; 
 		}
-		if(empty($mediaID)){
-			$data=array('error' => "Error retrieving MediaID"); 
-			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog($mediaID, 'dMed', 'Media item '.$mediaID.' delete failed. Error retrieving mediaID.'); 
-      		echo json_encode($data);
-      		exit; 
-		} 
+		 
 		
 		$this->load->model("Media_model");
 		
