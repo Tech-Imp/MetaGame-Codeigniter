@@ -85,7 +85,7 @@
               if (response.success) {
                 console.log("Success");
                 _this.cleanAreas();
-                _this.textBodyResponse("Profile Info added to the database", "#sectionMessage", false, "#sectionArea-alert", "#saveNewSection");
+                _this.textBodyResponse("Section added to the database", "#sectionMessage", false, "#sectionArea-alert", "#saveNewSection");
                 return $("#saveNewContact").prop("disabled", false);
               } else if (response.debug) {
                 console.log("debug");
@@ -120,7 +120,7 @@
             if (response.success) {
               console.log("Success");
               _this.cleanAreas();
-              _this.textBodyResponse("Profile Info added to the database", "#roleMessage", false, "#roleArea-alert", "#saveNewContact");
+              _this.textBodyResponse("User/Section association added to the database", "#roleMessage", false, "#roleArea-alert", "#saveNewContact");
               return $("#saveNewContact").prop("disabled", false);
             } else if (response.debug) {
               console.log("debug");

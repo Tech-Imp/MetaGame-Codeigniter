@@ -63,7 +63,7 @@ class adminTools extends window.classes.dashboardIndex
                          if response.success
                               console.log "Success"
                               @cleanAreas()
-                              @textBodyResponse("Profile Info added to the database", "#sectionMessage", false, "#sectionArea-alert", "#saveNewSection")
+                              @textBodyResponse("Section added to the database", "#sectionMessage", false, "#sectionArea-alert", "#saveNewSection")
                               $("#saveNewContact").prop("disabled", false)
                          else if response.debug
                               console.log "debug"
@@ -90,7 +90,7 @@ class adminTools extends window.classes.dashboardIndex
                     if response.success
                          console.log "Success"
                          @cleanAreas()
-                         @textBodyResponse("Profile Info added to the database", "#roleMessage", false, "#roleArea-alert", "#saveNewContact")
+                         @textBodyResponse("User/Section association added to the database", "#roleMessage", false, "#roleArea-alert", "#saveNewContact")
                          $("#saveNewContact").prop("disabled", false)
                     else if response.debug
                          console.log "debug"
