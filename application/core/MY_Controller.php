@@ -8,7 +8,7 @@ class MY_Controller extends CI_Controller{
 		// $data['site_name']=config_item('site_name');
 	}
 	protected function dropdownOptions($selected=NULL, $arrayOpts, $arrayVals=NULL){
-		if(count($arrayOpts)==1 && $selected!=NULL){
+		if(count($arrayOpts)==1 && $selected!=NULL && !is_array($arrayOpts)){
 		 	return "<option selected value='".$selected."'> ".$arrayOpts." </option>";	
 		}
 		elseif (count($arrayOpts)==count($arrayVals)) {

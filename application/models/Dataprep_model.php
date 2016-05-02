@@ -364,9 +364,14 @@ class Dataprep_model extends CI_Model{
 			$artVis="itemHidden";
 			$vis="Currently <span class='glyphicon glyphicon-eye-close'></span><strong>HIDDEN</strong>";
 		}
-		elseif (array_key_exists('visibleWhen', $row) && $currDate < $storedDate && $row->mediaType!="avatar" && $row->mediaType!="logo") {
-			$artVis="itemTemp";
+		elseif (array_key_exists('visibleWhen', $row) && $currDate < $storedDate) {
+		     $artVis="itemTemp";
 			$vis="<span class='glyphicon glyphicon-exclamation-sign'></span> Visible on ".date("M jS, Y",strtotime($row->visibleWhen));
+			//Special case for Avatars and Logos. Always want to be shown as visible
+			if(array_key_exists("mediaType", $row) && ($row->mediaType=="avatar" || $row->mediaType=="logo")){
+			     $artVis="itemVis";
+                    $vis="Currently <span class='glyphicon glyphicon-eye-open'></span><strong>VISIBLE</strong>";
+			}
 		}
 		else {
 			$artVis="itemVis";
