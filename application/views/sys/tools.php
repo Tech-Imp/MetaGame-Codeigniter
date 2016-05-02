@@ -32,7 +32,7 @@
 					<div class="panel-heading" role="tab" id="roleAdd">
 			      		<h4 class="panel-title text-center">
 				        	<a data-toggle="collapse" data-parent="#accordion" href="#addRoleController" aria-expanded="true" aria-controls="addRoleController">
-				          		<strong class="green"><span class='glyphicon glyphicon-pawn'></span> Add New Roles to Section</strong>
+				          		<strong class="green"><span class='glyphicon glyphicon-pawn'></span> Add New People to Section</strong>
 					        </a>
 				      	</h4>
 				    </div>

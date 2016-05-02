@@ -120,15 +120,15 @@ class SectionAuth_model extends MY_Model{
 			$results=$this->Subauth_model->getBySection($entry->sub_dir);
                $numUsers=0;
 			foreach($results as $row){
-				$this->Subauth_model->delete(intval($row->user_id));
+				$this->Subauth_model->delete(intval($row->subauth_id));
                     $numUsers++;
 			}
-               $actions=$numUsers."/".count($results)." Users removed";
+               $actions=$numUsers." of ".count($results)." Users removed";
 		}
 		$result=$this->get($id);
 		if(count($result)){
 			$this->delete($id);
-               $actions.=" and section ".$section." removed";
+               $actions.=" and section ".$entry->sub_name." removed";
 		}
           return $actions;
 	}
