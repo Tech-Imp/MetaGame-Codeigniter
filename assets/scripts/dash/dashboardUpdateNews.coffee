@@ -35,7 +35,7 @@ class dashboardUpdateNews extends window.classes.dashboardIndex
           
           if $.trim($("#mceNewsArea").html())
                $.ajax
-                    url: @base_url+"/post/saveNewsEdit" 
+                    url: @base_url+"/admin/post/postnews/saveNewsEdit" 
                     type: 'post'
                     dataType: 'json'
                     data:
@@ -69,7 +69,7 @@ class dashboardUpdateNews extends window.classes.dashboardIndex
           
           
           $.ajax
-               url: @base_url+"/post/deleteSpecificNews" 
+               url: @base_url+"/admin/post/postnews/deleteSpecificNews" 
                type: 'post'
                dataType: 'json'
                data:

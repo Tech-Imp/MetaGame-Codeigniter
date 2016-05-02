@@ -49,7 +49,7 @@
       }
       if ($.trim($("#mceContact").html())) {
         return $.ajax({
-          url: this.base_url + "/post/editProfile",
+          url: this.base_url + "/admin/post/postprofile/editProfile",
           type: 'post',
           dataType: 'json',
           data: {
@@ -83,7 +83,7 @@
         console.log("dashboardUpdateContact.deleteMedia");
       }
       return $.ajax({
-        url: this.base_url + "/post/deleteProfile",
+        url: this.base_url + "/admin/post/postprofile/deleteProfile",
         type: 'post',
         dataType: 'json',
         data: {

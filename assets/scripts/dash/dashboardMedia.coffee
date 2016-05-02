@@ -13,7 +13,7 @@ class dashboardMedia extends window.classes.dashboardIndex
           
           $('.nUpload').plupload
                runtimes: 'html5,flash,silverlight,html4'
-               url: @base_url+'/post/CIUpload'
+               url: @base_url+'/admin/post/postmedia/CIUpload'
                max_file_size: '4mb'
                chunk_size: '1mb'
                filters: [
@@ -74,7 +74,7 @@ class dashboardMedia extends window.classes.dashboardIndex
           
           if $.trim($("#mceEmbedArea").val())
                $.ajax
-                    url: @base_url+"/post/addEmbedMedia"
+                    url: @base_url+"/admin/post/postmedia/addEmbedMedia"
                     type: 'post'
                     dataType: 'json'
                     data:

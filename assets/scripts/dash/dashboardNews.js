@@ -88,7 +88,7 @@
       }
       if ($.trim($("#mceNewsArea").html())) {
         return $.ajax({
-          url: this.base_url + "/post/addNews",
+          url: this.base_url + "/admin/post/postnews/addNews",
           type: 'post',
           dataType: 'json',
           data: {

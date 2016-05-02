@@ -27,7 +27,7 @@
       }
       $('.nUpload').plupload({
         runtimes: 'html5,flash,silverlight,html4',
-        url: this.base_url + '/post/CIUpload',
+        url: this.base_url + '/admin/post/postmedia/CIUpload',
         max_file_size: '4mb',
         chunk_size: '1mb',
         filters: [
@@ -99,7 +99,7 @@
       }
       if ($.trim($("#mceEmbedArea").val())) {
         return $.ajax({
-          url: this.base_url + "/post/addEmbedMedia",
+          url: this.base_url + "/admin/post/postmedia/addEmbedMedia",
           type: 'post',
           dataType: 'json',
           data: {

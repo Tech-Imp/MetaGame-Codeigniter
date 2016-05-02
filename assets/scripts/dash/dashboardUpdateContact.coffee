@@ -35,7 +35,7 @@ class dashboardUpdateContact extends window.classes.dashboardIndex
           
           if $.trim($("#mceContact").html())
                $.ajax
-                    url: @base_url+"/post/editProfile" 
+                    url: @base_url+"/admin/post/postprofile/editProfile" 
                     type: 'post'
                     dataType: 'json'
                     data:
@@ -68,7 +68,7 @@ class dashboardUpdateContact extends window.classes.dashboardIndex
           
           
           $.ajax
-               url: @base_url+"/post/deleteProfile" 
+               url: @base_url+"/admin/post/postprofile/deleteProfile" 
                type: 'post'
                dataType: 'json'
                data:

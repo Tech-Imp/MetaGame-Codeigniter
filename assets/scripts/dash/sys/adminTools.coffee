@@ -99,6 +99,7 @@ class adminTools extends window.classes.dashboardIndex
                          console.log "error"
                          @textBodyResponse(response.error,  "#roleMessage", true, "#roleArea-alert", "#saveNewContact")  
                          $("#saveNewContact").prop("disabled", false)
+                         
 
      
 window.classes ?= {}

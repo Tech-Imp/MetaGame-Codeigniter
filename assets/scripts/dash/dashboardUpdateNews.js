@@ -49,7 +49,7 @@
       }
       if ($.trim($("#mceNewsArea").html())) {
         return $.ajax({
-          url: this.base_url + "/post/saveNewsEdit",
+          url: this.base_url + "/admin/post/postnews/saveNewsEdit",
           type: 'post',
           dataType: 'json',
           data: {
@@ -84,7 +84,7 @@
         console.log("dashboardIndex.deleteMedia");
       }
       return $.ajax({
-        url: this.base_url + "/post/deleteSpecificNews",
+        url: this.base_url + "/admin/post/postnews/deleteSpecificNews",
         type: 'post',
         dataType: 'json',
         data: {

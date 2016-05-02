@@ -65,7 +65,7 @@ class dashboardNews extends window.classes.dashboardIndex
           
           if $.trim($("#mceNewsArea").html())
                $.ajax
-                    url: @base_url+"/post/addNews"
+                    url: @base_url+"/admin/post/postnews/addNews"
                     type: 'post'
                     dataType: 'json'
                     data:

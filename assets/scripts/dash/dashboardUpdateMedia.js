@@ -42,7 +42,7 @@
         console.log("dashboardUpdateMedia.saveEdits");
       }
       return $.ajax({
-        url: this.base_url + "/post/saveMediaEdit",
+        url: this.base_url + "/admin/post/postmedia/saveMediaEdit",
         type: 'post',
         dataType: 'json',
         data: {
@@ -76,7 +76,7 @@
         console.log("dashboardUpdateMedia.deleteMedia");
       }
       return $.ajax({
-        url: this.base_url + "/post/deleteSpecificMedia",
+        url: this.base_url + "/admin/post/postmedia/deleteSpecificMedia",
         type: 'post',
         dataType: 'json',
         data: {

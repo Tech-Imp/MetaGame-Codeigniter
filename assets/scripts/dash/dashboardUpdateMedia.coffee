@@ -24,7 +24,7 @@ class dashboardUpdateMedia extends window.classes.dashboardIndex
           
           
           $.ajax
-               url: @base_url+"/post/saveMediaEdit" 
+               url: @base_url+"/admin/post/postmedia/saveMediaEdit" 
                type: 'post'
                dataType: 'json'
                data:
@@ -59,7 +59,7 @@ class dashboardUpdateMedia extends window.classes.dashboardIndex
           
           
           $.ajax
-               url: @base_url+"/post/deleteSpecificMedia" 
+               url: @base_url+"/admin/post/postmedia/deleteSpecificMedia" 
                type: 'post'
                dataType: 'json'
                data:

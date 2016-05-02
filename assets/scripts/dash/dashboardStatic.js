@@ -49,7 +49,7 @@
       var myUploader;
       $('.nUpload').plupload({
         runtimes: 'html5,flash,silverlight,html4',
-        url: this.base_url + '/post/CIUpload',
+        url: this.base_url + '/admin/post/postmedia/CIUpload',
         max_file_size: '4mb',
         chunk_size: '1mb',
         filters: [
@@ -93,7 +93,7 @@
       }
       if ($.trim($("#mceContact").html())) {
         return $.ajax({
-          url: this.base_url + "/post/addProfile",
+          url: this.base_url + "/admin/post/postprofile/addProfile",
           type: 'post',
           dataType: 'json',
           data: {

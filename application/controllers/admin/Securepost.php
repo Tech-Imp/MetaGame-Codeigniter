@@ -8,7 +8,6 @@ class Securepost extends MY_Controller{
 
 //-----------------------------------------------------------------------------------------------------
 //SECTION RELATED FEATURES
-//
 //-------------------------------------------------------------------------------------------------------	
 	function addSection(){
 		header('content-type: text/javascript');

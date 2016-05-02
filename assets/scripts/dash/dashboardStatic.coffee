@@ -35,7 +35,7 @@ class dashboardStatic extends window.classes.dashboardIndex
      saveAvatar:()=>
        $('.nUpload').plupload
                runtimes: 'html5,flash,silverlight,html4'
-               url: @base_url+'/post/CIUpload'
+               url: @base_url+'/admin/post/postmedia/CIUpload'
                max_file_size: '4mb'
                chunk_size: '1mb'
                filters: [
@@ -74,7 +74,7 @@ class dashboardStatic extends window.classes.dashboardIndex
           
           if $.trim($("#mceContact").html())
                $.ajax
-                    url: @base_url+"/post/addProfile"
+                    url: @base_url+"/admin/post/postprofile/addProfile"
                     type: 'post'
                     dataType: 'json'
                     data:
