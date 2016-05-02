@@ -19,7 +19,8 @@ class Media_model extends MY_Model{
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
 		if($id===NULL){
-			$this->db->where('mediaType !=', 'profilePic');
+			$this->db->where('mediaType !=', 'avatar');
+               $this->db->where('mediaType !=', 'logo');
 		}
 		//Only limit view if not superadmin
 		if($myRole<$this->config->item('superAdmin')){
@@ -30,7 +31,8 @@ class Media_model extends MY_Model{
 	public function getMediaCount($here=null){
 		$myRole=$this->session->userdata('role');
 		$myID=$this->session->userdata('id');
-		$this->db->where('mediaType !=', 'profilePic');
+		$this->db->where('mediaType !=', 'avatar');
+		$this->db->where('mediaType !=', 'logo');
 		//Only limit view if not superadmin
 		if($myRole<$this->config->item('superAdmin')){
 			$this->db->where('author_id =', $myID);
@@ -132,15 +134,17 @@ class Media_model extends MY_Model{
 	//--------------------------------------------------------------------------------------------------------------------
 	//Get only avatars from database, use limit
 	//--------------------------------------------------------------------------------------------------------------------
-	public function getAvatar($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
+	public function getAvatarLogo($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
 		$this->db->where('fileLoc !=', '');
-		$this->db->where('mediaType', 'profilePic');
+		$this->db->where('mediaType', 'avatar');
+          $this->db->or_where('mediaType', 'logo');
 		return $this->getCommonMedia($id, $resultLimit, $offset, $here, NULL);
 	}
 	
-	public function getAvatarCount($here=null){
+	public function getAvatarLogoCount($here=null){
 		$this->db->where('fileLoc !=', '');
-		$this->db->where('mediaType', 'profilePic');
+		$this->db->where('mediaType', 'avatar');
+          $this->db->or_where('mediaType', 'logo');
 		return $this->getCommonCount($here, NULL);
 	}
 	//----------------------------------------------------------------------------------------------------------------------
@@ -148,7 +152,8 @@ class Media_model extends MY_Model{
 	//--------------------------------------------------------------------------------------------------------------------
 	public function getFrontMedia($id=NULL ,$vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
 		if($id===NULL){
-			$this->db->where('mediaType !=', 'profilePic');
+			$this->db->where('mediaType !=', 'avatar');
+               $this->db->where('mediaType !=', 'logo');
 		}
 		//Only limit to vintage or nonvintage when proper value
 		if($vintage != NULL){

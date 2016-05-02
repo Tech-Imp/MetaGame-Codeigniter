@@ -63,9 +63,9 @@ class dashboardStatic extends window.classes.dashboardIndex
           myUploader.bind 'BeforeUpload', (up, file)=> 
                up.settings.multipart_params= 
                     title: $("#avatarNotes").val()
-                    stub: 'Avatar upload'
+                    stub: 'Avatar/Logo upload'
                     loggedOnly: 0
-                    mediaType: "profilePic"
+                    mediaType: $("#mediaOptions").val()
                     exFlag:  $("#exclusiveFlagAvatar").val()
                     section:  $("#sectionAvatar").val()
    
@@ -97,9 +97,9 @@ class dashboardStatic extends window.classes.dashboardIndex
                          else if response.error
                               console.log "error"
                               @textBodyResponse(response.error,  "#userMessage", true, "#textArea-alert", "#saveNewContact")  
-                              $("#saveNewArticle").prop("disabled", false)
+                              $("#saveNewContact").prop("disabled", false)
           else
-               @textBodyResponse("You need to add Contact Info!", "#userMessage", true, "#textArea-alert", "#saveNewArticle")
+               @textBodyResponse("You need to add Contact Info!", "#userMessage", true, "#textArea-alert", "#saveNewContact")
      
                           
      

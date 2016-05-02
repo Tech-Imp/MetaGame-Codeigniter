@@ -77,9 +77,9 @@
         return function(up, file) {
           return up.settings.multipart_params = {
             title: $("#avatarNotes").val(),
-            stub: 'Avatar upload',
+            stub: 'Avatar/Logo upload',
             loggedOnly: 0,
-            mediaType: "profilePic",
+            mediaType: $("#mediaOptions").val(),
             exFlag: $("#exclusiveFlagAvatar").val(),
             section: $("#sectionAvatar").val()
           };
@@ -117,13 +117,13 @@
               } else if (response.error) {
                 console.log("error");
                 _this.textBodyResponse(response.error, "#userMessage", true, "#textArea-alert", "#saveNewContact");
-                return $("#saveNewArticle").prop("disabled", false);
+                return $("#saveNewContact").prop("disabled", false);
               }
             };
           })(this)
         });
       } else {
-        return this.textBodyResponse("You need to add Contact Info!", "#userMessage", true, "#textArea-alert", "#saveNewArticle");
+        return this.textBodyResponse("You need to add Contact Info!", "#userMessage", true, "#textArea-alert", "#saveNewContact");
       }
     };
 

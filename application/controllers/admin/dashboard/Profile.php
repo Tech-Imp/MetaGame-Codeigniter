@@ -25,7 +25,10 @@ class Profile extends Dash_backend{
 		
 		//TODO NEED TO alter dropdowns to accept value inputs
 		$data['validSections']=$this->dropdownSections();
-		
+		$data['mediaOptions']="<select id='mediaOptions'>
+               <option value='avatar'>Avatar</option>
+               <option value='logo'>Logo</option>
+          </select>";
 		
 		$data['exclusiveAvatar']=$this->exclusiveSelector("Avatar");
 		$data['exclusiveProfile']=$this->exclusiveSelector("Profile");
@@ -33,8 +36,8 @@ class Profile extends Dash_backend{
 		
 		$maxLimit=$this->config->item('maxAdmin');
 		// Get Avatars
-		$myMedia=$this->Media_model->getAvatar(NULL, $maxLimit, 0);
-		$maxMediaCount=$this->Media_model->getAvatarCount();
+		$myMedia=$this->Media_model->getAvatarLogo(NULL, $maxLimit, 0);
+		$maxMediaCount=$this->Media_model->getAvatarLogoCount();
 		$data['avatarTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, 0);
 		// Get profile
 		$contacts=$this->Profilepages_model->getProfile();
@@ -79,8 +82,8 @@ class Profile extends Dash_backend{
 		else {
 			//In lieu of a more succinct way to display this in the edit just use same method
 			$maxLimit=$this->config->item('maxAdmin');
-			$myMedia=$this->Media_model->getAvatar(NULL, $maxLimit, 0);
-			$maxMediaCount=$this->Media_model->getAvatarCount();
+			$myMedia=$this->Media_model->getAvatarLogo(NULL, $maxLimit, 0);
+			$maxMediaCount=$this->Media_model->getAvatarLogoCount();
 			$data['avatarTable']=$this->Dataprep_model->simpleAvatars($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, 0);
 			$allData=$this->Profilepages_model->getProfile(intval($id));
 			if(count($allData)){

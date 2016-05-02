@@ -6,7 +6,7 @@
 					<div class="panel-heading" role="tab" id="photoAvatar">
 			      		<h4 class="panel-title text-center">
 				        	<a data-toggle="collapse" data-parent="#accordion" href="#avatarController" aria-expanded="false" aria-controls="articleController">
-				          		<strong class="green"><span class='glyphicon glyphicon-camera'></span> Add Avatar Picture </strong>
+				          		<strong class="green"><span class='glyphicon glyphicon-camera'></span> Add Avatar/Logo Picture </strong>
 					        </a>
 				      	</h4>
 				    </div>
@@ -15,6 +15,8 @@
 					      	<div class="row">
 					      		<div class="col-xs-2">Stub Notes</div>
 					      		<div class="col-xs-10 col-md-4"><input type="text" class='textReq' id="avatarNotes" name="stub" value=""></div>
+					      		<div class="col-xs-2">Media type</div>
+                                        <div class="col-xs-10 col-md-4"><?php echo $mediaOptions?></div>
 					      	</div>
 					      	<?php echo $exclusiveAvatar;?>
 					      	<br>
@@ -97,6 +99,8 @@
 					      				<?php echo $validSections?>
 				      				</select>
 				      			</div>
+				      			<div class="col-xs-2">Current Logo</div>
+                                        <div class="col-xs-10 col-md-4"><input type="text" id="logoUsed" value=""></div>
 					      	</div>
 					      	<br>
 					      	<div class="row">

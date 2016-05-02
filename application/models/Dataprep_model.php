@@ -360,11 +360,11 @@ class Dataprep_model extends CI_Model{
 			$storedDate=new DateTime($row->visibleWhen);
 		}
 		// Visibility of item logic alters coloring and wording
-		if(array_key_exists('visibleWhen', $row) && $row->visibleWhen === "0000-00-00 00:00:00" && $row->mediaType!="profilePic"){
+		if(array_key_exists('visibleWhen', $row) && $row->visibleWhen === "0000-00-00 00:00:00" && $row->mediaType!="avatar" && $row->mediaType!="logo"){
 			$artVis="itemHidden";
 			$vis="Currently <span class='glyphicon glyphicon-eye-close'></span><strong>HIDDEN</strong>";
 		}
-		elseif (array_key_exists('visibleWhen', $row) && $currDate < $storedDate && $row->mediaType!="profilePic") {
+		elseif (array_key_exists('visibleWhen', $row) && $currDate < $storedDate && $row->mediaType!="avatar" && $row->mediaType!="logo") {
 			$artVis="itemTemp";
 			$vis="<span class='glyphicon glyphicon-exclamation-sign'></span> Visible on ".date("M jS, Y",strtotime($row->visibleWhen));
 		}
@@ -534,9 +534,12 @@ class Dataprep_model extends CI_Model{
 				case 'sound':
 					$mediaClass="<div><span class='glyphicon glyphicon-headphones'></span><strong> Audio </strong></div>";
 					break;
-				case 'profilePic':
+				case 'avatar':
 					$mediaClass="<div><span class='glyphicon glyphicon-user'></span><strong> Avatar </strong></div>";
 					break;
+                    case 'logo':
+                         $mediaClass="<div><span class='glyphicon glyphicon-star-empty'></span><strong> Logo </strong></div>";
+                         break;
 			}
 		}
 		elseif (array_key_exists('type', $row)) {
