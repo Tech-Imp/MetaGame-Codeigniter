@@ -27,6 +27,10 @@ class dashboardStatic extends window.classes.dashboardIndex
           $("#saveNewContact").unbind().bind "click", (event)=>
                $("#saveNewContact").prop("disabled", "disabled")    
                @saveProfile()
+          
+          $("#saveNewSocial").unbind().bind "click", (event)=>
+               $("#saveNewSocial").prop("disabled", "disabled")    
+               @saveSocial()
 
           $("#clearArticle").unbind().bind "click", (event)=>
                @cleanAreas()
@@ -100,6 +104,40 @@ class dashboardStatic extends window.classes.dashboardIndex
                               $("#saveNewContact").prop("disabled", false)
           else
                @textBodyResponse("You need to add Contact Info!", "#userMessage", true, "#textArea-alert", "#saveNewContact")
+     
+     
+     saveSocial:()=>
+          if @debug then console.log "dashboardStatic.saveProfile"
+          
+          $.ajax
+               url: @base_url+"/admin/post/postprofile/addSocial"
+               type: 'post'
+               dataType: 'json'
+               data:
+                    target: $('#socialTarget').val()
+                    logoID: $('#logoUsed').val()
+                    facebook: $('#facebookSocial').val()
+                    youtube: $('#youtubeSocial').val()
+                    twitter: $('#twitterSocial').val()
+                    tumblr: $('#tumblrSocial').val()
+                    email: $('#emailSocial').val()
+                    twitch: $('#twitchSocial').val()
+                    bodyText: $('#mceSocial').html()
+                    section: $('#sectionSocial').val()
+                    exFlag: $('#exclusiveFlagSocial').val()
+               success: (response)=>
+                    if response.success
+                         console.log "Success"
+                         @cleanAreas()
+                         @textBodyResponse("Social Info added to the database", "#socialMessage", false, "#socialArea-alert", "#saveNewContact")
+                         $("#saveNewSocial").prop("disabled", false)
+                    else if response.debug
+                         console.log "debug"
+                         $("#saveNewSocial").prop("disabled", false)
+                    else if response.error
+                         console.log "error"
+                         @textBodyResponse(response.error,  "#socialMessage", true, "#socialArea-alert", "#saveNewContact")  
+                         $("#saveNewSocial").prop("disabled", false)
      
                           
      

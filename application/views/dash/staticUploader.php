@@ -100,34 +100,34 @@
 				      				</select>
 				      			</div>
 				      			<div class="col-xs-2">Current Logo</div>
-                                        <div class="col-xs-10 col-md-4"><input type="text" id="logoUsed" value=""></div>
+                                        <div class="col-xs-10 col-md-4"><input type="text" class="cleanMe" id="logoUsed" value=""></div>
 					      	</div>
 					      	<br>
 					      	<div class="row">
 					      		<div class="col-xs-2">Facebook:</div>
-					      		<div class="col-xs-10 col-md-4"><input type="text" id="facebookSocial" value=""></div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" class="cleanMe" id="facebookSocial" value=""></div>
 					      		<div class="col-xs-2">Youtube:</div>
-					      		<div class="col-xs-10 col-md-4"><input type="text" id="youtubeSocial" value=""></div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" class="cleanMe" id="youtubeSocial" value=""></div>
 					      	</div>
 							<br>
 							<div class="row">
 					      		<div class="col-xs-2">Twitter:</div>
-					      		<div class="col-xs-10 col-md-4"><input type="text" id="twitterSocial" value=""></div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" class="cleanMe" id="twitterSocial" value=""></div>
 					      		<div class="col-xs-2">Tumblr:</div>
-					      		<div class="col-xs-10 col-md-4"><input type="text" id="tumblrSocial" value=""></div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" class="cleanMe" id="tumblrSocial" value=""></div>
 					      	</div>
 					      	<br>
 					      	<div class="row">
 					      		<div class="col-xs-2">Email:</div>
-					      		<div class="col-xs-10 col-md-4"><input type="text" id="emailSocial" value=""></div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" class="cleanMe" id="emailSocial" value=""></div>
 					      		<div class="col-xs-2">Twitch:</div>
-					      		<div class="col-xs-10 col-md-4"><input type="text" id="twitchSocial" value=""></div>
+					      		<div class="col-xs-10 col-md-4"><input type="text" class="cleanMe" id="twitchSocial" value=""></div>
 					      	</div>
 					      	<?php echo $exclusiveSocial;?>
 							<h3>Social Info (Used only for subsections)</h3>
-							<div class="alert alert-danger noshow" id="textArea-alert">
+							<div class="alert alert-danger noshow" id="socialArea-alert">
     							<button type="button" class="close" data-dismiss="alert">x</button>
-    							<strong id="userMessage">You need to add Social Info </strong>
+    							<strong id="socialMessage">You need to add Social Info </strong>
 							</div>
 					      	<textarea name="MCEarea" class='cleanMe' cols="40" rows="10" id="mceSocial" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
 					       	<br>

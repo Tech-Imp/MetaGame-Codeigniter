@@ -11,6 +11,7 @@
     dashboardStatic.prototype.debug = true;
 
     function dashboardStatic() {
+      this.saveSocial = bind(this.saveSocial, this);
       this.saveProfile = bind(this.saveProfile, this);
       this.saveAvatar = bind(this.saveAvatar, this);
       this.setupEvents = bind(this.setupEvents, this);
@@ -36,6 +37,12 @@
         return function(event) {
           $("#saveNewContact").prop("disabled", "disabled");
           return _this.saveProfile();
+        };
+      })(this));
+      $("#saveNewSocial").unbind().bind("click", (function(_this) {
+        return function(event) {
+          $("#saveNewSocial").prop("disabled", "disabled");
+          return _this.saveSocial();
         };
       })(this));
       return $("#clearArticle").unbind().bind("click", (function(_this) {
@@ -125,6 +132,47 @@
       } else {
         return this.textBodyResponse("You need to add Contact Info!", "#userMessage", true, "#textArea-alert", "#saveNewContact");
       }
+    };
+
+    dashboardStatic.prototype.saveSocial = function() {
+      if (this.debug) {
+        console.log("dashboardStatic.saveProfile");
+      }
+      return $.ajax({
+        url: this.base_url + "/admin/post/postprofile/addSocial",
+        type: 'post',
+        dataType: 'json',
+        data: {
+          target: $('#socialTarget').val(),
+          logoID: $('#logoUsed').val(),
+          facebook: $('#facebookSocial').val(),
+          youtube: $('#youtubeSocial').val(),
+          twitter: $('#twitterSocial').val(),
+          tumblr: $('#tumblrSocial').val(),
+          email: $('#emailSocial').val(),
+          twitch: $('#twitchSocial').val(),
+          bodyText: $('#mceSocial').html(),
+          section: $('#sectionSocial').val(),
+          exFlag: $('#exclusiveFlagSocial').val()
+        },
+        success: (function(_this) {
+          return function(response) {
+            if (response.success) {
+              console.log("Success");
+              _this.cleanAreas();
+              _this.textBodyResponse("Social Info added to the database", "#socialMessage", false, "#socialArea-alert", "#saveNewContact");
+              return $("#saveNewSocial").prop("disabled", false);
+            } else if (response.debug) {
+              console.log("debug");
+              return $("#saveNewSocial").prop("disabled", false);
+            } else if (response.error) {
+              console.log("error");
+              _this.textBodyResponse(response.error, "#socialMessage", true, "#socialArea-alert", "#saveNewContact");
+              return $("#saveNewSocial").prop("disabled", false);
+            }
+          };
+        })(this)
+      });
     };
 
     return dashboardStatic;
