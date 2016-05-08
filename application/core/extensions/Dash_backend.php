@@ -108,7 +108,7 @@ class Dash_backend extends Admin_controller{
 //---------------------------------------------------------------------------------------	
 	protected function adminHeader()
 	{
-		if($this->session->userdata('role') >= $this->config->item('superAdmin')){
+		if($this->session->userdata('role') >= $this->config->item('sectionAdmin')){
 			$data['css'][0]="main.css";
 			$data['site_name']=config_item('site_name');
 			$data['title']="System Management";

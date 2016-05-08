@@ -26,6 +26,14 @@ class User_model extends MY_Model{
 		return $this->get($id);
 		
 	}
+//------------------------------------------------------------
+//Get all users 
+//-----------------------------------------------------------    
+     private function getInternal($id=NULL){
+          $myRole=$this->session->userdata('role');
+          $this->joinTable("auth_role",  "id", "id", "name, email, id" , "role, comment, active");
+          return $this->get($id);
+     }
 //-------------------------------------------------------------------------------------------------------
 //Get users that are above a rank
 //-------------------------------------------------------------------------------------------------------	
@@ -35,6 +43,6 @@ class User_model extends MY_Model{
 			$rank=0;
 		}
 		$this->db->where('auth_role.role >=', $rank);
-		return $this->getUsers();
+		return $this->getInternal();
 	} 
 }
