@@ -4,19 +4,19 @@ class Admin_model extends MY_Model{
      protected $_table_name='users';
 	protected $_primary_key='id';
 	protected $_primary_filter='intval';
-	protected $_order_by='id';
+	protected $_order_by='id ASC';
 	protected $_timestamp='FALSE';
 	
 	public $rules=array(
 		'password'=>array(
 			'field'=>'password', 
 			'label'=>'New Password', 
-			'rules'=>'trim|required|xss_clean|min_length[3]'
+			'rules'=>'trim|required|min_length[3]'
 		),
 		'passConfirm'=>array(
 			'field'=>'passConfirm', 
 			'label'=>'Retype Password', 
-			'rules'=>'trim|required|xss_clean|matches[password]'
+			'rules'=>'trim|required|matches[password]'
 		)
 	);
 	
@@ -24,27 +24,27 @@ class Admin_model extends MY_Model{
 		'name'=>array(
 			'field'=>'name', 
 			'label'=>'Name', 
-			'rules'=>'trim|required|xss_clean|max_length[100]'
+			'rules'=>'trim|required|max_length[100]'
 		),
 		'email'=>array(
 			'field'=>'email', 
 			'label'=>'Email', 
-			'rules'=>'trim|required|valid_email|xss_clean|max_length[130]|is_unique[users.email]'
+			'rules'=>'trim|required|valid_email|max_length[130]|is_unique[users.email]'
 		),
 		'emailVerify'=>array(
 			'field'=>'emailVerify', 
 			'label'=>'Retype Email', 
-			'rules'=>'trim|required|valid_email|xss_clean|matches[email]'
+			'rules'=>'trim|required|valid_email|matches[email]'
 		),
 		'password'=>array(
 			'field'=>'password', 
 			'label'=>'Password', 
-			'rules'=>'trim|required|xss_clean|min_length[10]|max_length[100]'
+			'rules'=>'trim|required|min_length[10]|max_length[100]'
 		),
 		'passConfirm'=>array(
 			'field'=>'passConfirm', 
 			'label'=>'Retype Password', 
-			'rules'=>'trim|required|xss_clean|matches[password]'
+			'rules'=>'trim|required|matches[password]'
 		),
 		'captcha'=>array(
 			'field'=>'g-recaptcha-response', 
@@ -52,7 +52,23 @@ class Admin_model extends MY_Model{
 			'rules'=>'required'
 		)
 	);
-	
+	public $adminRules=array(
+          'name'=>array(
+               'field'=>'name', 
+               'label'=>'Name', 
+               'rules'=>'trim|required|max_length[100]'
+          ),
+          'email'=>array(
+               'field'=>'email', 
+               'label'=>'Email', 
+               'rules'=>'trim|required|valid_email|max_length[130]|is_unique[users.email]'
+          ),
+          'emailVerify'=>array(
+               'field'=>'emailVerify', 
+               'label'=>'Retype Email', 
+               'rules'=>'trim|required|valid_email|matches[email]'
+          )
+     );
 	
 	
 	function __construct(){
@@ -202,8 +218,6 @@ class Admin_model extends MY_Model{
 //--------------------------------------------------------------------------------------
 
 	public function signUp(){
-		$this->load->model("Errorlog_model");
-		$this->load->model("Logging_model");	  
 		$newPass=FALSE;
 		$newPass= $this->input->post('password');
 		$newEmail=FALSE;
@@ -211,37 +225,107 @@ class Admin_model extends MY_Model{
 		$newName=FALSE;
 		$newName= $this->input->post('name');
 		
-		
-		$precheck=$this->get_by(array("email" => $newEmail));
-		if(count($precheck)){
-			$this->Errorlog_model->newLog(NULL, 'aUsr', 'Critical Failure. Email ('.$newEmail.') already exists in system.');
-			return FALSE;
-		}
-		$data=array(
-						'name'=> $newName,
-						'email'=> $newEmail,
-					);
-		$newID=$this->save($data);
-		$logID=$this->Logging_model->newLog($newID, 'aUsr', '!!! INCREMENTAL User '.$newName.'('.$newEmail.')  being added');  
-		if($newID !== 0 && $newID!==FALSE){
-			$this->Logging_model->incrementalLog($logID, 'aUsr', '!! INCREMENTAL User '.$newName.'('.$newEmail.') about to get salt');  
-			$newSalt=$this->fixSalt($newID, TRUE);
-			if($newSalt !== NULL){
-				$data['password']=$this->hashP($newPass, $newSalt);
-				$newID=$this->save($data, $newID);
-				
-				$this->Logging_model->incrementalLog($logID, 'aUsr', 'User '.$newName.'('.$newEmail.') added to database successfully');  
-				return TRUE;
-			}
-			else{
-				$this->Errorlog_model->newLog($newID, 'aUsr', 'Critical Failure. Salt failed');
-				return FALSE;
-			}
-		}
-		else{
-			$this->Errorlog_model->newLog($newID, 'aUsr', 'Critical Failure. Was unable to retrieve ID of user in database.');
-			return FALSE;
-		}
+		return $this->createUserEntry($newName, $newEmail, $newPass);
 	}
 
+     public function adminSignUp(){
+          // Generate a random enough password
+          $newPass=bin2hex(openssl_random_pseudo_bytes(12));
+          $newEmail=FALSE;
+          $newEmail= $this->input->post('email');
+          $newName=FALSE;
+          $newName= $this->input->post('name');
+          
+          return $this->createUserEntry($newName, $newEmail, $newPass, true);
+          
+     }
+     
+     private function createUserEntry($newName, $newEmail, $newPass, $adminGen=false){
+          $this->load->model("Errorlog_model");
+          $this->load->model("Logging_model"); 
+          $precheck=$this->get_by(array("email" => $newEmail));
+          if(count($precheck)){
+               $this->Errorlog_model->newLog(NULL, 'aUsr', 'Critical Failure. Email ('.$newEmail.') already exists in system.');
+               return FALSE;
+          }
+          $data=array(
+                              'name'=> $newName,
+                              'email'=> $newEmail,
+                         );
+          $newID=$this->save($data);
+          $logID=$this->Logging_model->newLog($newID, 'aUsr', '!!! INCREMENTAL User '.$newName.'('.$newEmail.')  being added');  
+          if($newID !== 0 && $newID!==FALSE){
+               $this->Logging_model->incrementalLog($logID, 'aUsr', '!! INCREMENTAL User '.$newName.'('.$newEmail.') about to get salt');  
+               $newSalt=$this->fixSalt($newID, TRUE);
+               if($newSalt !== NULL){
+                    $data['password']=$this->hashP($newPass, $newSalt);
+                    $newID=$this->save($data, $newID);
+                    
+                    $this->Logging_model->incrementalLog($logID, 'aUsr', 'User '.$newName.'('.$newEmail.') added to database successfully');  
+                    $this->generateCreationEmail($newEmail, $newPass, $newID, $adminGen);
+                    return TRUE;
+               }
+               else{
+                    $this->Errorlog_model->newLog($newID, 'aUsr', 'Critical Failure. Salt failed');
+                    return FALSE;
+               }
+          }
+          else{
+               $this->Errorlog_model->newLog($newID, 'aUsr', 'Critical Failure. Was unable to retrieve ID of user in database.');
+               return FALSE;
+          }
+     }
+
+//----------------------------------------------------------------------------------------------------------------
+//Email functions
+//---------------------------------------------------------------------------------------------------------------
+     public function generateCreationEmail($email, $pass, $id=-1, $sendPass=FALSE){
+          
+          $message="";
+          $message.="Greetings! \n";
+          $message.="An account has been created with this email: ".$email."\n";
+          $message.="\n";
+          if($sendPass){
+               $message.="A password was randomly generated for you. It is purposely long so that you will change it upon login. \n";
+               $message.="Please consider using a passphrase made up of several words to make it easy to remember, and hard to crack. \n\n";
+               $message.="Password: ".$pass;
+               $message.="\n\n";
+               $message.="Please copy and paste to avoid errors.";
+               $message.="\n\n";
+          }
+          $message.="You can log into the site at www.meta-game.net/login";
+          $message.="\n\n";
+          $message.="This email was sent from an automated system. Please do not attempt to write back, as no one will respond.";
+          
+          $this->generateEmail($email, $message, $id, "An account has been created for you at Meta-game.net");
+     }
+     
+     private function generateEmail($recip=NULL, $message=NULL, $id=-1, $subject="META-GAME Auto-generated System message"){
+          $this->load->model("Errorlog_model");
+          $this->load->model("Logging_model");
+          
+          if($recip!==NULL && $message!==NULL){
+               $this->load->library('email');
+               
+               $this->email->clear(TRUE);
+               
+               $this->email->from('system@meta-game.net', 'NO-REPLY');
+               $this->email->to($recip); 
+               // $this->email->bcc('them@their-example.com'); 
+               
+               $this->email->subject($subject);
+               $this->email->message($message);     
+               
+               if($this->email->send()){
+                    $this->Logging_model->newLog($id, 'sEma', 'Email -'.$subject.'- to ('.$recip.')sent successfully'); 
+               }
+               else{
+                    // Write out a log with truncation in effect (max size is 300)
+                    $this->Errorlog_model->newLog($id, 'sEma', 'Email Failed, Debug: '.substr($this->email->print_debugger(),0,270)."XX"); 
+               }
+          }
+          else{
+               $this->Errorlog_model->newLog($id, 'sEma', 'Generate email failed. There was a lack of an email address or message');
+          }
+     }
 }

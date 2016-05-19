@@ -26,8 +26,10 @@ class Tools extends Dash_backend{
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
 		
-          
-		
+          $data['createUserLink']="";
+		if($this->session->userdata('role') >= $this->config->item('sectionAdmin')){
+               $data['createUserLink']=anchor('admin/systems/tools/createuser',"<span class='glyphicon glyphicon-user'></span> Create User", array('class'=>'btn btn-success btn-lg btn-block', 'id'=>'cNewUser'));
+          }
 		//Logging of recent items
 		$types=array("aSec", "dSec", "uAdd", "uDel");
           $logs=$this->Logging_model->getTypeLogs($types,15,0);
@@ -136,7 +138,28 @@ class Tools extends Dash_backend{
           $this->load->view('inc/dash_footer', $data);
           $this->load->view('templates/footer', $data);
      }
-
+     public function createUser(){
+          $data=$this->adminHeader();
+          $dashboard='admin/systems/tools';
+          $this->load->model("Admin_model");
+          
+          $rules=$this->Admin_model->adminRules;
+          $this->form_validation->set_rules($rules);
+          if($this->form_validation->run() == TRUE){
+               $userIp=$this->input->ip_address();
+               if($this->Admin_model->adminSignUp()==TRUE){
+                    redirect($dashboard);
+               }
+               else{
+                    $this->session->set_flashdata('error', 'Error with setting up account. Please try later.');
+                    redirect('signup', 'refresh');
+               }
+               $this->session->set_flashdata('error', 'SUCCESS');
+          }
+          $this->load->view('templates/header', $data);
+          $this->load->view('sys/signup_user');
+          $this->load->view('templates/footer', $data);
+     }
 
 //--------------------------------------------------------------------------------------
 //Helper functions

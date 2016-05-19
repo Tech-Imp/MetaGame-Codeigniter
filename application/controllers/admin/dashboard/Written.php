@@ -11,6 +11,7 @@ class Written extends Dash_backend{
 //------------------------------------------------------------------------------------------------------------------------------------
 	
 	public function index(){
+	     $this->secureArea();
 		$this->load->model('Article_model');
 		$this->load->model('Dataprep_model');
 		$data=$this->commonHeader();
@@ -47,6 +48,7 @@ class Written extends Dash_backend{
 	}
 	
 	public function editWritten($id=NULL){
+	     $this->secureArea();
 		$this->load->model('Article_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';

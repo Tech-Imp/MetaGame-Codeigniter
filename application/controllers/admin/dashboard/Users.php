@@ -97,6 +97,7 @@ class Users extends Dash_backend{
 //------------------------------------------------------------------------------------------------------------------------
 	
 	public function listUsers(){
+	     $this->secureArea();
 		$this->load->model('Admin_model');
 		$data=$this->commonHeader();
 		$userRecords=$this->Admin_model->getUsers();

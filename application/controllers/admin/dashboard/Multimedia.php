@@ -12,6 +12,7 @@ class Multimedia extends Dash_backend{
 //------------------------------------------------------------------------------------------------------------------------------
 	
 	public function index(){
+	     $this->secureArea();
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
 		$data=$this->commonHeader();
@@ -49,6 +50,7 @@ class Multimedia extends Dash_backend{
 	}
 
 	public function editMedia($id=NULL){
+	     $this->secureArea();
 		$this->load->model('Media_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'dash/dashboardIndex.js';

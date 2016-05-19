@@ -142,6 +142,8 @@ class Dash_backend extends Admin_controller{
 	
 		return $userOptions;
 	}
-	
+	protected function secureArea(){
+	     $this->protectedArea($this->config->item('contributor'), 'admin/dashboard');
+	}
 	
 }

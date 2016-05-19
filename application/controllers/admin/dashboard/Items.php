@@ -12,6 +12,7 @@ class Items extends Dash_backend{
 //
 //----------------------------------------------------------------------------------------------------------------------------
 	public function index(){
+	     $this->secureArea();
 		$this->load->model('Admin_model');
 		$data=$this->commonHeader();
 		$data['currentLocation']="<div class='navbar-brand'>Product Dashboard</div>";

@@ -81,4 +81,9 @@ class MY_Controller extends CI_Controller{
                return "";
           }
      }
+     protected function protectedArea($minRank=1, $redirect=""){
+          if($this->session->userdata('role') < $minRank){
+               redirect($redirect);
+          }
+     }
 }

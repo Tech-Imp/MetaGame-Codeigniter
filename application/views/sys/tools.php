@@ -142,6 +142,23 @@
 				      	
 				      	</div>
 				    </div>
+				    <!-- Add internal user-->
+                        <div class="panel-heading" role="tab" id="visibilityAdd">
+                              <h4 class="panel-title text-center">
+                              <a data-toggle="collapse" data-parent="#accordion" href="#newUserController" aria-expanded="false" aria-controls="newUserController">
+                                        <strong class="green"><span class='glyphicon glyphicon-user'></span> Add new user account </strong>
+                                 </a>
+                              </h4>
+                        </div>
+                        <div id="newUserController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="visibilityAdd">
+                              <div class="panel-body">
+                                   This will allow a new user to be created. It will default them to basic login rights. 
+                                   <br>
+                                   Contact site admin to have those privledges elevated.
+                                   <br>
+                                   <?php echo $createUserLink?>
+                              </div>
+                        </div>
 				</div>
 			</div>
 		</div>

@@ -10,6 +10,7 @@ class Profile extends Dash_backend{
 //Profile Specific
 //---------------------------------------------------------------------------------------------------------------------------------	
 	public function index(){
+	     $this->secureArea();
 		$this->load->model('Media_model');
 		$this->load->model('Profilepages_model');
 		$this->load->model('Subpages_model');
@@ -65,6 +66,7 @@ class Profile extends Dash_backend{
 	}
 
 	public function editProfile($id=NULL){
+	     $this->secureArea();
 		$this->load->model('Media_model');
 		$this->load->model('Profilepages_model');
 		$this->load->model('Dataprep_model');
