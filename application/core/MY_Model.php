@@ -58,9 +58,11 @@ class MY_Model extends CI_Model{
 			$now=date('Y-m-d H:i:s');
 			if($id===NULL){
 				$data['created']=$now;
+                    $data['author_id']=$this->session->userdata('id');
 			}
 			else{
 				$data['modified']=$now;
+                    $data['modified_by']=$this->session->userdata('id');
 			}
 		}
 			

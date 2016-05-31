@@ -58,6 +58,8 @@ class adminTools extends window.classes.dashboardIndex
                          section: $('#secName').val()
                          usage: $('#sectionUsage').html()
                          sub_dir: $('#secDir').val()
+                         visibility: $("#linkVis").val()
+                         where: $("#linkLoc").val()
                               
                     success: (response)=>
                          if response.success

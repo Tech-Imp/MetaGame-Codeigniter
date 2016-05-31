@@ -34,12 +34,10 @@ class Vendor_model extends MY_Model{
 	
 	
 	public function saveContact($body, $title='', $id=NULL){
-		$myID=$this->session->userdata('id');
 			
 		$data=array(
 			'title'=>$title,
 			'page'=>'contact',
-			'author_id'=>$myID,
 			'body'=>$body,
 		); 
 		

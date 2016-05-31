@@ -5,7 +5,7 @@ class Admin_model extends MY_Model{
 	protected $_primary_key='id';
 	protected $_primary_filter='intval';
 	protected $_order_by='id ASC';
-	protected $_timestamp='FALSE';
+	protected $_timestamp=FALSE;
 	
 	public $rules=array(
 		'password'=>array(

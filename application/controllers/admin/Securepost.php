@@ -18,6 +18,8 @@ class Securepost extends MY_Controller{
 		
 		$section = $this->simplePurify($this->input->post('section'));
 		$sub_dir = $this->simplePurify($this->input->post('sub_dir'));
+          $vis = intval($this->input->post('visibility'));
+          $bindToParent = $this->simplePurify($this->input->post('where'));
 		$uncleanUsage = $this->input->post('usage');
 		
 		if($myRole< $this->config->item('sectionAdmin')){
@@ -41,7 +43,15 @@ class Securepost extends MY_Controller{
 		
 		
 		$this->load->model("SectionAuth_model");
-          $result=$this->SectionAuth_model->saveSubsection($sub_dir, $section, $clean_html);
+          //Determine parent that holds the link is valid
+          if(!$this->verifySection($bindToParent)){
+               $data=array('error' => "Invalid section ");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog(-1, 'aSec', 'Failed to create section. Parent section invalid. User role '.$myRole.' Section '.$bindToParent);  
+               echo json_encode($data);
+               exit; 
+          } 
+          $result=$this->SectionAuth_model->saveSubsection($sub_dir, $section, $clean_html, $vis, $bindToParent);
 		$this->SectionAuth_model->addUserToSection($author, $sub_dir);
 		
 		$this->load->model("Logging_model");

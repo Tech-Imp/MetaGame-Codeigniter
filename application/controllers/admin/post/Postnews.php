@@ -23,7 +23,7 @@ class Postnews extends MY_Controller{
 		$stub = $this->simplePurify($this->input->post('stub')); 
       	$visibleWhen = $this->simplePurify($this->input->post('visibleWhen'));
 		$uncleanText = $this->input->post('bodyText');
-		$author =$this->simplePurify( $this->session->userdata('id'));
+		// $author =$this->simplePurify( $this->session->userdata('id'));
 		$type=$this->simplePurify($this->input->post('type'));
 		
 		if($myRole < $this->config->item('contributor')){
@@ -56,7 +56,7 @@ class Postnews extends MY_Controller{
 		} 
 		
 		$this->load->model("Article_model");
-        $result=$this->Article_model->postArticles($author, $visibleWhen, $title, $stub, $clean_html, NULL, $exFlag, $section, $type);
+          $result=$this->Article_model->postArticles($visibleWhen, $title, $stub, $clean_html, NULL, $exFlag, $section, $type);
 		$this->load->model("Logging_model");
 		$this->Logging_model->newLog($result, 'aNew', 'News item '.$title.' ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')');  
 		
@@ -128,7 +128,7 @@ class Postnews extends MY_Controller{
 		// Verify user has rights to media
 		$verify=$this->Article_model->get($newsID, TRUE);
 		if($verify->author_id==$myID || $myRole>$this->config->item('sectionAdmin')){
-			$result=$this->Article_model->postArticles($verify->author_id, $visibleWhen, $title, $stub, $clean_html, $newsID, $exFlag, $section, $type);
+			$result=$this->Article_model->postArticles($visibleWhen, $title, $stub, $clean_html, $newsID, $exFlag, $section, $type);
 			$this->load->model("Logging_model");
 			$this->Logging_model->newLog($result, 'eNew', 'News item '.$title.' ('.$result.') edit saved successfully by '.$myName.'('.$myEmail.')');  
 			$data=array('success' => $result);

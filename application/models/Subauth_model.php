@@ -15,12 +15,10 @@ class Subauth_model extends MY_Model{
 	
 	
 	public function saveSubAuth($user, $section, $id=NULL){
-		$myID=$this->session->userdata('id');
 				
 		$data=array(
 			'sub_dir'=>$section,
 			'user_id'=>$user,
-			'author_id' => $myID,
 		); 
 		
 

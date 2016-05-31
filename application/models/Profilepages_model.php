@@ -15,12 +15,10 @@ class Profilepages_model extends MY_Model{
 	
 	
 	public function saveProfile($title='', $profileName, $body, $exFlag, $section, $avatarID, $id=NULL){
-		$myID=$this->session->userdata('id');
 			
 		$data=array(
 			'title'=>$title,
 			'profileName'=>$profileName,
-			'author_id'=>$myID,
 			'body'=>$body,
 			'exclusiveSection'=>$exFlag,
 			'forSection'=>$section,

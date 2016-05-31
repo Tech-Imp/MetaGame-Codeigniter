@@ -13,14 +13,14 @@ class SectionAuth_model extends MY_Model{
 	}
 	
 	
-	public function saveSubsection($section, $name=NULL, $about=NULL, $id=NULL){
-		$myID=$this->session->userdata('id');
+	public function saveSubsection($section, $name=NULL, $about=NULL, $vis=0, $parent="", $id=NULL){
 				
 		$data=array(
 			'sub_name'=>$name,
 			'sub_dir'=>$section,
 			'usage'=>$about,
-			'author_id' => $myID,
+			'visible'=>$vis,
+			'forSection'=>$parent,
 		); 
 
 		$rowId=$this->save($data, $id);

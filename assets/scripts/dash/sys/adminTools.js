@@ -78,7 +78,9 @@
           data: {
             section: $('#secName').val(),
             usage: $('#sectionUsage').html(),
-            sub_dir: $('#secDir').val()
+            sub_dir: $('#secDir').val(),
+            visibility: $("#linkVis").val(),
+            where: $("#linkLoc").val()
           },
           success: (function(_this) {
             return function(response) {

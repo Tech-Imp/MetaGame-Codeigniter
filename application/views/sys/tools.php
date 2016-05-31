@@ -86,16 +86,37 @@
 			      		<div class="panel-body">
 					      	
 					      	<div class="row">
-					      		<div class="col-xs-2">Name of new section:</div>
+					      		<div class="col-xs-2"><strong>Name of new section:</strong></div>
 					      		<div class="col-xs-10 col-md-4"><input type="text" id="secName" class="textReq" value=""></div>
 					      		<div class="col-xs-12 col-md-6">This is the name as it will appear in the dropdowns.</div>
 					      	</div>
 							<br>
 							<div class="row">
-					      		<div class="col-xs-2">www.meta-game.net/</div>
+					      		<div class="col-xs-2"><strong>www.meta-game.net/</strong></div>
 					      		<div class="col-xs-10 col-md-4"><input type="text" id="secDir" class="textReq" placeholder="YOUR STUFF"></div>
 					      		<div class="col-xs-12 col-md-6">The sudirectory address to reach your stuff directly. (ie meta-game.net/main)</div>
 					      	</div>
+					      	<br>
+					      	<div class="row">
+                                        <div class="col-xs-2"><strong>Visible in links?</strong></div>
+                                        <div class="col-xs-10 col-md-4">
+                                             <select id='linkVis'>
+                                                  <?php echo $linkVisibility?>
+                                             </select>
+                                        </div>
+                                        <div class="col-xs-12 col-md-6">Determines if a section will appear on right hand side for easy access</div>
+                                   </div>
+                                   <br>
+					      	<div class="row">
+                                        <div class="col-xs-2"><strong>Link on where?</strong></div>
+                                        <div class="col-xs-10 col-md-4">
+                                             <select id='linkLoc'>
+                                                  <option value="">MAIN</option>
+                                                  <?php echo $sectionList?>
+                                             </select>
+                                        </div>
+                                        <div class="col-xs-12 col-md-6">Determines which section that link would be visible on as a shortcut</div>
+                                   </div>
 					      	<br>
 							<h3>Usage (what this section is for):</h3>
 							<div class="alert alert-danger noshow" id="sectionArea-alert">

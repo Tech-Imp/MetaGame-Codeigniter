@@ -50,6 +50,9 @@ class Tools extends Dash_backend{
 		$controlled=$this->SectionAuth_model->getSectionControl();
 		$data['sectionTable']=$this->Adminprep_model->getSectionControlled($controlled);
 		
+          //Generate Yes/no for visibility
+          $data["linkVisibility"]=$this->dropdownOptions(NULL, array("Yes", "No"), array(1,0));
+          
 		$this->load->view('sys/tools', $data);
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);
@@ -146,7 +149,7 @@ class Tools extends Dash_backend{
           $rules=$this->Admin_model->adminRules;
           $this->form_validation->set_rules($rules);
           if($this->form_validation->run() == TRUE){
-               $userIp=$this->input->ip_address();
+               // $userIp=$this->input->ip_address();
                if($this->Admin_model->adminSignUp()==TRUE){
                     redirect($dashboard);
                }

@@ -15,7 +15,6 @@ class Subpages_model extends MY_Model{
 	
 	
 	public function saveSocial($forWho='self', $logoID='', $facebook='', $youtube='', $twitter='', $tumblr='', $twitch='', $email='', $body='',  $exFlag, $section, $id=NULL){
-		$myID=$this->session->userdata('id');
 				
 		$data=array(
                'sub_dir'=>$forWho,
@@ -27,8 +26,6 @@ class Subpages_model extends MY_Model{
 			'twitch'=>$twitch,
 			'email'=>$email,
 			'body'=>$body,
-			
-			'author_id' => $myID,
 			'forSection' => $section,
 			'exclusiveSection'=>$exFlag,
 		); 
