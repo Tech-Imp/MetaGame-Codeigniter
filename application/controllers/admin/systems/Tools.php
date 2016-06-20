@@ -52,7 +52,7 @@ class Tools extends Dash_backend{
 		
           //Generate Yes/no for visibility
           $data["linkVisibility"]=$this->dropdownOptions(NULL, array("Yes", "No"), array(1,0));
-          
+          // var_dump($this->SectionAuth_model->getQuicklinks());
 		$this->load->view('sys/tools', $data);
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);

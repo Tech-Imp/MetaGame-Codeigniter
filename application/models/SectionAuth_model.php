@@ -27,15 +27,22 @@ class SectionAuth_model extends MY_Model{
 		
 		return $rowId;
 	}
-	public function getSectionControl($id=NULL){
-		$myID=$this->session->userdata('id');
-		$myRole=$this->session->userdata('role');
-		if($myRole< $this->config->item('superAdmin')){
-			$this->db->where("author_id", $myID);
-		}
-		$this->joinTable("users",  "author_id", "id", "*", "name, email");
+	public function getQuicklinks($id=null){
+		$this->restrictSect(NULL, FALSE, $this->_table_name);
+		$this->db->where($this->_table_name.".visible", 1);
+		$this->joinTable("sub_info_database",  "sub_dir", "sub_dir", "sub_name, sub_dir, usage", "*");
+          $this->joinTable("media_database",  "logoID", "media_id", NULL, "fileLoc, embed, mediaType");
 		return $this->get($id);
 	}
+     public function getSectionControl($id=NULL){
+          $myID=$this->session->userdata('id');
+          $myRole=$this->session->userdata('role');
+          if($myRole< $this->config->item('superAdmin')){
+               $this->db->where("author_id", $myID);
+          }
+          $this->joinTable("users",  "author_id", "id", "*", "name, email");
+          return $this->get($id);
+     }
 	//--------------------------------------------------------------------------------------------------------
 	//Get info on who has access to what using additional models
 	//essentially acting as a security wrapper around other classes

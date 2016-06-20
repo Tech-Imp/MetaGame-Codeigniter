@@ -167,22 +167,31 @@ class MY_Model extends CI_Model{
 
 //---------------------------------------------------------------
 
-	public function restrictSect($here=null){
+	public function restrictSect($here=NULL, $exclusiveExists=TRUE, $specTable=FALSE){
 		//Whole section dedicated to making sure that items can be separated based on 
 		//exclusive areas.
-		if($here===null){
+		if($here===NULL){
 			$here=$this->uri->segment(1, $this->config->item('mainPage'));
 		}
 		$excludeLoc=$this->config->item('excludeLoc');
-		
+          
+          $section='forSection =';
+          $exFlag='exclusiveSection ='; 
+		if($specTable){
+               $section=$specTable.'.forSection =';
+               $exFlag=$specTable.'.exclusiveSection =';   
+		}
 		// $here=explode('/', uri_string());
 		
 		if (in_array($here, $excludeLoc)==FALSE && $here != ""){
-			$this->db->where('forSection =', $here);
+			$this->db->where($section, $here);
 		}
-		elseif(strpos($here, $this->config->item('adminPage')) === false){
-			$this->db->where('exclusiveSection =', 0);
+		elseif(strpos($here, $this->config->item('adminPage')) === false && $exclusiveExists){
+			$this->db->where($exFlag, 0);
 		}
+          elseif (!$exclusiveExists) {
+              $this->db->where($section, "");
+          }
 		// End content Exclusion
 	}
 

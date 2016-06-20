@@ -61,10 +61,11 @@ class Common_frontend extends Frontend_controller{
 		$currentRole=$this->session->userdata('role');
 		if($currentRole===FALSE){
 			$currentRole=0;
-			return "<ul class='nav navbar-nav navbar-right'>
-	      			<li>".anchor('signup', "<span class='glyphicon glyphicon-plus'></span>Sign up")."</li>
-	      			<li>".anchor('login', "<span class='glyphicon glyphicon-log-in' title='Log In'></span>")."</li>
-	      		</ul>";
+			// return "<ul class='nav navbar-nav navbar-right'>
+	      			// <li>".anchor('signup', "<span class='glyphicon glyphicon-plus'></span>Sign up")."</li>
+	      			// <li>".anchor('login', "<span class='glyphicon glyphicon-log-in' title='Log In'></span>")."</li>
+	      		// </ul>";
+      		return "";
 		}
 		if($currentRole>=$this->config->item('contributor')){
 			return "<ul class='nav navbar-nav navbar-right'>
@@ -82,7 +83,12 @@ class Common_frontend extends Frontend_controller{
 	}
 	
 //-------------------------------------------------------------------------------------	
-//----------------------------------------------------------------------------------		
+//----------------------------------------------------------------------------------	
+     public function showLinks(){
+          $this->load->model('SectionAuth_model');
+          $this->load->model('Dataprep_model');
+          $this->SectionAuth_model->getQuicklinks();
+     }	
 	
 	
 }

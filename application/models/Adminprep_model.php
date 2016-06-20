@@ -1,11 +1,144 @@
 <?
-class Adminprep_model extends CI_Model{
+class Adminprep_model extends Dataprep_model{
     	
 	
 	function __construct(){
 		parent::__construct();
 	}
-
+     
+     
+     //-------------------------------------------------------------------------------------------------------------------------
+//Prepares items for the backend
+//-------------------------------------------------------------------------------------------------------------------------
+     public function gatherItemsAdmin($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
+          //myMedia is the raw data coming back from the model
+          //Items is just a string of what these things are
+          //editFn leads over the the editing function needed on the dashboard since this is written generically
+          //maxRows is the total number of items 
+          //limitRows is the amount we want displayed at once
+          //pageOffset sets how many multiples of limitRows down we are looking 
+          $export="<strong>No ".$items." to display that you have editing rights on.</strong>";
+          if(count($myMedia)){
+               $export="";
+               //Loop through the data and make a new row for each
+               foreach ($myMedia as $row) {
+                    $newsID=$row->$primary_key;
+                    $visItems=$this->visFlag($row);
+                    $vis=$visItems['text'];
+                    //check if exclusive to logged members
+                    $vis.=$this->loggedFlag($row);
+                    //Create the block item based on info gathered and add to return value
+                    $export.=
+                    "<div id=mediaItem".$newsID." class='col-lg-4 col-md-6 col-xs-12 well ".$visItems['css']."'>
+                    <div class='titleSizer'><strong>".$row->title."</strong></div>
+                    ".$this->mediaDisplay($row)."
+                    <br>
+                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
+                    ".$this->textualContent($row)."
+                    <div>".$vis."</div>
+                    ".$this->whereShown($row->forSection, $row->exclusiveSection)."
+                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
+                    <br>
+                    ".$this->vintageFlag($row)."
+                    ".$this->modifiedCreation($row, TRUE)."
+                    <div>".anchor('admin/dashboard/'.$editFn.'/'.$newsID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
+                </div>";
+                         
+               }
+               //Handle pagination when multiple items are limited and it exceeds the limit
+               $export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
+          }
+          return $export;
+     }
+     
+     public function profileItemsAdmin($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
+          //myMedia is the raw data coming back from the model
+          //Items is just a string of what these things are
+          //editFn leads over the the editing function needed on the dashboard since this is written generically
+          //maxRows is the total number of items 
+          //limitRows is the amount we want displayed at once
+          //pageOffset sets how many multiples of limitRows down we are looking 
+          $export="<strong>No ".$items." to display right now. Check back soon!</strong>";
+          if(count($myMedia)){
+               $export="";
+               //Loop through the data and make a new row for each
+               foreach ($myMedia as $row) {
+                    $profileID=$row->$primary_key;
+                    //Create the block item based on info gathered and add to return value
+                    $export.=
+                    "<div id=profile".$profileID." class='col-xs-12 well'>
+                    <div class='titleSizer'><strong>".$row->profileName." the ".$row->title."</strong></div>
+                    Using following as avatar: ".$this->mediaDisplay($row)."
+                    <br>
+                    <div class='row'>
+                         <div class='col-xs-3'>
+                         ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
+                         </div>
+                         <div class='col-xs-9'>
+                         ".$this->textualContent($row, false)."
+                         </div>
+                    </div>
+                    <br>
+                    ".$this->whereShown($row->forSection, $row->exclusiveSection)."
+                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
+                    <br>
+                    ".$this->modifiedCreation($row, TRUE)."
+                    <div>".anchor('admin/dashboard/'.$editFn.'/'.$profileID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
+                </div>";
+                         
+               }
+               //Handle pagination when multiple items are limited and it exceeds the limit
+               $export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
+          }
+          return $export;
+     }
+     
+     public function simpleAvatars($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all'){
+          //myMedia is the raw data coming back from the model
+          //Items is just a string of what these things are
+          //editFn leads over the the editing function needed on the dashboard since this is written generically
+          //maxRows is the total number of items 
+          //limitRows is the amount we want displayed at once
+          //pageOffset sets how many multiples of limitRows down we are looking 
+          $export="<strong>No ".$items." to display that you have editing rights on.</strong>";
+          if(count($myMedia)){
+               $export="";
+               //Loop through the data and make a new row for each
+               foreach ($myMedia as $row) {
+                    $avatarID=$row->$primary_key;
+                    $visItems=$this->visFlag($row);
+                    $vis=$visItems['text'];
+                    //check if exclusive to logged members
+                    $vis.=$this->loggedFlag($row);
+                    //Create the block item based on info gathered and add to return value
+                    $export.=
+                    "<div id=mediaItem".$avatarID." class='col-lg-4 col-md-6 col-xs-12 well itemVis'>
+                    <div class='titleSizer'><strong>".$avatarID."</strong></div>
+                    ".$this->mediaDisplay($row)."
+                    <br>
+                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
+                    <br>
+                    ".$this->whereShown($row->forSection, $row->exclusiveSection)."
+                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
+                    ".$this->modifiedCreation($row, TRUE)."
+                    <div>".anchor('admin/dashboard/'.$editFn.'/'.$avatarID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
+                </div>";
+                         
+               }
+               //Handle pagination when multiple items are limited and it exceeds the limit
+               $export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
+          }
+          return $export;
+     }
+     
+     public function socialItemsAdmin(){
+          return "FUNCTION NOT YET MADE";
+     }
+     
+     
+//-----------------------------------------------------------
+//Admin only functions
+//-----------------------------------------------------------     
      public function getSectionLogs($logs){
           if(count($logs)){
                $logOutput='<div><h4>Recent activity:</h4><br><ul>';

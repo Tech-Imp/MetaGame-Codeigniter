@@ -8,7 +8,7 @@
 		public function index()
 		{
 			$data=$this->adminHeader();
-			$this->load->model('Dataprep_model');
+			$this->load->model('Adminprep_model');
 			$data['currentLocation']="<div class='navbar-brand'>Migration Dashboard</div>";
 			$this->load->view('templates/header', $data);
 			$this->load->view('inc/dash_header', $data);
@@ -37,7 +37,7 @@
 		}
 		public function down(){
 			$data=$this->adminHeader();
-			$this->load->model('Dataprep_model');
+			$this->load->model('Adminprep_model');
 			$data['currentLocation']="<div class='navbar-brand'>Migration Dashboard</div>";
 			$this->load->view('templates/header', $data);
 			$this->load->view('inc/dash_header', $data);
@@ -69,7 +69,7 @@
 		public function latest()
 		{
 			$data=$this->adminHeader();
-			$this->load->model('Dataprep_model');
+			$this->load->model('Adminprep_model');
 			$data['currentLocation']="<div class='navbar-brand'>Migration Dashboard</div>";
 			$this->load->view('templates/header', $data);
 			$this->load->view('inc/dash_header', $data);

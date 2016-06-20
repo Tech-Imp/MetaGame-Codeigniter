@@ -22,89 +22,7 @@ class Dataprep_model extends CI_Model{
 //-------------------------------------------------------------------------------------------------------------------------
 //Prepares items for the backend
 //-------------------------------------------------------------------------------------------------------------------------
-	public function gatherItemsAdmin($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
-		//myMedia is the raw data coming back from the model
-		//Items is just a string of what these things are
-		//editFn leads over the the editing function needed on the dashboard since this is written generically
-		//maxRows is the total number of items 
-		//limitRows is the amount we want displayed at once
-		//pageOffset sets how many multiples of limitRows down we are looking 
-		$export="<strong>No ".$items." to display that you have editing rights on.</strong>";
-		if(count($myMedia)){
-			$export="";
-			//Loop through the data and make a new row for each
-			foreach ($myMedia as $row) {
-				$newsID=$row->$primary_key;
-				$visItems=$this->visFlag($row);
-				$vis=$visItems['text'];
-				//check if exclusive to logged members
-				$vis.=$this->loggedFlag($row);
-				//Create the block item based on info gathered and add to return value
-				$export.=
-				"<div id=mediaItem".$newsID." class='col-lg-4 col-md-6 col-xs-12 well ".$visItems['css']."'>
-                    <div class='titleSizer'><strong>".$row->title."</strong></div>
-                    ".$this->mediaDisplay($row)."
-                    <br>
-                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
-                    ".$this->textualContent($row)."
-                    <div>".$vis."</div>
-                    ".$this->whereShown($row->forSection, $row->exclusiveSection)."
-                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
-                    <br>
-                    ".$this->vintageFlag($row)."
-                    ".$this->modifiedCreation($row, TRUE)."
-                    <div>".anchor('admin/dashboard/'.$editFn.'/'.$newsID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
-                </div>";
-                         
-			}
-			//Handle pagination when multiple items are limited and it exceeds the limit
-			$export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
-		}
-		return $export;
-	}
-	
-	public function profileItemsAdmin($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
-		//myMedia is the raw data coming back from the model
-		//Items is just a string of what these things are
-		//editFn leads over the the editing function needed on the dashboard since this is written generically
-		//maxRows is the total number of items 
-		//limitRows is the amount we want displayed at once
-		//pageOffset sets how many multiples of limitRows down we are looking 
-		$export="<strong>No ".$items." to display right now. Check back soon!</strong>";
-		if(count($myMedia)){
-			$export="";
-			//Loop through the data and make a new row for each
-			foreach ($myMedia as $row) {
-				$profileID=$row->$primary_key;
-				//Create the block item based on info gathered and add to return value
-				$export.=
-				"<div id=profile".$profileID." class='col-xs-12 well'>
-                    <div class='titleSizer'><strong>".$row->profileName." the ".$row->title."</strong></div>
-                    Using following as avatar: ".$this->mediaDisplay($row)."
-                    <br>
-                    <div class='row'>
-	                    <div class='col-xs-3'>
-	                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
-	                    </div>
-	                    <div class='col-xs-9'>
-	                    ".$this->textualContent($row, false)."
-	                    </div>
-                    </div>
-                    <br>
-                    ".$this->whereShown($row->forSection, $row->exclusiveSection)."
-                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
-                    <br>
-                    ".$this->modifiedCreation($row, TRUE)."
-                    <div>".anchor('admin/dashboard/'.$editFn.'/'.$profileID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
-                </div>";
-                         
-			}
-			//Handle pagination when multiple items are limited and it exceeds the limit
-			$export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
-		}
-		return $export;
-	}
-	
+
 	public function profileItems($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all' ){
 		//myMedia is the raw data coming back from the model
 		//Items is just a string of what these things are
@@ -144,49 +62,8 @@ class Dataprep_model extends CI_Model{
 		return $export;
 	}
 	
-	public function simpleAvatars($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all'){
-		//myMedia is the raw data coming back from the model
-		//Items is just a string of what these things are
-		//editFn leads over the the editing function needed on the dashboard since this is written generically
-		//maxRows is the total number of items 
-		//limitRows is the amount we want displayed at once
-		//pageOffset sets how many multiples of limitRows down we are looking 
-		$export="<strong>No ".$items." to display that you have editing rights on.</strong>";
-		if(count($myMedia)){
-			$export="";
-			//Loop through the data and make a new row for each
-			foreach ($myMedia as $row) {
-				$avatarID=$row->$primary_key;
-				$visItems=$this->visFlag($row);
-				$vis=$visItems['text'];
-				//check if exclusive to logged members
-				$vis.=$this->loggedFlag($row);
-				//Create the block item based on info gathered and add to return value
-				$export.=
-				"<div id=mediaItem".$avatarID." class='col-lg-4 col-md-6 col-xs-12 well itemVis'>
-                    <div class='titleSizer'><strong>".$avatarID."</strong></div>
-                    ".$this->mediaDisplay($row)."
-                    <br>
-                    ".$this->meatyContent($row, count($myMedia), 'dashboard', 'admin', $limitPerRows, $maxPerRow, $primary_key, $editFn, FALSE)."
-                    <br>
-                    ".$this->whereShown($row->forSection, $row->exclusiveSection)."
-                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
-                    ".$this->modifiedCreation($row, TRUE)."
-                    <div>".anchor('admin/dashboard/'.$editFn.'/'.$avatarID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
-                </div>";
-                         
-			}
-			//Handle pagination when multiple items are limited and it exceeds the limit
-			$export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
-		}
-		return $export;
-	}
 	
-	public function socialItemsAdmin(){
-		return "FUNCTION NOT YET MADE";
-	}
-	
-	private function gatherGenericItems($myMedia, $items, $primary_key, $myLink, $perRow, $maxPerRow, $redirect=NULL){
+	protected function gatherGenericItems($myMedia, $items, $primary_key, $myLink, $perRow, $maxPerRow, $redirect=NULL){
 		//myMedia is the raw data coming back from the model
 		//Items is just a string of what these things are
 		//primary_key is the name of the primary key, used to retrieve values
@@ -301,7 +178,7 @@ class Dataprep_model extends CI_Model{
 	//It will strip out the ID of the video so that an image can be used as a placeholder instead to increase optimization
 	//of the page itself.
 	//------------------------------------------------------------------------------------------------
-	private function checkYoutube($embed, $redirectPage="", $redirectID=""){
+	protected function checkYoutube($embed, $redirectPage="", $redirectID=""){
 		if(strpos($embed, "youtube.com/embed/") !==FALSE){
 			$precheck=explode("youtube.com/embed/", $embed);
 			$embedID=explode("\"", $precheck[1]);
@@ -317,7 +194,7 @@ class Dataprep_model extends CI_Model{
 		}
 	}
 	//------------------------------------------------------------------------------------------------
-	private function modifiedCreation($row, $onlyMod=false){
+	protected function modifiedCreation($row, $onlyMod=false){
 		$modified="";
 		$editted="Never";
 		if(array_key_exists('modified', $row)){
@@ -331,7 +208,7 @@ class Dataprep_model extends CI_Model{
 		return $modified;
 	}
 	//------------------------------------------------------------------------------------------------
-	private function vintageFlag($row){
+	protected function vintageFlag($row){
 		$vintage="";
 		if(array_key_exists('vintage', $row)){
 			if(intval($row->vintage) == 1){
@@ -344,7 +221,7 @@ class Dataprep_model extends CI_Model{
 		return $vintage;
 	}
 	//------------------------------------------------------------------------------------------------
-	private function loggedFlag($row){
+	protected function loggedFlag($row){
 		$vis="";
 		if(array_key_exists('loggedOnly', $row) && $row->loggedOnly !== ""){
 			$vis.="<br>";
@@ -354,7 +231,7 @@ class Dataprep_model extends CI_Model{
 		return $vis;
 	}
 	//------------------------------------------------------------------------------------------------
-	private function visFlag($row){
+	protected function visFlag($row){
 		$currDate=new DateTime("now");
 		if(array_key_exists('visibleWhen', $row)){
 			$storedDate=new DateTime($row->visibleWhen);
@@ -380,7 +257,7 @@ class Dataprep_model extends CI_Model{
 		return array('css'=>$artVis, 'text'=>$vis);
 	}
 	//----------------------------------------------------------------------------------------------------
-	private function textualContent($row, $adminView=TRUE){
+	protected function textualContent($row, $adminView=TRUE){
 		$content="";
 		// Setup styling on a component level so it doesnt need to be bothered
 		if($adminView){
@@ -402,7 +279,7 @@ class Dataprep_model extends CI_Model{
 		return $content;
 	}
 	//------------------------------------------------------------------------------------------------
-	private function meatyContent($row, $overallCount, $myLink, $area, $perRow, $maxPerRow, $primary_key, $ctrlFunc='index', $showText=TRUE){
+	protected function meatyContent($row, $overallCount, $myLink, $area, $perRow, $maxPerRow, $primary_key, $ctrlFunc='index', $showText=TRUE){
 		$media="";
 		
 		if(array_key_exists('fileLoc', $row) && $row->fileLoc !== ""){
@@ -435,7 +312,7 @@ class Dataprep_model extends CI_Model{
 		}
 		return $media;
 	}
-	private function simpleContent($row, $myLink, $area, $primary_key, $ctrlFunc='index', $showText=TRUE){
+	protected function simpleContent($row, $myLink, $area, $primary_key, $ctrlFunc='index', $showText=TRUE){
 		if(array_key_exists('fileLoc', $row) && $row->fileLoc !== ""){
 			return "<img class='img-responsive center-block' alt='{$row->title}' src='".$row->fileLoc."'></img>";
 		}
@@ -450,7 +327,7 @@ class Dataprep_model extends CI_Model{
 	
 	}
 	//--------------------------------------------------------------------------------------------------------------
-	private function generateRows($newsID, $perRow, $rowCount){
+	protected function generateRows($newsID, $perRow, $rowCount){
 		$export="";	
 		if ($perRow==1){
 			$export.="<div id=mediaItem".$newsID." class='metaBorder' >";
@@ -472,7 +349,7 @@ class Dataprep_model extends CI_Model{
 		return $export;
 	}
 	//---------------------------------------------------------------------------------------------------------------------
-	private function generatePermalink($newsID, $items, $area,  $myLink, $redirect, $perRow, $maxPerRow, $overallCount){
+	protected function generatePermalink($newsID, $items, $area,  $myLink, $redirect, $perRow, $maxPerRow, $overallCount){
 		$export="";
 		if($items!==NULL && $myLink!==NULL){
 			if($perRow==1 && $overallCount==1 && $maxPerRow==0){
@@ -490,7 +367,7 @@ class Dataprep_model extends CI_Model{
 		return $export;
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
-	private function endRow($perRow, $rowCount, $overallCount){
+	protected function endRow($perRow, $rowCount, $overallCount){
 		$export="";
 		if ($perRow!=1){
         	if(($rowCount%$perRow ==0 && $rowCount>1) || ($rowCount==$overallCount)){
@@ -502,7 +379,7 @@ class Dataprep_model extends CI_Model{
 	//---------------------------------------------------------------------------------------------------
 	//Generic version of pagination to be reused
 	//---------------------------------------------------------------------------------------------------
-	private function generalPagination($existing=NULL, $maxPerRow, $limitPerRows, $pageOffset, $databaseType=NULL){
+	protected function generalPagination($existing=NULL, $maxPerRow, $limitPerRows, $pageOffset, $databaseType=NULL){
 		$export=$existing;
 		if($maxPerRow>$limitPerRows && $databaseType!==NULL){
 			$export.="<div class='row'><nav class='col-xs-12'>
@@ -525,7 +402,7 @@ class Dataprep_model extends CI_Model{
 		return $export;
 	}
 	//------------------------------------------------------------------------------------------------------------------------------
-	private function mediaDisplay($row){
+	protected function mediaDisplay($row){
 		//TODO May need to clean this to a more uniform pattern involving config
 		$mediaClass="<div><span class='glyphicon glyphicon-ban-circle'></span><strong> UNKNOWN </strong></div>";
 		if(array_key_exists('mediaType', $row)){
@@ -560,7 +437,7 @@ class Dataprep_model extends CI_Model{
 		return $mediaClass;
 	}
 	//-------------------------------------------------------------------------------------------------------------------------------
-	private function whereShown($section, $exclusive, $default="main"){
+	protected function whereShown($section, $exclusive, $default="main"){
 		$where="";
 		//Only in the exclusive case
 		if(!empty($section) and $exclusive){
@@ -575,7 +452,7 @@ class Dataprep_model extends CI_Model{
 		return $where;
 	}
 	//-------------------------------------------------------------------------------------------------------------------------------
-	private function senseMediaController($type=NULL){
+	protected function senseMediaController($type=NULL){
 		switch ($type) {
 			case 'picture':
 				return "photo";

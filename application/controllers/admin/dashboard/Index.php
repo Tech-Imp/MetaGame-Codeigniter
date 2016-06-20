@@ -14,7 +14,7 @@ class Index extends Dash_backend{
 		$data=$this->commonHeader();
 		$this->load->model('Logging_model');
 		$this->load->model('Media_model');
-		$this->load->model('Dataprep_model');
+		$this->load->model('Adminprep_model');
 		$data['currentLocation']="<div class='navbar-brand'>Your Dashboard</div>";
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
@@ -32,7 +32,7 @@ class Index extends Dash_backend{
 		$data['recentChanges']=$logOutput;
 		//Recent Photos
 		$myMedia=$this->Media_model->getMedia(NULL, 6, 0);
-		$data['mediaTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", 6, 6);
+		$data['mediaTable']=$this->Adminprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", 6, 6);
 		$this->load->view('dashboard', $data);
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);

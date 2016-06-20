@@ -13,7 +13,7 @@ class Written extends Dash_backend{
 	public function index(){
 	     $this->secureArea();
 		$this->load->model('Article_model');
-		$this->load->model('Dataprep_model');
+		$this->load->model('Adminprep_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
 		$data['js'][1]= 'dash/dashboardIndex.js';
@@ -35,7 +35,7 @@ class Written extends Dash_backend{
 		$articles=$this->Article_model->getArticles(NULL, $maxLimit, 0);
 		$maxNewsCount=$this->Article_model->getWrittenCount(false);
 		
-		$data['articleTable']=$this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "written/editWritten", $maxNewsCount, $maxLimit, 0);
+		$data['articleTable']=$this->Adminprep_model->gatherItemsAdmin($articles, "news", "news_id", "written/editWritten", $maxNewsCount, $maxLimit, 0);
 		
 		$data['exclusive']=$this->exclusiveSelector();
 		

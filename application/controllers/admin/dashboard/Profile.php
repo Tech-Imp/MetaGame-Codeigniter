@@ -14,7 +14,7 @@ class Profile extends Dash_backend{
 		$this->load->model('Media_model');
 		$this->load->model('Profilepages_model');
 		$this->load->model('Subpages_model');
-		$this->load->model('Dataprep_model');
+		$this->load->model('Adminprep_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
 		$data['js'][1]= 'plupload/plupload.full.min.js';
@@ -39,13 +39,13 @@ class Profile extends Dash_backend{
 		// Get Avatars
 		$myMedia=$this->Media_model->getAvatarLogo(NULL, $maxLimit, 0);
 		$maxMediaCount=$this->Media_model->getAvatarLogoCount();
-		$data['avatarTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, 0);
+		$data['avatarTable']=$this->Adminprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, 0);
 		// Get profile
 		$contacts=$this->Profilepages_model->getProfile();
-		$data['contactTable']=$this->Dataprep_model->profileItemsAdmin($contacts, "profiles", "static_id", "profile/editProfile");
+		$data['contactTable']=$this->Adminprep_model->profileItemsAdmin($contacts, "profiles", "static_id", "profile/editProfile");
 		// Get Social
 		$social=$this->Subpages_model->getSocial();
-		$data['socialTable']=$this->Dataprep_model->socialItemsAdmin();
+		$data['socialTable']=$this->Adminprep_model->socialItemsAdmin();
 		$data['travelTable']="ITEM NOT HOOKED UP TO DATABASE DO NOT USE";
 		
 		
@@ -69,7 +69,7 @@ class Profile extends Dash_backend{
 	     $this->secureArea();
 		$this->load->model('Media_model');
 		$this->load->model('Profilepages_model');
-		$this->load->model('Dataprep_model');
+		$this->load->model('Adminprep_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
 		$data['js'][1]= 'dash/dashboardIndex.js';
@@ -86,7 +86,7 @@ class Profile extends Dash_backend{
 			$maxLimit=$this->config->item('maxAdmin');
 			$myMedia=$this->Media_model->getAvatarLogo(NULL, $maxLimit, 0);
 			$maxMediaCount=$this->Media_model->getAvatarLogoCount();
-			$data['avatarTable']=$this->Dataprep_model->simpleAvatars($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, 0);
+			$data['avatarTable']=$this->Adminprep_model->simpleAvatars($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, 0);
 			$allData=$this->Profilepages_model->getProfile(intval($id));
 			if(count($allData)){
 				$data['staticID']=$allData->static_id;

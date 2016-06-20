@@ -14,7 +14,7 @@ class Multimedia extends Dash_backend{
 	public function index(){
 	     $this->secureArea();
 		$this->load->model('Media_model');
-		$this->load->model('Dataprep_model');
+		$this->load->model('Adminprep_model');
 		$data=$this->commonHeader();
 		$data['js'][0]= 'plupload/plupload.full.min.js';
 		$data['js'][1]= 'plupload/jquery.ui.plupload/jquery.ui.plupload.js';
@@ -36,7 +36,7 @@ class Multimedia extends Dash_backend{
 		$myMedia=$this->Media_model->getMedia(NULL, $maxLimit, 0);
 		$maxMediaCount=$this->Media_model->getMediaCount();
 		
-		$data['mediaTable']=$this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, 0);
+		$data['mediaTable']=$this->Adminprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, 0);
 		$data['mediaOptions']="<select id='mediaOptions'>
 			<option value='video'>Video</option>
 			<option value='sound'>Audio</option>
