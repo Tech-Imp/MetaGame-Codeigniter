@@ -6,6 +6,27 @@ class Dataprep_model extends CI_Model{
 		parent::__construct();
 	}
 
+     public function linkGen($data){
+          $output="";
+          if(count($data)){
+               foreach($data as $link){
+                  $inner="";
+                  if($link->fileLoc){
+                       $inner="<img class='img-responsive img-rounded' src=".$link->fileLoc." alt=".$link->sub_name.">";
+                  }
+                  else{
+                       $inner="<div class='imageLink'>";
+                       $inner.="<img class='img-responsive img-rounded' src=".$this->config->item('defaultImage')." alt=".$link->sub_name.">";
+                       $inner.="<div class='linkText'>".$link->sub_name."</div>";
+                       $inner.="</div>";
+                  }
+                  $output.="<br><a href=".base_url().$link->sub_dir." target=''>".$inner."</a>";  
+               }
+          }
+          // print_r($data);
+          return $output;
+     }
+
 //------------------------------------------------------------------------------------------
 //Used to prepare items for the front end
 //-------------------------------------------------------------------------------------------

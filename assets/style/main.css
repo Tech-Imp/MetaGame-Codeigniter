@@ -44,8 +44,8 @@ td{
 .titleSizer{
 	height: 2em; 
 	min-height: 2em;
-    line-height: 1em; 
-    overflow: hidden;
+     line-height: 1em; 
+     overflow: hidden;
 }
 .itemVis{
 	background-image: linear-gradient(to bottom,#0099FF 0,#f5f5f5 100%);
@@ -65,4 +65,9 @@ td{
 .expandedText{
 	width: 100%; 
 	resize: none;
+}
+.linkText{
+     position: relative;
+     top: -20px;
+     left: 10px;
 }

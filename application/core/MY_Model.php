@@ -29,7 +29,10 @@ class MY_Model extends CI_Model{
 		
 		// Handles case where I need to reference multiple different tables for join functions
 		if($altTable === FALSE){
-			$this->db->order_by($this->_table_name.'.'.$this->_order_by);
+	          $parts=explode(",", $this->_order_by);
+               foreach($parts as $orderClause){
+                    $this->db->order_by($this->_table_name.'.'.$orderClause);
+               }
 			$this->db->from($this->_table_name);
 			return $this->db->get()->$method();
 		}

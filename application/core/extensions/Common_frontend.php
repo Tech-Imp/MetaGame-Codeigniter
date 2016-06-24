@@ -37,6 +37,7 @@ class Common_frontend extends Frontend_controller{
 		$data['userOptions'] = $this->baseTemplate();
 		$data['singularContent']='';
 		$data['mediaContent']=$data['mediaHeader']='';
+          $data['siteLinks']=$this->showLinks();
 		return $data;
 	}
 	//-------------------------------------------------------------------------------
@@ -87,7 +88,8 @@ class Common_frontend extends Frontend_controller{
      public function showLinks(){
           $this->load->model('SectionAuth_model');
           $this->load->model('Dataprep_model');
-          $this->SectionAuth_model->getQuicklinks();
+          $linkData=$this->SectionAuth_model->getQuicklinks();
+          return $this->Dataprep_model->linkGen($linkData);
      }	
 	
 	

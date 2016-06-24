@@ -51,9 +51,9 @@
   					</div>
   					<div class="panel-body">
     					<a href='' target='_blank'><img class='img-responsive img-rounded'src="<?php echo base_url() ; ?>assets/image/Placeholder.jpg" alt='Support Meta-game via PayPal'> </a>
-    					<br>
-  						<a href='http://www.skype.com/en/download-skype/skype-for-computer/' target='_blank'><img class='img-responsive img-rounded'src="<?php echo base_url() ; ?>assets/image/Placeholder.jpg" alt='Skype at '> </a>
+                         <?php echo $siteLinks ?>
   					</div>
+  					
 				</div>
 				<br>
 				<div class="panel panel-default">

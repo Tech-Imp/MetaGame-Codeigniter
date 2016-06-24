@@ -28,9 +28,10 @@ class SectionAuth_model extends MY_Model{
 		return $rowId;
 	}
 	public function getQuicklinks($id=null){
+	     $supInfo="logoID, facebook_url, youtube_url, twitter_url, tumblr_url, twitch, email";
 		$this->restrictSect(NULL, FALSE, $this->_table_name);
 		$this->db->where($this->_table_name.".visible", 1);
-		$this->joinTable("sub_info_database",  "sub_dir", "sub_dir", "sub_name, sub_dir, usage", "*");
+		$this->joinTable("sub_info_database",  "sub_dir", "sub_dir", "sub_name, sub_dir, usage", $supInfo);
           $this->joinTable("media_database",  "logoID", "media_id", NULL, "fileLoc, embed, mediaType");
 		return $this->get($id);
 	}
