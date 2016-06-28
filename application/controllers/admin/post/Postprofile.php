@@ -238,9 +238,8 @@ class Postprofile extends MY_Controller{
           $myEmail=$this->session->userdata('email');
           $author = $this->session->userdata('id');
           
-          $info_id=intval($this->simplePurify($this->input->post('info_id')));
+          $info_id=intval($this->simplePurify($this->input->post('infoID')));
           $logoID = intval($this->simplePurify($this->input->post('logoID')));
-          $target = $this->simplePurify($this->input->post('target'));
           $facebook = $this->simplePurify($this->input->post('facebook'));
           $youtube = $this->simplePurify($this->input->post('youtube'));
           $twitter = $this->simplePurify($this->input->post('twitter'));
@@ -280,9 +279,9 @@ class Postprofile extends MY_Controller{
           $clean_html = html_purify($uncleanText);
           
           $this->load->model("Subpages_model");
-          $result=$this->Subpages_model->saveSocial($target, $logoID, $facebook, $youtube, $twitter, $tumblr, $twitch, $email, $clean_html, $exFlag, $section, $info_id);
+          $result=$this->Subpages_model->saveSocial(NULL, $logoID, $facebook, $youtube, $twitter, $tumblr, $twitch, $email, $clean_html, $exFlag, $section, $info_id);
           $this->load->model("Logging_model");
-          $this->Logging_model->newLog($result, 'eSoc', 'Social item '.$target.' ('.$result.') updated successfully by '.$myName.'('.$myEmail.')');  
+          $this->Logging_model->newLog($result, 'eSoc', 'Social item '.$info_id.' ('.$result.') updated successfully by '.$myName.'('.$myEmail.')');  
           
           $data=array('success' => $result); 
           echo json_encode($data);
@@ -295,7 +294,7 @@ class Postprofile extends MY_Controller{
           $myID=$this->session->userdata('id');
           $myName=$this->session->userdata('name');
           $myEmail=$this->session->userdata('email');
-          $profileID = intval($this->input->post('profileID')); 
+          $profileID = intval($this->input->post('infoID')); 
           
           if(empty($profileID)){
                $data=array('error' => "Error retrieving SocialID"); 
@@ -312,14 +311,13 @@ class Postprofile extends MY_Controller{
           
           
           $this->load->model("Subpages_model");
-          
           // Verify user has rights to media
-          $verify=$this->Profilepages_model->get($profileID, TRUE);
+          $verify=$this->Subpages_model->get($profileID, TRUE);
           if($verify->author_id==$myID || $myRole> $this->config->item('sectionAdmin')){
                $result=$this->Subpages_model->delete($profileID);
                $data=array('success' => $profileID);
                $this->load->model("Logging_model");
-               $this->Logging_model->newLog($profileID, 'dSoc', 'Social item '.$verify->title.' ('.$result.') was deleted by user '.$myName.'('.$myEmail.') ');
+               $this->Logging_model->newLog($profileID, 'dSoc', 'Social item for '.$verify->sub_dir.' ('.$result.') was deleted by user '.$myName.'('.$myEmail.') ');
           }
           else{
                $data=array('error' => 'Cannot delete that item');

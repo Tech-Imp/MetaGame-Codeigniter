@@ -45,7 +45,7 @@ class Profile extends Dash_backend{
 		$data['contactTable']=$this->Adminprep_model->profileItemsAdmin($contacts, "profiles", "static_id", "profile/editProfile");
 		// Get Social
 		$social=$this->Subpages_model->getSocial();
-		$data['socialTable']=$this->Adminprep_model->socialItemsAdmin();
+		$data['socialTable']=$this->Adminprep_model->socialItemsAdmin($social, "social info", "info_id", "profile/editSocial");
 		$data['travelTable']="ITEM NOT HOOKED UP TO DATABASE DO NOT USE";
 		
 		
@@ -105,4 +105,49 @@ class Profile extends Dash_backend{
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);
 	}
+     public function editSocial($id=NULL){
+          $this->secureArea();
+          $this->load->model('Media_model');
+          $this->load->model('Subpages_model');
+          $this->load->model('Adminprep_model');
+          $data=$this->commonHeader();
+          $data['js'][0]= 'tinymce/jquery.tinymce.min.js';
+          $data['js'][1]= 'dash/dashboardIndex.js';
+          $data['js'][2]= 'dash/dashboardUpdateSocial.js';
+          $data['currentLocation']="<div class='navbar-brand'>Edit Social Info</div>";
+          $this->load->view('templates/header', $data);
+          $this->load->view('inc/dash_header', $data);
+          
+          if($id===NULL){
+               $this->load->view('dash/errorInfo');
+          }
+          else {
+               //In lieu of a more succinct way to display this in the edit just use same method
+               $maxLimit=$this->config->item('maxAdmin');
+               $myMedia=$this->Media_model->getAvatarLogo(NULL, $maxLimit, 0);
+               $maxMediaCount=$this->Media_model->getAvatarLogoCount();
+               $data['avatarTable']=$this->Adminprep_model->simpleAvatars($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, 0);
+               $allData=$this->Subpages_model->getSocial(intval($id));
+               if(count($allData)){
+                    $data['socialID']=$allData->info_id;
+                    $data['who']=$this->Adminprep_model->itemFor($allData);
+                    $data['logoUsed']=$allData->logoID;
+                    $data['facebook']=$allData->facebook_url;
+                    $data['youtube']=$allData->youtube_url;
+                    $data['twitter']=$allData->twitter_url;
+                    $data['tumblr']=$allData->tumblr_url;
+                    $data['emailSocial']=$allData->email;
+                    $data['twitch']=$allData->twitch;
+                    $data['body']=$allData->body;
+                    $data['exclusive']=$this->exclusiveSelector(NULL, $allData->exclusiveSection, $allData->forSection);
+                    $this->load->view('dash/socialEdit', $data);
+               }
+               else{
+                    $this->load->view('dash/errorInfo');
+               }    
+          }
+          
+          $this->load->view('inc/dash_footer', $data);
+          $this->load->view('templates/footer', $data);
+     }
 }

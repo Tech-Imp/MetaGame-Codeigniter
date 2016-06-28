@@ -131,14 +131,79 @@ class Adminprep_model extends Dataprep_model{
           return $export;
      }
      
-     public function socialItemsAdmin(){
-          return "FUNCTION NOT YET MADE";
+     public function socialItemsAdmin($myMedia, $items, $primary_key, $editFn, $maxPerRow=0, $limitPerRows=1, $pageOffset=0, $databaseType='all'){
+          //myMedia is the raw data coming back from the model
+          //Items is just a string of what these things are
+          //editFn leads over the the editing function needed on the dashboard since this is written generically
+          //maxRows is the total number of items 
+          //limitRows is the amount we want displayed at once
+          //pageOffset sets how many multiples of limitRows down we are looking 
+          $export="<strong>No ".$items." to display that you have editing rights on.</strong>";
+          if(count($myMedia)){
+               $export="";
+               //Loop through the data and make a new row for each
+               foreach ($myMedia as $row) {
+                    $itemID=$row->$primary_key;
+                    $visItems=$this->visFlag($row);
+                    $vis=$visItems['text'];
+                    //check if exclusive to logged members
+                    $vis.=$this->loggedFlag($row);
+                    //Create the block item based on info gathered and add to return value
+                    $export.=
+                    "<div id=mediaItem".$itemID." class='col-lg-4 col-md-6 col-xs-12 well itemVis'>
+                    <strong>For ".$this->itemFor($row)."</strong>
+                    <br>
+                    <br>
+                    ".$this->socialBox($row)."
+                    <br>
+                    ".$this->whereShown($row->forSection, $row->exclusiveSection)."
+                    <div>Created: ".date("M jS, Y",strtotime($row->created))."</div>
+                    ".$this->modifiedCreation($row, TRUE)."
+                    <div>".anchor('admin/dashboard/'.$editFn.'/'.$itemID,"<span class='glyphicon glyphicon-cog'></span><strong>Edit</strong>")."</div>
+                </div>";
+                         
+               }
+               //Handle pagination when multiple items are limited and it exceeds the limit
+               $export=$this->generalPagination($export, $maxPerRow, $limitPerRows, $pageOffset, $databaseType);
+          }
+          return $export;
      }
      
      
 //-----------------------------------------------------------
 //Admin only functions
-//-----------------------------------------------------------     
+//-----------------------------------------------------------  
+     public function itemFor($who){
+          if($who->sub_dir!="self"){
+               return $who->sub_name." (".$who->sub_dir.")";
+          }
+          else{
+              return $who->name." (Self)"; 
+          }
+          
+     }
+     private function socialBox($row){
+          $dataItems="";
+          if($row->facebook_url){$dataItems.="<a href='{$row->facebook_url}' target='_blank'><span class='label label-success'>Facebook</span></a>";}
+          else{$dataItems.="<span class='label label-danger'>Facebook</span>";}
+          if($row->youtube_url){$dataItems.="<a href='{$row->youtube_url}' target='_blank'><span class='label label-success'>Youtube</span></a>";}
+          else{$dataItems.="<span class='label label-danger'>Youtube</span>";}
+          if($row->twitter_url){$dataItems.="<a href='{$row->twitter_url}' target='_blank'><span class='label label-success'>Twitter</span></a>";}
+          else{$dataItems.="<span class='label label-danger'>Twitter</span>";}
+          if($row->tumblr_url){$dataItems.="<a href='{$row->tumblr_url}' target='_blank'><span class='label label-success'>Tumblr</span></a>";}
+          else{$dataItems.="<span class='label label-danger'>Tumblr</span>";}
+          if($row->twitch){$dataItems.="<a href='{$row->twitch}' target='_blank'><span class='label label-success'>Twitch</span></a>";}
+          else{$dataItems.="<span class='label label-danger'>Twitch</span>";}
+          if($row->email){$dataItems.="<a href='mailto:{$row->email}'><span class='label label-success'>Email</span></a>";}
+          else{$dataItems.="<span class='label label-danger'>Email</span>";}
+          if($row->logoID){$dataItems.="<br><br><img class='img-responsive center-block' alt='Logo for {$row->sub_name}' src='".$row->fileLoc."'></img>";}
+          else{$dataItems.="<br><br><img class='img-responsive center-block' alt='Logo for {$row->sub_name}' src='".$this->config->item('defaultImage')."'></img>";}
+          
+          return $dataItems;
+     }
+
+
+   
      public function getSectionLogs($logs){
           if(count($logs)){
                $logOutput='<div><h4>Recent activity:</h4><br><ul>';

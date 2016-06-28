@@ -17,7 +17,6 @@ class Subpages_model extends MY_Model{
 	public function saveSocial($forWho='self', $logoID='', $facebook='', $youtube='', $twitter='', $tumblr='', $twitch='', $email='', $body='',  $exFlag, $section, $id=NULL){
 				
 		$data=array(
-               'sub_dir'=>$forWho,
                'logoID'=>$logoID,
                'facebook_url'=>$facebook,
                'youtube_url'=>$youtube,
@@ -29,7 +28,9 @@ class Subpages_model extends MY_Model{
 			'forSection' => $section,
 			'exclusiveSection'=>$exFlag,
 		); 
-		
+		if($id==NULL){
+	         $data['sub_dir']=$forWho;
+		}
 
 		$rowId=$this->save($data, $id);
 		
@@ -40,7 +41,7 @@ class Subpages_model extends MY_Model{
 	//------------------------------------------------------------------------------------------------------
 	//Display limited list of subdirectory social information
 	//-----------------------------------------------------------------------------------------------------
-	public function getSocial($here=NULL, $id=NULL, $limit=NULL, $offset=NULL)
+	public function getSocial($id=NULL, $limit=NULL, $offset=NULL, $here=NULL)
 	{
 		$this->restrictSect($here);
 		if($limit !== NULL){
@@ -53,6 +54,7 @@ class Subpages_model extends MY_Model{
 		}
 		$this->joinTable("media_database",  "logoID", "media_id", "*", "fileLoc, embed, mediaType");
 		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", NULL, "sub_name, visible");
+          $this->joinTable("users",  "sub_info_database.author_id", "id", NULL, "name");
 		return $this->get($id);
 	}
 	//-----------------------------------------------------------------------------------------------------------

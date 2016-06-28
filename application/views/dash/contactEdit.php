@@ -1,4 +1,5 @@
 <div class="col-md-8  col-md-offset-1">
+     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 	<div class='panel panel-default'>
 		<div class="panel-heading" role="tab" id="photoAvatar">
       		<h4 class="panel-title text-center">
@@ -22,11 +23,7 @@
 	      	</div>
 	    </div>
 	</div>
-</div>
 <br>
-<br>			
-<div class="col-md-8  col-md-offset-1">
-	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 	  	<div class="panel panel-default">
 	    	<div class="panel-heading" role="tab">
 	      		<h4 class="panel-title">

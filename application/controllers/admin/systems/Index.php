@@ -15,7 +15,7 @@ class Index extends Dash_backend{
 		$this->load->model('Logging_model');
 		$this->load->model('Media_model');
 		$this->load->model('Adminprep_model');
-		$data['currentLocation']="<div class='navbar-brand'>Your Dashboard</div>";
+		$data['currentLocation']="<div class='navbar-brand'>Your Systems</div>";
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
 		
