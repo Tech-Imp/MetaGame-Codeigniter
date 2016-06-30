@@ -195,24 +195,7 @@ class Admin_model extends MY_Model{
 		return $compId;
 	}
 	
-//------------------------------------------------------------
-//Get all users of rank lower than self
-//-----------------------------------------------------------	
-	public function getUsers(){
-		$myRole=$this->session->userdata('role');
-		$this->db->select("users.name, users.email, users.id, auth_role.comment, auth_role.active");
-		$this->db->from('users');
-		$this->db->join('auth_role', 'users.id = auth_role.id');
-		//TODO Where clause for searching via LIKE
-		
-		//Only limit view if not superadmin
-		if($myRole<$this->config->item('superAdmin')){
-			$this->db->where('auth_role.role <', $myRole);
-		}
-		
-		return $this->db->get()->result();
-		
-	}
+
 //-----------------------------------------------------------------------------------------------------------------------
 //Add UNIQUE user to database
 //--------------------------------------------------------------------------------------
@@ -249,9 +232,9 @@ class Admin_model extends MY_Model{
                return FALSE;
           }
           $data=array(
-                              'name'=> $newName,
-                              'email'=> $newEmail,
-                         );
+                         'name'=> $newName,
+                         'email'=> $newEmail,
+                    );
           $newID=$this->save($data);
           $logID=$this->Logging_model->newLog($newID, 'aUsr', '!!! INCREMENTAL User '.$newName.'('.$newEmail.')  being added');  
           if($newID !== 0 && $newID!==FALSE){
@@ -282,9 +265,9 @@ class Admin_model extends MY_Model{
      public function generateCreationEmail($email, $pass, $id=-1, $sendPass=FALSE){
           
           $message="";
-          $message.="Greetings! \n";
+          $message.="Greetings! \n\n";
           $message.="An account has been created with this email: ".$email."\n";
-          $message.="\n";
+          $message.="\n\n";
           if($sendPass){
                $message.="A password was randomly generated for you. It is purposely long so that you will change it upon login. \n";
                $message.="Please consider using a passphrase made up of several words to make it easy to remember, and hard to crack. \n\n";
@@ -293,39 +276,11 @@ class Admin_model extends MY_Model{
                $message.="Please copy and paste to avoid errors.";
                $message.="\n\n";
           }
-          $message.="You can log into the site at www.meta-game.net/login";
+          $message.="You can log into the site at ".base_url()."login";
           $message.="\n\n";
           $message.="This email was sent from an automated system. Please do not attempt to write back, as no one will respond.";
           
-          $this->generateEmail($email, $message, $id, "An account has been created for you at Meta-game.net");
+          $this->generateEmail($email, $message, $id, "An account has been created for you at ".base_url());
      }
      
-     private function generateEmail($recip=NULL, $message=NULL, $id=-1, $subject="META-GAME Auto-generated System message"){
-          $this->load->model("Errorlog_model");
-          $this->load->model("Logging_model");
-          
-          if($recip!==NULL && $message!==NULL){
-               $this->load->library('email');
-               
-               $this->email->clear(TRUE);
-               
-               $this->email->from('system@meta-game.net', 'NO-REPLY');
-               $this->email->to($recip); 
-               // $this->email->bcc('them@their-example.com'); 
-               
-               $this->email->subject($subject);
-               $this->email->message($message);     
-               
-               if($this->email->send()){
-                    $this->Logging_model->newLog($id, 'sEma', 'Email -'.$subject.'- to ('.$recip.')sent successfully'); 
-               }
-               else{
-                    // Write out a log with truncation in effect (max size is 300)
-                    $this->Errorlog_model->newLog($id, 'sEma', 'Email Failed, Debug: '.substr($this->email->print_debugger(),0,270)."XX"); 
-               }
-          }
-          else{
-               $this->Errorlog_model->newLog($id, 'sEma', 'Generate email failed. There was a lack of an email address or message');
-          }
-     }
 }

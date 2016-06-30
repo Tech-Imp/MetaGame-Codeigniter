@@ -98,10 +98,10 @@ class Users extends Dash_backend{
 	
 	public function listUsers(){
 	     $this->secureArea();
-		$this->load->model('Admin_model');
+		$this->load->model('User_model');
 		$data=$this->commonHeader();
           if($this->session->userdata('role') >= $this->config->item('sectionAdmin')){
-		   $userRecords=$this->Admin_model->getUsers();
+		   $userRecords=$this->User_model->getUsers();
           }
           else{
              $userRecords=array();  
@@ -111,7 +111,7 @@ class Users extends Dash_backend{
 		$data['userTable']="<strong>No users to display from database that are under your authority.</strong>";
 		
 		if(count($userRecords)){
-			$data['userTable']=simpleUserInterface($userRecords);
+			$data['userTable']=$this->simpleUserInterface($userRecords);
 		}
 		
 		$this->load->view('templates/header', $data);

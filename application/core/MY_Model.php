@@ -197,7 +197,35 @@ class MY_Model extends CI_Model{
           }
 		// End content Exclusion
 	}
-
+     
+     protected function generateEmail($recip=NULL, $message=NULL, $id=-1, $subject="Auto-generated System message"){
+          $this->load->model("Errorlog_model");
+          $this->load->model("Logging_model");
+          
+          if($recip!==NULL && $message!==NULL){
+               $this->load->library('email');
+               
+               $this->email->clear(TRUE);
+               $this->email->from($this->config->item('systemEmail'), 'NO-REPLY');
+               $this->email->to($recip); 
+               // $this->email->bcc('them@their-example.com'); 
+               
+               $this->email->subject($subject);
+               $this->email->message($message);     
+               
+               if($this->email->send()){
+                    $this->Logging_model->newLog($id, 'sEma', 'Email -'.$subject.'- to ('.$recip.')sent successfully'); 
+               }
+               else{
+                    // Write out a log with truncation in effect (max size is 300)
+                    $this->Errorlog_model->newLog($id, 'sEma', 'Email Failed, Debug: '.substr($this->email->print_debugger(),0,270)."XX"); 
+               }
+          }
+          else{
+               $this->Errorlog_model->newLog($id, 'sEma', 'Generate email failed. There was a lack of an email address or message');
+          }
+     }
+     
 
 }
 
