@@ -110,36 +110,38 @@ class Users extends Dash_backend{
 		$data['numUsers']=count($userRecords);
 		$data['userTable']="<strong>No users to display from database that are under your authority.</strong>";
 		
-		
 		if(count($userRecords)){
-			$data['userTable']="<div class='table-responsive'><table class='table table-hover table-striped'><thead>
-				<tr>
-					<td>Name</td>
-					<td>Email</td>
-					<td>Edit</td>
-				</tr>
-			</thead>
-			<tbody>";
-			//Loop through the data and make a new row for each
-			foreach ($userRecords as $row) {
-				$userId=$row->id;
-				$data['userTable'].="
-				<tr><td>"
-				.$row->name."</td>
-				<td>".$row->email."</td>
-				<td>".anchor('admin/dashboard/users/index/'.$userId,"<span class='glyphicon glyphicon-cog'></span>")."</td>
-				</tr>";
-					
-			}
-			$data['userTable'].="</tbody></table>";
-			// $data['userTable']=var_dump($userRecords);
+			$data['userTable']=simpleUserInterface($userRecords);
 		}
-		
 		
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
 		$this->load->view('dash/userInfo');
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);
+	}
+	
+	//Used in the simple case of solely editing passwords
+	private function simpleUserInterface($userRecords){
+         $table="<div class='table-responsive'><table class='table table-hover table-striped'><thead>
+               <tr>
+                    <td>Name</td>
+                    <td>Email</td>
+                    <td>Edit</td>
+               </tr>
+          </thead>
+          <tbody>";
+          //Loop through the data and make a new row for each
+          foreach ($userRecords as $row) {
+               $table.="
+               <tr><td>"
+               .$row->name."</td>
+               <td>".$row->email."</td>
+               <td>".anchor('admin/dashboard/users/index/'.$row->id, "<span class='glyphicon glyphicon-cog'></span>")."</td>
+               </tr>";
+          }
+          $table.="</tbody></table>";
+          // $data['userTable']=var_dump($userRecords);
+          return $table;
 	}
 }
