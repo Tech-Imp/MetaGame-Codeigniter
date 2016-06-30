@@ -33,7 +33,7 @@ class Written extends Dash_backend{
 		
 		$maxLimit=$this->config->item('maxAdmin');
 		$articles=$this->Article_model->getArticles(NULL, $maxLimit, 0);
-		$maxNewsCount=$this->Article_model->getWrittenCount(false);
+		$maxNewsCount=$this->Article_model->getWrittenCount(false, NULL, NULL, TRUE);
 		
 		$data['articleTable']=$this->Adminprep_model->gatherItemsAdmin($articles, "news", "news_id", "written/editWritten", $maxNewsCount, $maxLimit, 0);
 		

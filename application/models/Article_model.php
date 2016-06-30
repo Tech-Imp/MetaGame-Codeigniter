@@ -111,12 +111,18 @@ class Article_model extends MY_Model{
 	//----------------------------------------------------------------------------
 	//Generic function for all written content
 	//----------------------------------------------------------------------------
-	public function getWrittenCount($findViaTime=true, $here=null, $type=NULL){
-			
+	public function getWrittenCount($findViaTime=true, $here=null, $type=NULL, $admin=FALSE){
+		$myRole=$this->session->userdata('role');
+          $myID=$this->session->userdata('id');
+          
 		if($type!==NULL){
 			$this->db->where('type =', $type);
 		}
 		
+          if($admin && $myRole<$this->config->item('superAdmin')){
+               $this->db->where('author_id =', $myID);
+          }
+          
 		if($findViaTime){
 			$now=date('Y-m-d H:i:s');	
 			$visArr=array('visibleWhen <='=> $now, 'visibleWhen !=' => '0000-00-00 00:00:00');
