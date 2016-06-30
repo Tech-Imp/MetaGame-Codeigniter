@@ -10,7 +10,6 @@ class MY_Model extends CI_Model{
 		
 	function __construct(){
 		parent::__construct();
-		
 	}
 	public function get($id=NULL, $single=FALSE, $altTable=FALSE, $altOrder=FALSE){
 		// Does a querry sans a where clause but can be limited to a specific row rather than all	
@@ -26,7 +25,6 @@ class MY_Model extends CI_Model{
 		else{
 			$method='result';
 		}
-		
 		// Handles case where I need to reference multiple different tables for join functions
 		if($altTable === FALSE){
 	          $parts=explode(",", $this->_order_by);
@@ -43,7 +41,6 @@ class MY_Model extends CI_Model{
 			$this->db->from($altTable);
 			return $this->db->get()->$method();
 		}
-	
 	}
 //----------------------------------------------------------------------------------------	
 	public function get_by($where, $single=FALSE, $altTable=FALSE, $altOrder=FALSE){
@@ -51,12 +48,9 @@ class MY_Model extends CI_Model{
 		$this->db->where($where);
 		return $this->get(NULL, $single, $altTable, $altOrder);
 	}
-	
-	
 //----------------------------------------------------------------------------------------	
 	public function save($data, $id=NULL, $altTable=FALSE, $overtime=FAlSE){
 		//Are timestamps important for this transaction?
-		
 		if($this->_timestamp  === TRUE || $overtime===TRUE ){
 			$now=date('Y-m-d H:i:s');
 			if($id===NULL){
@@ -68,7 +62,6 @@ class MY_Model extends CI_Model{
                     $data['modified_by']=$this->session->userdata('id');
 			}
 		}
-			
 		// Insert into DB
 		if ($id===NULL){
 			if(isset($data[$this->_primary_key])){
@@ -112,9 +105,7 @@ class MY_Model extends CI_Model{
 		// return $data;
 		return $id;
 	}
-	
 //-------------------------------------------------------------
-	
 	public function delete($id){
 		//Only used for removal of entry
 		//TODO Authorization of delete
@@ -128,8 +119,9 @@ class MY_Model extends CI_Model{
 		$this->db->limit(1);
 		$this->db->delete($this->_table_name);
 	}
-	
-//-----------------------------------------------------------	
+//-------------------------------------------------------------------------------
+//	Fine Tuned basic querry controls
+//--------------------------------------------------------------------------	
 	public function joinTable($secondTable, $priIndex, $secIndex, $reqPriFields="*", $reqSecFields="*", $typeOfJoin='left'){
 		// Join function to allow ease of use for results that need 2 tables. The current class is assumed primary
 		$priSelect=$this->selectIterator($reqPriFields, $this->_table_name);
@@ -150,7 +142,6 @@ class MY_Model extends CI_Model{
 		$selStatement="";
 		if($reqFields!==NULL){
 			$length=$loc=0;
-			
 			$length=count($selectArray);
 			foreach($selectArray as $selItem){
 				$selStatement.=$table.'.'.$selItem;	
@@ -160,16 +151,7 @@ class MY_Model extends CI_Model{
 		}
 		return $selStatement;
 	}
-
-
-//-----------------------------------------------------------------------------------
-
-	public function hashP($string, $salt){
-		return hash('sha512', $salt . $string . config_item('encryption_key'));
-	}
-
 //---------------------------------------------------------------
-
 	public function restrictSect($here=NULL, $exclusiveExists=TRUE, $specTable=FALSE){
 		//Whole section dedicated to making sure that items can be separated based on 
 		//exclusive areas.
@@ -197,7 +179,9 @@ class MY_Model extends CI_Model{
           }
 		// End content Exclusion
 	}
-     
+ //---------------------------------------------------------------------------------
+ //Generic shared functions
+ //------------------------------------------------------------------------------    
      protected function generateEmail($recip=NULL, $message=NULL, $id=-1, $subject="Auto-generated System message"){
           $this->load->model("Errorlog_model");
           $this->load->model("Logging_model");
@@ -225,7 +209,9 @@ class MY_Model extends CI_Model{
                $this->Errorlog_model->newLog($id, 'sEma', 'Generate email failed. There was a lack of an email address or message');
           }
      }
-     
-
+//-----------------------------------------------------------------------------------
+     public function hashP($string, $salt){
+          return hash('sha512', $salt . $string . config_item('encryption_key'));
+     }
 }
 
