@@ -16,8 +16,8 @@ class Users extends Dash_backend{
 		$data=$this->commonHeader();
 		$data['currentLocation']="<div class='navbar-brand'>Your Settings</div>";
 		
-		// Completely disallow the ability of anyone with less rank than contributor from even attempting a PW change on someone else
-		if($this->session->userdata('role') < $this->config->item('contributor')){$id=NULL;}
+		// Completely disallow the ability of anyone with less rank than sectionAdmin from even attempting a PW change on someone else
+		if($this->session->userdata('role') < $this->config->item('sectionAdmin')){$id=NULL;}
 		
 		// Find the name of the person to be changed
 		$roleAffected=-1;
@@ -44,7 +44,7 @@ class Users extends Dash_backend{
 			if($id===NULL){
 				$editID=$this->Admin_model->fixSelf();
 			}
-			elseif($this->session->userdata('role')>= $this->config->item('contributor') && $roleAffected !== -1 && $this->session->userdata('role') > $roleAffected){
+			elseif($this->session->userdata('role')>= $this->config->item('sectionAdmin') && $roleAffected !== -1 && $this->session->userdata('role') > $roleAffected){
 				$editID=$this->Admin_model->fixOther(intval($id));
 			}
 			else{
@@ -61,7 +61,7 @@ class Users extends Dash_backend{
 				$progMessage="<br> <span class='text-success'>Update Successful</span>";
 			}
 			elseif ($this->session->userdata('role')>= $this->config->item('contributor')) {
-				$progMessage="<br> <span class='text-danger'>Update failed.</span> <br>Cannot alter passwords of users of equal or higher rank than you.";
+				$progMessage="<br> <span class='text-danger'>Update failed.</span> <br>Cannot alter passwords of users of equal or higher rank than you. Cannot alter normal users at contributor rank.";
 			}
 			else{
 				$progMessage="<br> <span class='text-danger'>Update failed.</span>";
@@ -100,7 +100,12 @@ class Users extends Dash_backend{
 	     $this->secureArea();
 		$this->load->model('Admin_model');
 		$data=$this->commonHeader();
-		$userRecords=$this->Admin_model->getUsers();
+          if($this->session->userdata('role') >= $this->config->item('sectionAdmin')){
+		   $userRecords=$this->Admin_model->getUsers();
+          }
+          else{
+             $userRecords=array();  
+          }
 		$data['currentLocation']="<div class='navbar-brand'>Users List</div>";
 		$data['numUsers']=count($userRecords);
 		$data['userTable']="<strong>No users to display from database that are under your authority.</strong>";
