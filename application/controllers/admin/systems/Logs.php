@@ -12,7 +12,7 @@ class Logs extends Dash_backend{
 	public function index(){
 	     $this->secureArea();
 		$this->load->model('Admin_model');
-		$data=$this->commonHeader();
+		$data=$this->adminHeader();
 		$data['currentLocation']="<div class='navbar-brand'>Site Logs (NYI)</div>";
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);

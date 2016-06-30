@@ -258,7 +258,7 @@ class Paging extends CI_Controller{
 	//--------------------------------------------------------------------------
 	private function getWritten($paging=0, $currentLoc=null){
 		$this->load->model('Article_model');
-		$this->load->model('Dataprep_model');
+		$this->load->model('Adminprep_model');
 		$maxLimit=$this->config->item('maxAdmin');
 		$offset=$paging*$maxLimit;
 		
@@ -267,7 +267,7 @@ class Paging extends CI_Controller{
 		
 	
 		if(count($articles)){
-			return $this->Dataprep_model->gatherItemsAdmin($articles, "news", "news_id", "written/editWritten", $maxNewsCount, $maxLimit, $paging);
+			return $this->Adminprep_model->gatherItemsAdmin($articles, "news", "news_id", "written/editWritten", $maxNewsCount, $maxLimit, $paging);
 		}
 		else{
 			return "<div><h4>That article does not exist.</h4></div>";
@@ -278,7 +278,7 @@ class Paging extends CI_Controller{
 	//------------------------------------------------------------------------------
 	private function getMedia($paging=0, $currentLoc=null){
 		$this->load->model('Media_model');
-		$this->load->model('Dataprep_model');
+		$this->load->model('Adminprep_model');
 		$maxLimit=$this->config->item('maxAdmin');
 		$offset=$paging*$maxLimit;
 		
@@ -287,7 +287,7 @@ class Paging extends CI_Controller{
 		
 	
 		if(count($myMedia)){
-			return $this->Dataprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, $paging);
+			return $this->Adminprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", $maxMediaCount, $maxLimit, $paging);
 		}
 		else{
 			return "<div><h4>That video does not exist.</h4></div>";
