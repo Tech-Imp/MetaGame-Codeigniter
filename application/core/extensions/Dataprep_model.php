@@ -20,7 +20,7 @@ class Dataprep_model extends CI_Model{
                        $inner.="<div class='linkText'>".$link->sub_name."</div>";
                        $inner.="</div>";
                   }
-                  $output.="<br><a href=".base_url().$link->sub_dir." target=''>".$inner."</a>";  
+                  $output.='<br><a title="'.strip_tags($link->usage).'" href='.base_url().$link->sub_dir.' target="">'.$inner.'</a>';  
                }
           }
           // print_r($data);

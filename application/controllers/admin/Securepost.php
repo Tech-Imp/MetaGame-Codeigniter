@@ -56,7 +56,16 @@ class Securepost extends MY_Controller{
 		
 		$this->load->model("Logging_model");
 		$this->Logging_model->newLog($result, 'aSec', 'Section '.$section.' ('.$sub_dir.') created by '.$myName.'('.$myEmail.')');  
-		
+		//Preload basic template settings for a new section
+		$this->load->model("Sectionexposure_model");
+          if($this->Sectionexposure_model->sectionAddBasic($sub_dir)){
+               $this->Logging_model->newLog($result, 'vSec', 'Section '.$section.' ('.$sub_dir.') had a basic visibility template created');  
+          }
+          else{
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog($result, 'vSec', 'Section '.$section.' ('.$sub_dir.') did not have basic visibility created!!'); 
+          }
+          
 		$data=array('success' => $result); 
       	echo json_encode($data);
       	exit; 
