@@ -206,7 +206,7 @@ class Users extends Dash_backend{
 				return "Admin";
 				break;
 			default:
-				return "Unknown ( ".role." )";
+				return "Unknown ( ".$role." )";
 				break;
 		}	
 		return "ERROR";
