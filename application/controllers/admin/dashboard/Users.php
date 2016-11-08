@@ -92,7 +92,7 @@ class Users extends Dash_backend{
 //View all users and redirect to edit user passwords. Since email is used as a login key it is not allowed for altering
 //Will only display users with a lower access level than user logged in
 //Will need to code a "where" function for specific user lookup in the future
-//Should also link to additional databasse to verify transactions the user has made
+//Should also link to additional databass to verify transactions the user has made
 //Also pull up log entries on user
 //------------------------------------------------------------------------------------------------------------------------
 	
@@ -137,11 +137,131 @@ class Users extends Dash_backend{
                <tr><td>"
                .$row->name."</td>
                <td>".$row->email."</td>
-               <td>".anchor('admin/dashboard/users/index/'.$row->id, "<span class='glyphicon glyphicon-cog'></span>")."</td>
-               </tr>";
+               <td>".anchor('admin/dashboard/users/index/'.$row->id, "<span class='glyphicon glyphicon-cog'></span>");
+               if($this->session->userdata('role') >= $this->config->item('sectionAdmin')){
+		   			$table.="   ".anchor('admin/dashboard/users/userRole/'.$row->id, "<span class='glyphicon glyphicon-warning-sign'></span>");
+          		}
+               $table.="</td></tr>";
           }
           $table.="</tbody></table>";
           // $data['userTable']=var_dump($userRecords);
           return $table;
+	}
+//---------------------------------------------------------------------------------
+//Alter user role to be elevated or lowered
+//---------------------------------------------------------------------------------
+	public function userRole($id=NULL){
+		$data=$this->adminHeader();
+		$this->load->model('SectionAuth_model');
+	      $this->load->model('User_model');
+	      $this->load->model('Logging_model');
+	      $this->load->model('Adminprep_model');
+	      
+	      $data['currentLocation']="<div class='navbar-brand'>Alter Permissions</div>";
+	      $data['js'][0]= 'tinymce/jquery.tinymce.min.js';
+	      $data['js'][1]= 'dash/dashboardIndex.js';
+	      $data['js'][2]= 'dash/sys/adminUserDelete.js';
+	      $data['js'][3]='commonShared.js';
+	      
+	      $this->load->view('templates/header', $data);
+	      $this->load->view('inc/dash_header', $data);
+	      
+	      if($id===NULL){
+	           $this->load->view('dash/errorInfo');
+	      }
+	      else {
+	           $allData=$this->User_model->getUsers(intval($id));
+	           if(count($allData)){
+	                $data['uid']=$id;
+	                $data['userEmail']=$allData->email;
+	                $data['comments']=$allData->comment;
+	                $data['userName']=$allData->name;
+	                $data['role']=$this->determineRole($allData->role);
+					$data['actions']=$this->roleActions($allData->role);
+	                $this->load->view('sys/alterUser', $data);
+	           }
+	           else{
+	                $this->load->view('dash/errorInfo');
+	           }    
+	      }
+	      
+	      $this->load->view('inc/dash_footer', $data);
+	      $this->load->view('templates/footer', $data);
+	}
+//-----------------------------------------------------------------------------------------------------------
+//Give a textual descriptor of the role
+//-----------------------------------------------------------------------------------------------------------
+	private function determineRole($role=0){
+		switch(intval($role)){
+			case $this->config->item('normUser'):
+				return "Normal User";
+				break;
+			case $this->config->item('contributor'):
+				return "Contributor";
+				break;
+			case $this->config->item('sectionAdmin'):
+				return "Section Admin";
+				break;
+			case $this->config->item('superAdmin'):
+				return "Admin";
+				break;
+			default:
+				return "Unknown ( ".role." )";
+				break;
+		}	
+		return "ERROR";
+	}	
+//-----------------------------------------------------------------------------------------------------------
+//Generate role promotion/demotion buttons
+//-----------------------------------------------------------------------------------------------------------	
+	private function roleActions($role=0){
+		if($role>=$this->session->userdata('role')){
+			return "<br>
+					<div class='row'>
+                         <div class='col-xs-12'><strong>You cannot alter this users role.</strong></div>
+                    </div><br>";
+		}
+		else{
+			$actions="
+			<button class='btn btn-info' type='button' data-toggle='collapse' data-target='#setNorm' aria-expanded='false' aria-controls='setNorm'>
+                    Set as Norm User
+                    </button>";
+             $block="<div class='collapse'  role='tabpanel' id='setNorm'>
+                         <div class='well'>
+                         <div>This will set their role to a normal user.</strong></div> 
+                         <div><strong>Are you sure?</strong></div><br> 
+                         <button class='btn btn-danger' type='button' data-toggle='collapse' data-target='#setNorm' aria-expanded='false' aria-controls='setNorm'>No, Cancel</button>
+                         <button class='btn btn-success' type='button' id='setRoleNorm'>Yes, Norm User</button>
+                         </div>
+                    </div>";
+			if($this->session->userdata('role')>=$this->config->item('sectionAdmin')){
+				$actions.="
+				<button class='btn btn-info' type='button' data-toggle='collapse' data-target='#setContrib' aria-expanded='false' aria-controls='setContrib'>
+                    Set as Contributor
+                    </button>";
+                $block.="<div class='collapse' role='tabpanel' id='setContrib'>
+                         <div class='well'>
+                         <div>This will set their role to a Contributor.</strong></div> 
+                         <div><strong>Are you sure?</strong></div><br> 
+                         <button class='btn btn-danger' type='button' data-toggle='collapse' data-target='#setContrib' aria-expanded='false' aria-controls='setContrib'>No, Cancel</button>
+                         <button class='btn btn-success' type='button' id='setRoleContrib'>Yes, Contributor</button>
+                         </div>
+                    </div>";
+			}
+			if($this->session->userdata('role')>=$this->config->item('superAdmin')){
+				$actions.="<button class='btn btn-info' type='button' data-toggle='collapse' data-target='#setSectAdmin' aria-expanded='false' aria-controls='setSectAdmin'>
+                    Set as Section Admin
+                    </button>";
+                $block.="<div class='collapse' role='tabpanel' id='setSectAdmin'>
+                         <div class='well'>
+                         <div>This will set their role to a Section Admin.</strong></div> 
+                         <div><strong>Are you sure?</strong></div><br> 
+                         <button class='btn btn-danger' type='button' data-toggle='collapse' data-target='#setSectAdmin' aria-expanded='false' aria-controls='setSectAdmin'>No, Cancel</button>
+                         <button class='btn btn-success' type='button' id='setRoleSAdmin'>Yes, Section Admin</button>
+                         </div>
+                    </div>";
+			}
+			return $actions.$block;
+		}
 	}
 }

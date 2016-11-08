@@ -46,7 +46,7 @@
                          <div>This will remove <strong>ALL</strong> users from <strong><?php echo $groupName;?></strong> and then destroy <strong><?php echo $groupName;?></strong> group. </div> 
                          <div><strong>Are you sure?</strong></div><br> 
                          <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#deleteAssoc" aria-expanded="false" aria-controls="deleteAssoc">No, Cancel</button>
-                         <button class="btn btn-success" type="button" id='permDelete'>Yes, Delete Media</button>
+                         <button class="btn btn-success" type="button" id='permDelete'>Yes, Delete Group</button>
                          </div>
                     </div>
                </div>

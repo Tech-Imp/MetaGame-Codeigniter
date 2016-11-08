@@ -50,7 +50,7 @@
     					<h3 class="panel-title">Quick Links</h3>
   					</div>
   					<div class="panel-body">
-    					<a href='' target='_blank'><img class='img-responsive img-rounded'src="<?php echo base_url() ; ?>assets/image/Placeholder.jpg" alt='Support Meta-game via PayPal'> </a>
+    					<a href='<?php echo base_url() ; ?>main'><img class='img-responsive img-rounded'src="<?php echo base_url() ; ?>assets/image/Placeholder.jpg" alt='Main site'> </a>
                          <?php echo $siteLinks ?>
   					</div>
   					
