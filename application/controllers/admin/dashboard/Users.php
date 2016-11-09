@@ -223,33 +223,37 @@ class Users extends Dash_backend{
 		}
 		else{
 			$actions="
-			<button class='btn btn-info' type='button' data-toggle='collapse' data-target='#setNorm' aria-expanded='false' aria-controls='setNorm'>
+			<button class='btn btn-info' type='button' data-toggle='collapse' data-parent='#act-accordion' data-target='#setNorm'>
                     Set as Norm User
                     </button>";
-             $block="<div class='collapse'  role='tabpanel' id='setNorm'>
+                    
+             $block="<br><div class='panel-group' id='act-accordion' role='tablist'>
+				<div class='panel'>
+             		<div class='collapse'  role='tabpanel' id='setNorm'>
                          <div class='well'>
                          <div>This will set their role to a normal user.</strong></div> 
                          <div><strong>Are you sure?</strong></div><br> 
-                         <button class='btn btn-danger' type='button' data-toggle='collapse' data-target='#setNorm' aria-expanded='false' aria-controls='setNorm'>No, Cancel</button>
+                         <button class='btn btn-danger' type='button' data-toggle='collapse' data-target='#setNorm'>No, Cancel</button>
                          <button class='btn btn-success' type='button' id='setRoleNorm'>Yes, Norm User</button>
                          </div>
                     </div>";
 			if($this->session->userdata('role')>=$this->config->item('sectionAdmin')){
 				$actions.="
-				<button class='btn btn-info' type='button' data-toggle='collapse' data-target='#setContrib' aria-expanded='false' aria-controls='setContrib'>
+				<button class='btn btn-info' type='button' data-toggle='collapse' data-parent='#act-accordion' data-target='#setContrib'>
                     Set as Contributor
                     </button>";
                 $block.="<div class='collapse' role='tabpanel' id='setContrib'>
                          <div class='well'>
                          <div>This will set their role to a Contributor.</strong></div> 
                          <div><strong>Are you sure?</strong></div><br> 
-                         <button class='btn btn-danger' type='button' data-toggle='collapse' data-target='#setContrib' aria-expanded='false' aria-controls='setContrib'>No, Cancel</button>
+                         <button class='btn btn-danger' type='button' data-toggle='collapse' data-target='#setContrib'>No, Cancel</button>
                          <button class='btn btn-success' type='button' id='setRoleContrib'>Yes, Contributor</button>
                          </div>
                     </div>";
 			}
 			if($this->session->userdata('role')>=$this->config->item('superAdmin')){
-				$actions.="<button class='btn btn-info' type='button' data-toggle='collapse' data-target='#setSectAdmin' aria-expanded='false' aria-controls='setSectAdmin'>
+				$actions.="
+				<button class='btn btn-info' type='button' data-toggle='collapse' data-parent='#act-accordion' data-target='#setSectAdmin'>
                     Set as Section Admin
                     </button>";
                 $block.="<div class='collapse' role='tabpanel' id='setSectAdmin'>
@@ -261,7 +265,7 @@ class Users extends Dash_backend{
                          </div>
                     </div>";
 			}
-			return $actions.$block;
+			return $actions.$block."</div></div>";
 		}
 	}
 }
