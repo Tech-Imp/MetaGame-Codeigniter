@@ -41,12 +41,26 @@ class User_model extends MY_Model{
 //-------------------------------------------------------------------------------------------------------
 //Get users that are above a rank
 //-------------------------------------------------------------------------------------------------------	
-	public function getByMinRank($rank=0){
+	public function getByMinRank($rank=0, $id=NULL){
 		$myRole=$this->session->userdata('role');
 		if(!(abs($rank)<=$myRole)){
 			$rank=0;
 		}
 		$this->db->where('auth_role.role >=', $rank);
 		return $this->getInternal();
-	} 
+	}
+
+//-------------------------------------------------------------------------------------------------------------
+//Adjust role/rank
+//-------------------------------------------------------------------------------------------------------------
+	public function setRole($id, $rank){
+		$data=array(
+				'role'=>$rank,
+			); 
+		if($this->save($data, $id,'auth_role') !== NULL){
+			return " role updated ";	
+		}
+		return "!*! ROLE UPDATE FAILED !*!";
+	}
+ 
 }

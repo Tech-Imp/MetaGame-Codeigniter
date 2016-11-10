@@ -152,7 +152,7 @@ class Users extends Dash_backend{
 //---------------------------------------------------------------------------------
 	public function userRole($id=NULL){
 		$data=$this->adminHeader();
-		$this->load->model('SectionAuth_model');
+		
 	      $this->load->model('User_model');
 	      $this->load->model('Logging_model');
 	      $this->load->model('Adminprep_model');
@@ -160,7 +160,7 @@ class Users extends Dash_backend{
 	      $data['currentLocation']="<div class='navbar-brand'>Alter Permissions</div>";
 	      $data['js'][0]= 'tinymce/jquery.tinymce.min.js';
 	      $data['js'][1]= 'dash/dashboardIndex.js';
-	      $data['js'][2]= 'dash/sys/adminUserDelete.js';
+	      $data['js'][2]= 'dash/sys/adminUserAdjust.js';
 	      $data['js'][3]='commonShared.js';
 	      
 	      $this->load->view('templates/header', $data);

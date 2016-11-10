@@ -143,8 +143,8 @@ class Securepost extends MY_Controller{
 		//Verify added member qualifications
 		$this->load->model("User_model");
 		$this->load->model("SectionAuth_model");
-		$userRecord=$this->User_model->getUsers($user);
-          if($userRecord->role < $this->config->item('contributor')){
+		$userRecord=$this->User_model->getByMinRank($this->config->item('contributor'), $user);
+          if(is_null($userRecord)){
                $data=array('error' => "Invalid member");
                $this->load->model("Errorlog_model");
                $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user to section. User invalid. User role '.$myRole);  
@@ -159,8 +159,8 @@ class Securepost extends MY_Controller{
                echo json_encode($data);
                exit;  
 		}
-		//Verify section exists and if so add user to it
-          if($this->SectionAuth_model->sectionExists($section)){
+		//Verify section exists, user has authorization for it, and if so add user to it
+          if($this->SectionAuth_model->sectionExists($section) && $this->SectionAuth_model->isSelfAuthorized($section)){
                $result=$this->SectionAuth_model->addUserToSection($user, $section);
                $this->load->model("Logging_model");
                $this->Logging_model->newLog($result, 'uAdd', 'User '.$userRecord->name.' ('.$user.') added to section '.$section.'  by '.$myName.'('.$myEmail.')');
@@ -220,6 +220,75 @@ class Securepost extends MY_Controller{
           echo json_encode($data);
           exit; 
      }
+
+//-------------------------------------------------------------------------------------------------------------
+//USER->UserRole related functions
+//-------------------------------------------------------------------------------------------------------------
+	function setRole(){
+          header('content-type: text/javascript');
+          $myRole=$this->session->userdata('role');
+          $myID=$this->session->userdata('id');
+          $myName=$this->session->userdata('name');
+          $myEmail=$this->session->userdata('email');
+          $entryID = intval($this->input->post('userID')); 
+		  $adjustRole = $this->input->post('rank');		
+			
+          if(empty($entryID) || !is_int($entryID)){
+               $data=array('error' => "Error retrieving user ID"); 
+               echo json_encode($data);
+               exit; 
+          } 
+		  switch($adjustRole){
+			case "norm":
+				$setRank=$this->config->item('normUser');
+				break;
+			case "contrib": 
+				$setRank=$this->config->item('contributor');
+				break;
+			case "sect":
+				$setRank=$this->config->item('sectionAdmin');
+				break;
+			default:
+				$data=array('error' => "Error retrieving role"); 
+               	echo json_encode($data);
+               	exit; 
+		  }	
+		
+		
+			$this->load->model('User_model');
+			$userData=$this->User_model->getUsers($entryID);
+		
+          
+          if(count($userData)){
+               //only those with proper rank can affect others below them
+              if($userData->role < $myRole && $myRole > $this->config->item('contributor') && $myRole > $setRank){
+                    $result=$this->User_model->setRole($entryID, $setRank);
+                    $data=array('success' => $result);
+                    $this->load->model("Logging_model");
+                    $this->Logging_model->newLog($entryID, 'uPri', 'User '.$userData->name.$result.' by user '.$myName.'('.$myEmail.') ');
+               }
+               else{
+                    $data=array('error' => "Insufficient privledges"); 
+                    $this->load->model("Errorlog_model");
+                    $this->Errorlog_model->newLog($entryID, 'uPri', 'User '.$userData->name.'('.$userData->email.') role change failed. Insufficient permissions. User '.$myID.' role '.$myRole);
+               } 
+          }
+          else{
+               $data=array('error' => "Entry does not exist"); 
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog($entryID, 'uPri', 'User role change failed. ID does not exist. User '.$myID.' role '.$myRole);
+          }
+          
+           
+          echo json_encode($data);
+          exit; 
+     }
+
+
+
+
+
+
 
 //---------------------------------------------------------------------------------
 //shared functions
