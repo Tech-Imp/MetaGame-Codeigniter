@@ -25,7 +25,7 @@ class Securepost extends MY_Controller{
 		if($myRole< $this->config->item('sectionAdmin')){
 			$data=array('error' => "Insufficient privledges");
 			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'aSec', 'Failed to create section. Insufficient privledges. User role '.$myRole);  
+			$this->Errorlog_model->newLog(-1, 'aSec', 'Failed to create section. Insufficient privledges. User '.$myName.' ('.$myEmail.') role '.$myRole);  
       		echo json_encode($data);
       		exit; 
 		}
@@ -36,7 +36,7 @@ class Securepost extends MY_Controller{
 		if(empty($clean_html)||empty($section)||empty($sub_dir)){
 			$data=array('error' => "Required text field is empty");
 			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'aSec', 'Failed to create section. Required field empty ');  
+			$this->Errorlog_model->newLog(-1, 'aSec', 'Failed to create section. Required field empty by User '.$myName.' ('.$myEmail.')');  
       		echo json_encode($data);
       		exit; 
 		}
@@ -47,7 +47,7 @@ class Securepost extends MY_Controller{
           if(!$this->verifySection($bindToParent)){
                $data=array('error' => "Invalid section ");
                $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog(-1, 'aSec', 'Failed to create section. Parent section invalid. User role '.$myRole.' Section '.$bindToParent);  
+               $this->Errorlog_model->newLog(-1, 'aSec', 'Failed to create section. Parent section invalid. User '.$myName.' ('.$myEmail.') role '.$myRole.' Section '.$bindToParent);  
                echo json_encode($data);
                exit; 
           } 
@@ -63,7 +63,7 @@ class Securepost extends MY_Controller{
           }
           else{
                $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog($result, 'vSec', 'Section '.$section.' ('.$sub_dir.') did not have basic visibility created!!'); 
+               $this->Errorlog_model->newLog($result, 'vSec', 'Section '.$section.' ('.$sub_dir.') did NOT have basic visibility created!! by User '.$myName.' ('.$myEmail.')'); 
           }
           
 		$data=array('success' => $result); 
@@ -98,13 +98,13 @@ class Securepost extends MY_Controller{
      		else{
      			$data=array('error' => "Insufficient privledges"); 
                     $this->load->model("Errorlog_model");
-                    $this->Errorlog_model->newLog($sectionID, 'dSec', 'Section '.$verify->sub_name.'('.$verify->subsite_id.') delete failed. Insufficient permissions. User '.$myID.' role '.$myRole);
+                    $this->Errorlog_model->newLog($sectionID, 'dSec', 'Section '.$verify->sub_name.'('.$verify->subsite_id.') delete failed. Insufficient permissions. User '.$myName.'('.$myEmail.') role '.$myRole);
      		} 
           }
           else{
                $data=array('error' => "Section does not exist"); 
                $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog($sectionID, 'dSec', 'Section ('.$sectionID.') delete failed. ID does not exist. User '.$myID.' role '.$myRole);
+               $this->Errorlog_model->newLog($sectionID, 'dSec', 'Section ('.$sectionID.') delete failed. ID does not exist. User '.$myName.'('.$myEmail.') role '.$myRole);
           }
 		
 		 
@@ -128,7 +128,7 @@ class Securepost extends MY_Controller{
 		if($myRole< $this->config->item('sectionAdmin')){
 			$data=array('error' => "Insufficient privledges");
 			$this->load->model("Errorlog_model");
-			$this->Errorlog_model->newLog(-1, 'uAdd', 'Failed to add user to section. Insufficient privledges. User role '.$myRole);  
+			$this->Errorlog_model->newLog(-1, 'uAdd', 'Failed to add user to section. Insufficient privledges. User: '.$myName.' ('.$myEmail.') role: '.$myRole);  
       		echo json_encode($data);
       		exit; 
 		}
@@ -147,7 +147,7 @@ class Securepost extends MY_Controller{
           if(is_null($userRecord)){
                $data=array('error' => "Invalid member");
                $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user to section. User invalid. User role '.$myRole);  
+               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user to section. User invalid. User: '.$myName.' ('.$myEmail.') role: '.$myRole);  
                echo json_encode($data);
                exit; 
           }
@@ -155,7 +155,7 @@ class Securepost extends MY_Controller{
 		if(!($this->SectionAuth_model->isNewUser($user, $section))){
 		    $data=array('error' => "User already a member");
                $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user to section. User already a member. User role '.$myRole);  
+               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user '.$userRecord->name.' ('.$user.') to section. User already a member. User: '.$myName.' ('.$myEmail.') role: '.$myRole);  
                echo json_encode($data);
                exit;  
 		}
@@ -171,7 +171,7 @@ class Securepost extends MY_Controller{
           else{
                $data=array('error' => "Invalid section ");
                $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user to section. Section invalid. User role '.$myRole.' Section '.$section);  
+               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user '.$userRecord->name.' ('.$user.') to section. Section invalid. User: '.$myName.' ('.$myEmail.') role: '.$myRole.' Section: '.$section);  
                echo json_encode($data);
                exit; 
           } 

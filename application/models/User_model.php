@@ -47,7 +47,7 @@ class User_model extends MY_Model{
 			$rank=0;
 		}
 		$this->db->where('auth_role.role >=', $rank);
-		return $this->getInternal();
+		return $this->getInternal($id);
 	}
 
 //-------------------------------------------------------------------------------------------------------------

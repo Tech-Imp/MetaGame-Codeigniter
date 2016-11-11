@@ -1,5 +1,5 @@
 <?
-class Errorlog_model extends MY_Model{
+class Errorlog_model extends Logging_model{
     	
     protected $_table_name='error_log';
 	protected $_primary_key='transact_id';
