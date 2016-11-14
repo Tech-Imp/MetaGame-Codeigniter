@@ -104,19 +104,23 @@ class SectionAuth_model extends MY_Model{
 	public function removeUserFromSection($id=NULL, $user=NULL, $section=NULL){
 		
 		$this->load->model("Subauth_model");
+          $whoAffected="";
 		if($id!==NULL){
+		     $userAffected=$this->Subauth_model->getSubAuth($id);
 			$this->Subauth_model->delete($id);
+               $whoAffected="[".$userAffected->name." (".$userAffected->email.") from ".$userAffected->sub_name."]";
 		}
 		elseif ($user!==NULL && $section!==NULL){
 			$results=$this->Subauth_model->getIDBySecUser($user, $section);
 			foreach($results as $row){
 				$this->Subauth_model->delete(intval($row->user_id));
+                    $whoAffected.="[".$row->name." (".$row->email.") from ".$row->sub_name."]";
 			}
 		}
 		else{
 			return "Error: Data missing";
 		}
-		return "User removal successful";
+		return "User removal from section successful ".$whoAffected;
 	}
      
 	public function removeSubDir($id){

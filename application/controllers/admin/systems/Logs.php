@@ -19,7 +19,7 @@ class Logs extends Dash_backend{
 		$this->load->view('inc/dash_header', $data);
           
           $logOutput="<div><h4>Recent activity:</h4><br>No recent activity to report.</div>";
-          $logs=$this->Errorlog_model->getQuickLogs(15,0);
+          $logs=$this->Errorlog_model->getQuickLogs(30,0);
           if(count($logs)){
                $logOutput='<div><h4>Recent activity:</h4><br><ul>';
                foreach ($logs as $row) {
@@ -32,7 +32,7 @@ class Logs extends Dash_backend{
           
           
           
-          $this->load->view('dashboard', $data);
+          $this->load->view('sys/logs', $data);
 		// $this->load->view('dash/errorInfo');
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);
