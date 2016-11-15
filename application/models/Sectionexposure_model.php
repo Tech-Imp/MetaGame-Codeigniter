@@ -67,19 +67,21 @@ class Sectionexposure_model extends MY_Model{
      //Removes all subsections of a section
      public function sectionRemoveBasic($url){
           if(!(empty($url))){
-               $this->db->like('sub_url', url);  
+               $this->db->where('sub_url', $url);
+               $this->db->or_where_in('sub_url', $this->_basicSection);
+               $this->db->delete($this->_table_name);
+               //Double check the deed was done correctly
+               $this->db->like('sub_url', $url);  
                $results=$this->get();
-               if( count($results) <= (count($this->_basicSection)+1)){
-                    $this->db->like('sub_url', url);
-                    $this->db->delete($this->_table_name);
-                    return 0;
+               if( count($results) ==0 ){
+                    return "success";
                }
                else {
                     //Show variance of results found versus expected
                     return count($results) - (count($this->_basicSection)+1);
                }
           }
-          else{return NULL;}
+          else{return " ERROR[No URL passed] ";}
      }
      
      public function showSection($url){

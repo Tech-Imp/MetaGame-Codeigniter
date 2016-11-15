@@ -59,11 +59,11 @@ class Securepost extends MY_Controller{
 		//Preload basic template settings for a new section
 		$this->load->model("Sectionexposure_model");
           if($this->Sectionexposure_model->sectionAddBasic($sub_dir)){
-               $this->Logging_model->newLog($result, 'vSec', 'Section '.$section.' ('.$sub_dir.') had a basic visibility template created');  
+               $this->Logging_model->newLog($result, 'aVis', 'Section '.$section.' ('.$sub_dir.') had a basic visibility template created');  
           }
           else{
                $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog($result, 'vSec', 'Section '.$section.' ('.$sub_dir.') did NOT have basic visibility created!! by User '.$myName.' ('.$myEmail.')'); 
+               $this->Errorlog_model->newLog($result, 'aVis', 'Section '.$section.' ('.$sub_dir.') did NOT have basic visibility created!! by User '.$myName.' ('.$myEmail.')'); 
           }
           
 		$data=array('success' => $result); 
@@ -94,6 +94,16 @@ class Securepost extends MY_Controller{
      			$data=array('success' => $result);
      			$this->load->model("Logging_model");
      			$this->Logging_model->newLog($sectionID, 'dSec', $result.' by user '.$myName.'('.$myEmail.') ');
+                    // Remove basic visibility template explicitly- DO NOT HANDLE SPECIFIC custom ones here, handle that with specific page subsection addition/deletion
+                    $this->load->model("Sectionexposure_model");
+                    $visSuccess=$this->Sectionexposure_model->sectionRemoveBasic($verify->sub_dir);
+                    if($visSuccess=="success"){
+                         $this->Logging_model->newLog($result, 'dVis', 'Deleted Section '.$verify->sub_name.' ('.$verify->sub_dir.') basic visibility template successfully by User '.$myName.'('.$myEmail.')');  
+                    }
+                    else{
+                         $this->load->model("Errorlog_model");
+                         $this->Errorlog_model->newLog($result, 'dVis', 'Delete Section '.$verify->sub_name.' ('.$verify->sub_dir.') basic visibility FAILED!! Remaining vis:'.$visSuccess.' by User '.$myName.' ('.$myEmail.')'); 
+                    }
      		}
      		else{
      			$data=array('error' => "Insufficient privledges"); 
