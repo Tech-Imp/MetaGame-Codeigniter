@@ -67,8 +67,13 @@ class Sectionexposure_model extends MY_Model{
      //Removes all subsections of a section
      public function sectionRemoveBasic($url){
           if(!(empty($url))){
+               $otherUrls=array();
+               $otherUrls=array_map(function($suffix) use ($url){
+                    return $url."/".$suffix;
+               }, $this->_basicSection);
+               
                $this->db->where('sub_url', $url);
-               $this->db->or_where_in('sub_url', $this->_basicSection);
+               $this->db->or_where_in('sub_url', $otherUrls);
                $this->db->delete($this->_table_name);
                //Double check the deed was done correctly
                $this->db->like('sub_url', $url);  

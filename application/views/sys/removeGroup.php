@@ -39,7 +39,7 @@
                          <div class="col-xs-12"><?php echo $sectionAccess?></div>
                     </div><br>
                     <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#deleteAssoc" aria-expanded="false" aria-controls="deleteAssoc">
-                    Delete Association
+                    Delete Group
                     </button>
                     <div class="collapse" id="deleteAssoc">
                          <div class="well">
