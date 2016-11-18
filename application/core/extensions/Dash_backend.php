@@ -92,7 +92,6 @@ class Dash_backend extends Admin_controller{
 			$userOptions.=anchor('admin/dashboard/multimedia',"<span class='glyphicon glyphicon-file'></span> Add Media", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addMedia'));
 			$userOptions.=anchor('admin/dashboard/items',"<span class='glyphicon glyphicon-usd'></span> Add Merch", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'addItem'));
 			$userOptions.=anchor('admin/dashboard/profile',"<span class='glyphicon glyphicon-folder-open'></span> Edit Profile", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'editProfileElements'));
-			$userOptions.=anchor('admin/dashboard/users/listUsers',"<span class='glyphicon glyphicon-user'></span> Lookup Users", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'vUsers'));
 			$userOptions.=anchor('admin/dashboard/stats',"<span class='glyphicon glyphicon-stats'></span> View Stats", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'vStats'));
 	            	
 		}

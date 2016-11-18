@@ -97,9 +97,8 @@ class Users extends Dash_backend{
 //------------------------------------------------------------------------------------------------------------------------
 	
 	public function listUsers(){
-	     $this->secureArea();
-		$this->load->model('User_model');
-		$data=$this->commonHeader();
+          $data=$this->adminHeader();
+          $this->load->model('User_model');
           if($this->session->userdata('role') >= $this->config->item('sectionAdmin')){
 		   $userRecords=$this->User_model->getUsers();
           }
