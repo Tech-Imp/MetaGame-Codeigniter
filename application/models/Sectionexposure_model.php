@@ -95,4 +95,27 @@ class Sectionexposure_model extends MY_Model{
           }
           return $this->get();
      }
+
+//--------------------------------------------------------------------------------------------
+//Routes specific functions
+//--------------------------------------------------------------------------------------------
+
+     private function createLock($lockFile="generic.lock"){
+          if (fopen($lockFile, 'x')){
+               return TRUE;  //Lock file didnt exist but now does
+          }
+          else{
+               return FALSE; //Lock already in progress
+          }
+     }
+     private function removeLock($lockFile="generic.lock"){
+          if(file_exists($lockFile)){
+               unlink($lockFile);
+               return TRUE;
+          }
+          else{
+               return FALSE;
+          }
+     }     
+     
 }
