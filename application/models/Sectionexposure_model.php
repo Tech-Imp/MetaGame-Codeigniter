@@ -36,9 +36,11 @@ class Sectionexposure_model extends MY_Model{
      //Add all the basic pages that should exist per section
 	public function sectionAddBasic($url=NULL, $minRole=NULL, $redirect=""){
 	     if(!(empty($url))){
-	          $this->saveSectionVis($url, $minRole, $redirect);
+	          	$this->saveSectionVis($url, $minRole, $redirect);
+		 		$this->appendRoute($url);
                foreach($this->_basicSection as $item){
                     $this->saveSectionVis($url.'/'.$item, $minRole, $redirect);
+				   	$this->appendRoute($url, $item);
                }
                return TRUE;
 	     }
@@ -116,6 +118,32 @@ class Sectionexposure_model extends MY_Model{
           else{
                return FALSE;
           }
-     }     
+     }
+	 // Generic routing function
+	 private function appendRoute($section, $sub="", $remapSection=""){
+	 	$routeFile="application/config/addroute.php";
+		$origFile="application/config/routes.php";
+		$newroute="";
+		// first time creation of extra routing
+		if(!(file_exists($routeFile))){
+			$newroute="<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');\n\n";
+			$forceInclude="include_once 'addroute.php';";
+			if( strpos(file_get_contents($origFile), $forceInclude) !== false) {
+        		file_put_contents($origFile, $forceInclude, FILE_APPEND );
+    		}
+			
+		}
+		// Prepend a slash in the event the sub is empty	
+		if($sub!="")$sub="/".$sub;	
+	 	
+	 	// Generate the new route and append to file
+	 	if($remapSection==""){
+	 		$newroute.="\$route['".$section.$sub."']='main".$sub."';\n";
+	 	}
+		else{
+			$newroute.="\$route['".$section.$sub."']='".$remapSection.$sub."';\n";
+		}
+	 	file_put_contents($routeFile, $newroute, FILE_APPEND );
+	 }     
      
 }

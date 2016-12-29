@@ -13,7 +13,7 @@
 		      			<td><?php echo form_password('passConfirm'); ?></td>
 		      		</tr>
 		      		<tr>
-		      			<td><?php echo anchor('admin/dashboard',"<span class='glyphicon glyphicon-home'></span> Home", array('class'=>'btn btn-danger', 'id'=>'retHome'));?></td>
+		      			<td><?php echo anchor('admin/dashboard/users/listUsers',"<span class='glyphicon glyphicon-home'></span> Home", array('class'=>'btn btn-danger', 'id'=>'retHome'));?></td>
 		      			<td><?php echo form_submit('submit', 'Change Password', 'class="btn btn-success"'); ?></td>
 		      		</tr>
 		      	</table>

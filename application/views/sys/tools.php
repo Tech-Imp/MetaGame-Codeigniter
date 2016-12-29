@@ -18,12 +18,12 @@
 					<!-- My roles section -->
 					<div class="panel-heading" role="tab" id="myRoles">
 			      		<h4 class="panel-title text-center">
-				        	<a data-toggle="collapse" data-parent="#accordion" href="#myRolesController" aria-expanded="false" aria-controls="myRoleController">
+				        	<a data-toggle="collapse" data-parent="#accordion" href="#myRolesController" aria-expanded="true" aria-controls="myRoleController">
 				          		<strong class="green"><span class='glyphicon glyphicon-king'></span> My current roles </strong>
 					        </a>
 				      	</h4>
 				    </div>
-				    <div id="myRolesController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="myRoleController">
+				    <div id="myRolesController" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="myRoleController">
 			      		<div id="myRoles" class="panel-body">
 					      	<?php echo $myRole?>
 				      	</div>
@@ -31,12 +31,12 @@
 				    <!-- Add roles section -->
 					<div class="panel-heading" role="tab" id="roleAdd">
 			      		<h4 class="panel-title text-center">
-				        	<a data-toggle="collapse" data-parent="#accordion" href="#addRoleController" aria-expanded="true" aria-controls="addRoleController">
+				        	<a data-toggle="collapse" data-parent="#accordion" href="#addRoleController" aria-expanded="false" aria-controls="addRoleController">
 				          		<strong class="green"><span class='glyphicon glyphicon-pawn'></span> Add New People to Section</strong>
 					        </a>
 				      	</h4>
 				    </div>
-				    <div id="addRoleController" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="mceContactAdd">
+				    <div id="addRoleController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mceContactAdd">
 			      		<div class="panel-body">
 			      			<div class="alert alert-danger noshow" id="roleArea-alert">
     							<button type="button" class="close" data-dismiss="alert">x</button>
