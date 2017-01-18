@@ -136,9 +136,9 @@ class Users extends Dash_backend{
                <tr><td>"
                .$row->name."</td>
                <td>".$row->email."</td>
-               <td>".anchor('admin/dashboard/users/index/'.$row->id, "<span class='glyphicon glyphicon-cog'></span>");
+               <td>".anchor('admin/dashboard/users/index/'.$row->id, "<span class='glyphicon glyphicon-lock'>Password</span>");
                if($this->session->userdata('role') >= $this->config->item('sectionAdmin')){
-		   			$table.="   ".anchor('admin/dashboard/users/userRole/'.$row->id, "<span class='glyphicon glyphicon-warning-sign'></span>");
+		   			$table.=" / ".anchor('admin/dashboard/users/userRole/'.$row->id, "<span class='glyphicon glyphicon-cog'>Role</span>");
           		}
                $table.="</td></tr>";
           }

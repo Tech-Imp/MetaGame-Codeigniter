@@ -141,6 +141,55 @@ class Tools extends Dash_backend{
           $this->load->view('inc/dash_footer', $data);
           $this->load->view('templates/footer', $data);
      }
+
+	public function editsection($id=NULL)
+     {
+          $data=$this->adminHeader();
+          $this->load->model('SectionAuth_model');
+          $this->load->model('User_model');
+          $this->load->model('Logging_model');
+          $this->load->model('Adminprep_model');
+          
+          $data['currentLocation']="<div class='navbar-brand'>Edit Section?</div>";
+          $data['js'][0]= 'tinymce/jquery.tinymce.min.js';
+          $data['js'][1]= 'dash/dashboardIndex.js';
+		  $data['js'][2]= 'dash/sys/adminSectionEdit.js';
+		  $data['js'][3]='commonShared.js';
+
+          
+          $this->load->view('templates/header', $data);
+          $this->load->view('inc/dash_header', $data);
+          
+          if($id===NULL){
+               $this->load->view('dash/errorInfo');
+          }
+          else {
+               $allData=$this->SectionAuth_model->getSectionControl(intval($id));
+               if(count($allData)){
+                    //Group
+                    $data['assocID']=$id;
+                    $data['groupURL']=$allData->sub_dir;
+                    $data['groupName']=$allData->sub_name;
+                    $data['groupUsage']=$allData->usage;
+					$data["linkVisibility"]=$this->dropdownOptions($allData->visible, array("Yes", "No"), array(1,0));
+					$data['sectionList']=$this->dropdownSections("void", "The Void", $allData->forSection);
+                    //Creator
+                    $data['creationDate']=$allData->created;
+                    $data['creator']=$allData->name;
+                    $data['creatorEmail']=$allData->email;
+                    //User in group (may revisit in future)
+                    // $people=$this->SectionAuth_model->getUsersBySection($allData->sub_dir);
+                    // $data['sectionAccess']=$this->Adminprep_model->getWhoAssigned($people);
+                    $this->load->view('sys/editGroup', $data);
+               }
+               else{
+                    $this->load->view('dash/errorInfo');
+               }    
+          }
+          
+          $this->load->view('inc/dash_footer', $data);
+          $this->load->view('templates/footer', $data);
+     }
      public function createUser(){
           $data=$this->adminHeader();
           $dashboard='admin/systems/tools';

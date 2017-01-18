@@ -86,8 +86,6 @@ class Postnews extends MY_Controller{
 		$section=preg_replace('/\s+/', '', $section);
 		if($section==null){$section="";}
 		
-		$this->load->helper('htmlpurifier');
-		$clean_html = html_purify($uncleanText);
 		
 		if(empty($newsID)){
 			$data=array('error' => "Error retrieving NewsID"); 

@@ -246,13 +246,16 @@ class Adminprep_model extends Dataprep_model{
      }
      public function getSectionControlled($controlled){
           if(count($controlled)){
-               $logOutput="<thead><td>Section</td><td>URL suffix</td><td>Created by</td><td>Email</td><td>Delete?</td></thead><tbody>";
+               $logOutput="<thead><td>Section</td><td>URL suffix</td><td>Created by</td><td>Email</td><td>Edit/Delete</td></thead><tbody>";
                foreach ($controlled as $row) {
                     $logOutput.='<tr><td>'.$row->sub_name.'</td>
                          <td>'.$row->sub_dir.'</td>
                          <td> '.$row->name. ' </td>
                          <td>'.$row->email.'</td>
-                         <td>'.anchor('admin/systems/tools/removesection/'.$row->subsite_id,"<span class='glyphicon glyphicon-remove'></span>").'</td>
+                         <td>'
+                         .anchor('admin/systems/tools/editsection/'.$row->subsite_id,"<span class='glyphicon glyphicon-wrench'>Edit</span>").' / '
+                         .anchor('admin/systems/tools/removesection/'.$row->subsite_id,"<span class='glyphicon glyphicon-remove'>Del</span>")
+                         .'</td>
                          </tr>';   
                }
                return '<table class="table table-striped">'.$logOutput.'<tbody></table>';

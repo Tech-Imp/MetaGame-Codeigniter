@@ -3,7 +3,7 @@
           <div class="panel panel-default">
           <div class="panel-heading" role="tab">
                <h4 class="panel-title">
-                    <strong class="red"><span class='glyphicon glyphicon-trash'></span>  Remove Group</strong>
+                    <strong class="green"><span class='glyphicon glyphicon-wrench'></span>  Edit Group</strong>
                </h4>
           </div>
                <div class="panel-body">
@@ -30,25 +30,28 @@
                          <div class="col-xs-12 col-sm-6 col-md-4"><?php echo $creatorEmail; ?></div>
                     </div><br>
                     <div class="row">
-                         <div class="col-xs-12"><strong>Usage</strong></div>
-                         <br>
-                         <div class="col-xs-12"><?php echo $groupUsage;?></div>
+                         <div class="col-xs-12 col-sm-6 col-md-2"><strong>Visible in Quicklinks?</strong></div>
+                         <div class="col-xs-12 col-sm-6 col-md-4">
+                         	<select id='linkVis'>
+		      					<?php echo $linkVisibility?>
+		      				</select>
+	      				 </div>
+                         <div class="col-xs-12 col-sm-6 col-md-2"><strong>Quicklinks Parent Page</strong></div>
+                         <div class="col-xs-12 col-sm-6 col-md-4">
+         				 	<select id='linkLoc'>
+         				 		<option value="">MAIN</option>
+		      					<?php echo $sectionList?>
+		      				</select>
+		      			</div>
                     </div><br>
-                    <div class="row">
-                         <div class="col-xs-12"><strong>This will affect the following users:</strong></div>
-                         <div class="col-xs-12 table-responsive"><?php echo $sectionAccess?></div>
-                    </div><br>
-                    <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#deleteAssoc" aria-expanded="false" aria-controls="deleteAssoc">
-                    Delete Group
-                    </button>
-                    <div class="collapse" id="deleteAssoc">
-                         <div class="well">
-                         <div>This will remove <strong>ALL</strong> users from <strong><?php echo $groupName;?></strong> and then destroy <strong><?php echo $groupName;?></strong> group. </div> 
-                         <div><strong>Are you sure?</strong></div><br> 
-                         <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#deleteAssoc" aria-expanded="false" aria-controls="deleteAssoc">No, Cancel</button>
-                         <button class="btn btn-success" type="button" id='permDelete'>Yes, Delete Group</button>
-                         </div>
-                    </div>
+					<h3>Usage (for section):</h3>
+					<div class="alert alert-danger noshow" id="sectionArea-alert">
+						<button type="button" class="close" data-dismiss="alert">x</button>
+						<strong id="sectionMessage">You need to add Usage Info </strong>
+					</div>
+			      	<textarea name="MCEarea" class='cleanMe' cols="40" rows="10" id="sectionUsage" style="width: 100%; resize: vertical; overflow-y: scroll; "><?php echo $groupUsage;?></textarea>
+			       	<br>
+                    <button id="saveEdits" class="btn btn-success">Save Edits</button>
                </div>
           </div>         
      </div>

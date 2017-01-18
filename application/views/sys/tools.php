@@ -67,7 +67,7 @@
 					        			Users you have granted access
 					      			</h4>
 					    		</div>
-				      			<div id="sectionAccess" class="panel-body">
+				      			<div id="sectionAccess" class="panel-body table-responsive">
 						        	<?php echo $sectionAccess?>
 					      		</div>
 			      			</div>
@@ -133,7 +133,7 @@
 					        			Existing sections you control
 					      			</h4>
 					    		</div>
-				      			<div id="sectionTable" class="panel-body">
+				      			<div id="sectionTable" class="panel-body table-responsive">
 						        	<?php echo $sectionTable?>
 					      		</div>
 			      			</div>
