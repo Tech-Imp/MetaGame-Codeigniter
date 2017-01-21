@@ -36,11 +36,6 @@
           return _this.saveSection();
         };
       })(this));
-      $("#clearSection").unbind().bind("click", (function(_this) {
-        return function(event) {
-          return _this.cleanAreas();
-        };
-      })(this));
       return $('#sectionController').keyup(function() {
         var empty;
         empty = false;
@@ -78,7 +73,6 @@
             return function(response) {
               if (response.success) {
                 console.log("Success");
-                _this.cleanAreas();
                 _this.textBodyResponse("Section updated", "#sectionMessage", false, "#sectionArea-alert", "#saveEdits");
                 return $("#saveEdits").prop("disabled", false);
               } else if (response.debug) {

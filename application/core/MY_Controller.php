@@ -63,12 +63,13 @@ class MY_Controller extends CI_Controller{
           }
      }
      
-     protected function dropdownSections($defaultVal=NULL, $defaultName=NULL, $selected=NULL){
+     protected function dropdownSections($defaultVal=NULL, $defaultName=NULL, $selected=NULL, $skip=NULL){
           $this->load->model('SectionAuth_model');
           $sections=$this->SectionAuth_model->getValidSections();
           $name=$id=array();
           if(count($sections)){
                foreach($sections as $area){
+               		if($skip!=NULL && $skip==$area->sub_dir){continue;}
                     array_push($name, $area->sub_name);
                     array_push($id, $area->sub_dir);
                }

@@ -172,7 +172,7 @@ class Tools extends Dash_backend{
                     $data['groupName']=$allData->sub_name;
                     $data['groupUsage']=$allData->usage;
 					$data["linkVisibility"]=$this->dropdownOptions($allData->visible, array("Yes", "No"), array(1,0));
-					$data['sectionList']=$this->dropdownSections("void", "The Void", $allData->forSection);
+					$data['sectionList']=$this->dropdownSections("void", "The Void", $allData->forSection, $allData->sub_dir);
                     //Creator
                     $data['creationDate']=$allData->created;
                     $data['creator']=$allData->name;

@@ -121,6 +121,67 @@ class Securepost extends MY_Controller{
       	echo json_encode($data);
       	exit; 
 	}
+	function editSection(){
+			header('content-type: text/javascript');
+          	$myRole=$this->session->userdata('role');
+          	$myID=$this->session->userdata('id');
+          	$myName=$this->session->userdata('name');
+          	$myEmail=$this->session->userdata('email');
+          	$sectionID = intval($this->input->post('id')); 
+		  	$vis = intval($this->input->post('visibility'));		
+		  	$bindToParent = $this->simplePurify($this->input->post('where'));	
+		  	$uncleanUsage = $this->input->post('usage');	
+		  	//verify we have an id 
+          	if(empty($sectionID) || !is_int($sectionID)){
+           		$data=array('error' => "Error retrieving user ID"); 
+               	echo json_encode($data);
+               	exit; 
+          	} 
+          
+		  	//Determine parent that holds the link is valid
+          	if(!$this->verifySection($bindToParent)){
+           		$data=array('error' => "Invalid section ");
+               	$this->load->model("Errorlog_model");
+               	$this->Errorlog_model->newLog(-1, 'eSec', 'Failed to edit section. Parent section invalid. User '.$myName.' ('.$myEmail.') role '.$myRole.' Section '.$bindToParent);  
+               	echo json_encode($data);
+               	exit; 
+          	} 
+		  
+			$this->load->helper('htmlpurifier');
+			$clean_html = html_purify($uncleanUsage);
+			
+			if(empty($clean_html)){
+				$data=array('error' => "Required text field is empty");
+				$this->load->model("Errorlog_model");
+				$this->Errorlog_model->newLog(-1, 'eSec', 'Failed to edit section. Required field empty by User '.$myName.' ('.$myEmail.')');  
+	      		echo json_encode($data);
+	      		exit; 
+			}  
+		  
+  			$this->load->model("SectionAuth_model");
+		  	// Verify user has rights to section and section exists
+		  	$verify=$this->SectionAuth_model->getSectionControl($sectionID);
+          	if(count($verify)){
+              	if(($verify->author_id==$myID && $myRole>= $this->config->item('sectionAdmin')) || $myRole> $this->config->item('sectionAdmin')){
+ 					$result=$this->SectionAuth_model->saveSectionEdits($sectionID, $clean_html, $vis, $bindToParent);
+     				$data=array('success' => $result);
+     				$this->load->model("Logging_model");
+     				$this->Logging_model->newLog($sectionID, 'eSec', $result.' by user '.$myName.'('.$myEmail.') ');
+	 			}
+	 			else{
+	     			$data=array('error' => "Insufficient privledges"); 
+	                $this->load->model("Errorlog_model");
+	                $this->Errorlog_model->newLog($sectionID, 'eSec', 'Section '.$verify->sub_name.'('.$verify->subsite_id.') edit failed. Insufficient permissions. User '.$myName.'('.$myEmail.') role '.$myRole);
+	 			} 
+			}
+      		else{
+   				$data=array('error' => "Section does not exist"); 
+           		$this->load->model("Errorlog_model");
+           		$this->Errorlog_model->newLog($sectionID, 'eSec', 'Section ('.$sectionID.') delete failed. ID does not exist. User '.$myName.'('.$myEmail.') role '.$myRole);
+      		}
+          	echo json_encode($data);
+          	exit; 
+     }
 
 //---------------------------------------------------------------------------------
 //USER->SECTION RELATED FEATURES
@@ -186,7 +247,7 @@ class Securepost extends MY_Controller{
                exit; 
           } 
 	}	
-
+	
      function deleteUserFromSection(){
           header('content-type: text/javascript');
           $myRole=$this->session->userdata('role');

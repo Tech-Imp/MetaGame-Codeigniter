@@ -26,8 +26,6 @@ class adminSectionEdit extends window.classes.dashboardIndex
                $("#saveEdits").prop("disabled", "disabled")    
                @saveSection()
             
-          $("#clearSection").unbind().bind "click", (event)=>
-               @cleanAreas()
 
           $('#sectionController').keyup ->
                empty = false
@@ -59,7 +57,6 @@ class adminSectionEdit extends window.classes.dashboardIndex
                     success: (response)=>
                          if response.success
                               console.log "Success"
-                              @cleanAreas()
                               @textBodyResponse("Section updated", "#sectionMessage", false, "#sectionArea-alert", "#saveEdits")
                               $("#saveEdits").prop("disabled", false)
                          else if response.debug

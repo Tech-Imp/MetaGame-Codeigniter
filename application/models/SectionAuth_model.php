@@ -27,6 +27,19 @@ class SectionAuth_model extends MY_Model{
 		
 		return $rowId;
 	}
+	
+	public function saveSectionEdits($id, $about="", $vis=0, $parent=""){
+		$data=array(
+			'usage'=>$about,
+			'visible'=>$vis,
+			'forSection'=>$parent,
+		); 
+		if( $this->save($data, $id)!== NULL){
+			return " Update successful on section item ".$id;	
+		}
+		return "!*! UPDATE OF SECTION FAILED !*!";
+	}
+	
 	public function getQuicklinks($id=null){
 	     $supInfo="logoID, facebook_url, youtube_url, twitter_url, tumblr_url, twitch, email";
 		$this->restrictSect(NULL, FALSE, $this->_table_name);
