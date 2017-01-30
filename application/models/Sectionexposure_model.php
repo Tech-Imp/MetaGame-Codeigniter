@@ -8,12 +8,76 @@ class Sectionexposure_model extends MY_Model{
 	public $rules=array();
 	protected $_timestamp=FALSE;
 	private $_basicSection=array("index", "news", "articles", "media", "photos", "video", "merch", "contact");
-     
+    private $_origRouteFile="application/config/routes.php";
+    private $_exRouteFile="application/config/addroute.php";
+	
+	 
 	function __construct(){
 		parent::__construct();
-	}
-	//Core functionality to update or create new entries for visibility
-	public function saveSectionVis($subUrl=NULL, $minRole=NULL, $redirect="", $comment="", $id=NULL){
+	} 
+	
+	public function showSection($url){
+          if(!(empty($url))){
+               $this->db->like('sub_url', url);
+          }
+          return $this->get();
+     }
+//--------------------------------------------------------------------------------------------------------
+//-----------------------Core add/removal----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------	
+ 	//Add all the basic pages that should exist per section
+	public function sectionAddBasic($url=NULL, $minRole=NULL, $redirect=""){
+		if(!(empty($url))){
+			// test to see if anyone else is adding sections currently
+			if($this->createLock()){	     	
+	          	$this->saveSectionVis($url, $minRole, $redirect);
+		 		$this->appendRoute($url);
+	           	foreach($this->_basicSection as $item){
+	            	$this->saveSectionVis($url.'/'.$item, $minRole, $redirect);
+			   		$this->appendRoute($url, $item);
+	           	}
+	           	return $this->removeLock();
+			}
+			else{
+				return FALSE;	//This false means lock file could not be established
+			}
+     	}
+      	else{
+           	return FALSE;
+  		}
+     }
+     
+     //Removes all subsections of a section
+     public function sectionRemoveBasic($url){
+      	if(!(empty($url))){
+   			if($this->createLock()){	//Check lock just in case some other process is running
+	       		$otherUrls=array();
+	           	$otherUrls=array_map(function($suffix) use ($url){
+	            	return $url."/".$suffix;
+	           	}, $this->_basicSection);
+	           
+	           	$this->db->where('sub_url', $url);
+	           	$this->db->or_where_in('sub_url', $otherUrls);
+	           	$this->db->delete($this->_table_name);
+	           	//Double check the deed was done correctly
+	           	$this->db->like('sub_url', $url);  
+	           	$results=$this->get();
+				$this->removeLock();
+				if( count($results) ==0 ){
+	            	return "success";
+	           	}
+	           	else {
+	            	//Show variance of results found versus expected
+	            	return count($results) - (count($this->_basicSection)+1);
+	           	}
+			}
+			else{return " ERROR[Routing locked, unable to delete] ";}
+      	}
+  		else{return " ERROR[No URL passed] ";}
+ 	}
+ 	
+ 	//Core functionality to update or create new entries for visibility
+	private function saveSectionVis($subUrl=NULL, $minRole=NULL, $redirect="", $comment="", $id=NULL){
 		if(!(empty($subUrl)) || !(empty($id))){		
      		$data=array(
                     'redirect_to'=>$redirect,
@@ -33,21 +97,9 @@ class Sectionexposure_model extends MY_Model{
           }
 		return $rowId;
 	}
-     //Add all the basic pages that should exist per section
-	public function sectionAddBasic($url=NULL, $minRole=NULL, $redirect=""){
-	     if(!(empty($url))){
-	          	$this->saveSectionVis($url, $minRole, $redirect);
-		 		$this->appendRoute($url);
-               foreach($this->_basicSection as $item){
-                    $this->saveSectionVis($url.'/'.$item, $minRole, $redirect);
-				   	$this->appendRoute($url, $item);
-               }
-               return TRUE;
-	     }
-          else{
-               return FALSE;
-          }
-     }
+//----------------------------------------------------------------------------------------------------------------------------
+//---------------Advanced functions-------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------	 
      //Update group with similar issues     
      public function adjustGroupingBasic($url=NULL, $minRole=NULL, $redirect="", $comment=""){
           if(!(empty($url))){
@@ -66,37 +118,27 @@ class Sectionexposure_model extends MY_Model{
           }    
           
      }
-     //Removes all subsections of a section
-     public function sectionRemoveBasic($url){
-          if(!(empty($url))){
-               $otherUrls=array();
-               $otherUrls=array_map(function($suffix) use ($url){
-                    return $url."/".$suffix;
-               }, $this->_basicSection);
-               
-               $this->db->where('sub_url', $url);
-               $this->db->or_where_in('sub_url', $otherUrls);
-               $this->db->delete($this->_table_name);
-               //Double check the deed was done correctly
-               $this->db->like('sub_url', $url);  
-               $results=$this->get();
-               if( count($results) ==0 ){
-                    return "success";
-               }
-               else {
-                    //Show variance of results found versus expected
-                    return count($results) - (count($this->_basicSection)+1);
-               }
-          }
-          else{return " ERROR[No URL passed] ";}
+     public function regenRoutes(){
+ 		if($this->createLock("route.lock")){
+	     	$skipMe=array("beta", "admin", "main");
+	     	$this->load->model("SectionAuth_model");
+			//Remove existing secondary routing file
+			if(file_exists($this->_exRouteFile)){
+               unlink($this->_exRouteFile);
+          	}
+          	$result=$this->SectionAuth_model->get();
+			if(count($result)){
+				foreach($result as $item){
+					if(in_array($item->sub_dir, $skipMe)){continue;}
+					if(!$this->sectionAddBasic($item->sub_dir)){return FALSE;}
+				}
+			}
+			return $this->removeLock("route.lock");
+		}
+		return FALSE;
      }
      
-     public function showSection($url){
-          if(!(empty($url))){
-               $this->db->like('sub_url', url);
-          }
-          return $this->get();
-     }
+    
 
 //--------------------------------------------------------------------------------------------
 //Routes specific functions
@@ -121,15 +163,15 @@ class Sectionexposure_model extends MY_Model{
      }
 	 // Generic routing function
 	 private function appendRoute($section, $sub="", $remapSection=""){
-	 	$routeFile="application/config/addroute.php";
-		$origFile="application/config/routes.php";
+	 	$this->_exRouteFile="application/config/addroute.php";
+		
 		$newroute="";
 		// first time creation of extra routing
-		if(!(file_exists($routeFile))){
+		if(!(file_exists($this->_exRouteFile))){
 			$newroute="<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');\n\n";
 			$forceInclude="include_once 'addroute.php';";
-			if( strpos(file_get_contents($origFile), $forceInclude) !== false) {
-        		file_put_contents($origFile, $forceInclude, FILE_APPEND );
+			if( strpos(file_get_contents($this->_origRouteFile), $forceInclude) !== false) {
+        		file_put_contents($this->_origRouteFile, $forceInclude, FILE_APPEND );
     		}
 			
 		}
@@ -143,7 +185,7 @@ class Sectionexposure_model extends MY_Model{
 		else{
 			$newroute.="\$route['".$section.$sub."']='".$remapSection.$sub."';\n";
 		}
-	 	file_put_contents($routeFile, $newroute, FILE_APPEND );
+	 	file_put_contents($this->_exRouteFile, $newroute, FILE_APPEND );
 	 }     
      
 }
