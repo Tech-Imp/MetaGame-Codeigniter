@@ -7,7 +7,7 @@ class Sectionexposure_model extends MY_Model{
 	protected $_order_by='id DESC';
 	public $rules=array();
 	protected $_timestamp=FALSE;
-	private $_basicSection=array("index", "news", "articles", "media", "photos", "video", "merch", "contact");
+	private $_basicSection=array("index", "news", "articles", "media", "photos", "video", "audio", "merch", "contact");
     private $_origRouteFile="application/config/routes.php";
     private $_exRouteFile="application/config/addroute.php";
 	
@@ -26,15 +26,15 @@ class Sectionexposure_model extends MY_Model{
 //-----------------------Core add/removal----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------	
  	//Add all the basic pages that should exist per section
-	public function sectionAddBasic($url=NULL, $minRole=NULL, $redirect=""){
+	public function sectionAddBasic($url=NULL, $minRole=NULL, $redirect="", $writeSave=TRUE){
 		if(!(empty($url))){
 			// test to see if anyone else is adding sections currently
 			if($this->createLock()){	     	
-	          	$this->saveSectionVis($url, $minRole, $redirect);
+	          	if($writeSave){$this->saveSectionVis($url, $minRole, $redirect);}
 		 		$this->appendRoute($url);
 	           	foreach($this->_basicSection as $item){
-	            	$this->saveSectionVis($url.'/'.$item, $minRole, $redirect);
-			   		$this->appendRoute($url, $item);
+                         if($writeSave){$this->saveSectionVis($url.'/'.$item, $minRole, $redirect);}
+                         $this->appendRoute($url, $item);
 	           	}
 	           	return $this->removeLock();
 			}
@@ -130,7 +130,7 @@ class Sectionexposure_model extends MY_Model{
 			if(count($result)){
 				foreach($result as $item){
 					if(in_array($item->sub_dir, $skipMe)){continue;}
-					if(!$this->sectionAddBasic($item->sub_dir)){return FALSE;}
+					if(!$this->sectionAddBasic($item->sub_dir, NULL, "", FALSE)){return FALSE;}
 				}
 			}
 			return $this->removeLock("route.lock");

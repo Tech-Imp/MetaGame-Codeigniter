@@ -40,7 +40,9 @@ class commonShared
                when "photos" 
                     location["orig"]= target.parents("div.tab-pane")
                when "video"
-                   location["orig"]=target.parents("div.tab-pane")
+                    location["orig"]=target.parents("div.tab-pane")
+               when "audio"
+                    location["orig"]=target.parents("div.tab-pane")
                when "news"
                     location["orig"]=$("#mediaDatabase")
                when "multimedia"

@@ -65,6 +65,9 @@ class Paging extends CI_Controller{
 			case 'photos':
 				$results=$this->getImage($offset, $type, $loc[1]);
 				break;
+			case 'audio':
+                    $results=$this->getAudio($offset, $type, $loc[1]);
+                    break;
 			case 'news':
 				$results=$this->getNews($offset, $loc[1]);
 				break;
@@ -79,6 +82,9 @@ class Paging extends CI_Controller{
 				elseif (end($whichType)=="photos") {
 					$results=$this->getImage($offset, $type, $loc[1]);
 				}
+                    elseif (end($whichType)=="audio") {
+                         $results=$this->getAudio($offset, $type, $loc[1]);
+                    }
 				else{
 					$results=false;
 				}
@@ -148,7 +154,7 @@ class Paging extends CI_Controller{
 	private function getImage($paging=0, $type, $currentLoc=null){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
-		$maxLimit=$this->config->item('maxSMedia');
+		$maxLimit=$this->config->item('maxPMedia');
 		$offset=$paging*$maxLimit;
 		
 		$vintage=$this->determineVintage($type);
@@ -183,7 +189,7 @@ class Paging extends CI_Controller{
 	private function getVideo($paging=0, $type, $currentLoc=null){
 		$this->load->model('Media_model');
 		$this->load->model('Dataprep_model');
-		$maxLimit=$this->config->item('maxMMedia');
+		$maxLimit=$this->config->item('maxVMedia');
 		$offset=$paging*$maxLimit;
 		
 		$vintage=$this->determineVintage($type);
@@ -211,6 +217,42 @@ class Paging extends CI_Controller{
 			return "<div><h4>That video does not exist.</h4></div>";
 		}
 	} 
+
+     //------------------------------------------------------------------------------
+     //Audio area paging
+     //------------------------------------------------------------------------------
+     private function getAudio($paging=0, $type, $currentLoc=null){
+          $this->load->model('Media_model');
+          $this->load->model('Dataprep_model');
+          $maxLimit=$this->config->item('maxAMedia');
+          $offset=$paging*$maxLimit;
+          
+          $vintage=$this->determineVintage($type);
+          // $vintage=NULL; //DEBUG LINE
+          
+          $currentRole=$_SESSION['role'];
+          
+          
+          if($currentRole>0){
+               // show only embeded media that do not require login
+               $myMedia=$this->Media_model->getAudio(NULL, $vintage, NULL, $maxLimit, $offset, $currentLoc);
+               $maxItems=$this->Media_model->getAudioCount($vintage,NULL, $currentLoc);
+               
+          }
+          else{
+               // Show all embedded media for logged in users
+               $myMedia=$this->Media_model->getAudio(NULL, $vintage, 0, $maxLimit, $offset, $currentLoc);
+               $maxItems=$this->Media_model->getAudioCount($vintage, 0, $currentLoc);
+          }
+     
+          if(count($myMedia)){
+               return $this->Dataprep_model->gatherItemsRedirect($myMedia, "media", "media_id", "audio", 3, $maxItems, $maxLimit, $paging, $type, $currentLoc);
+          }
+          else{
+               return "<div><h4>That audio file does not exist.</h4></div>";
+          }
+     }
+
 	//------------------------------------------------------------------------------
 	//Written areas paging
 	//------------------------------------------------------------------------------
