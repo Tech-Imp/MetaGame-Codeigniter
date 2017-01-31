@@ -17,7 +17,7 @@ class Users extends Dash_backend{
 		$data['currentLocation']="<div class='navbar-brand'>Your Settings</div>";
 		
 		// Completely disallow the ability of anyone with less rank than sectionAdmin from even attempting a PW change on someone else
-		if($this->session->userdata('role') < $this->config->item('sectionAdmin')){$id=NULL;}
+		if($_SESSION['role'] < $this->config->item('sectionAdmin')){$id=NULL;}
 		
 		// Find the name of the person to be changed
 		$roleAffected=-1;
@@ -33,7 +33,7 @@ class Users extends Dash_backend{
 			}
 		}
 		else{
-			$who=$this->session->userdata('name');
+			$who=$_SESSION['name'];
 		}
 		$editID=NULL;
 		// Verify all rules for input fields are followed
@@ -44,12 +44,12 @@ class Users extends Dash_backend{
 			if($id===NULL){
 				$editID=$this->Admin_model->fixSelf();
 			}
-			elseif($this->session->userdata('role')>= $this->config->item('sectionAdmin') && $roleAffected !== -1 && $this->session->userdata('role') > $roleAffected){
+			elseif($_SESSION['role']>= $this->config->item('sectionAdmin') && $roleAffected !== -1 && $_SESSION['role'] > $roleAffected){
 				$editID=$this->Admin_model->fixOther(intval($id));
 			}
 			else{
 				$this->load->model("Errorlog_model");
-				$this->Errorlog_model->newLog($id, '!Pas', 'Password update failed. Insufficient rights for '.$this->session->userdata('id').'of role '.$this->session->userdata('role').
+				$this->Errorlog_model->newLog($id, '!Pas', 'Password update failed. Insufficient rights for '.$_SESSION['id'].'of role '.$_SESSION['role'].
 				' to Attempted edit '.$who.'('.$id.') role '.$roleAffected ); 
 				$editID=-1;
 			}
@@ -60,7 +60,7 @@ class Users extends Dash_backend{
 			if($editID!==-1){
 				$progMessage="<br> <span class='text-success'>Update Successful</span>";
 			}
-			elseif ($this->session->userdata('role')>= $this->config->item('contributor')) {
+			elseif ($_SESSION['role']>= $this->config->item('contributor')) {
 				$progMessage="<br> <span class='text-danger'>Update failed.</span> <br>Cannot alter passwords of users of equal or higher rank than you. Cannot alter normal users at contributor rank.";
 			}
 			else{
@@ -77,7 +77,7 @@ class Users extends Dash_backend{
 			$this->load->view('dash/errorInfo');
 		}
 		// if user exceeds your role
-		elseif ($this->session->userdata('role') <= $roleAffected && $this->session->userdata('role')>= $this->config->item('contributor')) {
+		elseif ($_SESSION['role'] <= $roleAffected && $_SESSION['role']>= $this->config->item('contributor')) {
 			$this->load->view('dash/privInfo');	
 		}
 		// if user is acceptable for alteration
@@ -99,7 +99,7 @@ class Users extends Dash_backend{
 	public function listUsers(){
           $data=$this->adminHeader();
           $this->load->model('User_model');
-          if($this->session->userdata('role') >= $this->config->item('sectionAdmin')){
+          if($_SESSION['role'] >= $this->config->item('sectionAdmin')){
 		   $userRecords=$this->User_model->getUsers();
           }
           else{
@@ -137,7 +137,7 @@ class Users extends Dash_backend{
                .$row->name."</td>
                <td>".$row->email."</td>
                <td>".anchor('admin/dashboard/users/index/'.$row->id, "<span class='glyphicon glyphicon-lock'>Password</span>");
-               if($this->session->userdata('role') >= $this->config->item('sectionAdmin')){
+               if($_SESSION['role'] >= $this->config->item('sectionAdmin')){
 		   			$table.=" / ".anchor('admin/dashboard/users/userRole/'.$row->id, "<span class='glyphicon glyphicon-cog'>Role</span>");
           		}
                $table.="</td></tr>";
@@ -214,7 +214,7 @@ class Users extends Dash_backend{
 //Generate role promotion/demotion buttons
 //-----------------------------------------------------------------------------------------------------------	
 	private function roleActions($role=0){
-		if($role>=$this->session->userdata('role')){
+		if($role>=$_SESSION['role']){
 			return "<br>
 					<div class='row'>
                          <div class='col-xs-12'><strong>You cannot alter this users role.</strong></div>
@@ -236,7 +236,7 @@ class Users extends Dash_backend{
                          <button class='btn btn-success' type='button' id='setRoleNorm'>Yes, Norm User</button>
                          </div>
                     </div>";
-			if($this->session->userdata('role')>=$this->config->item('sectionAdmin')){
+			if($_SESSION['role']>=$this->config->item('sectionAdmin')){
 				$actions.="
 				<button class='btn btn-info' type='button' data-toggle='collapse' data-parent='#act-accordion' data-target='#setContrib'>
                     Set as Contributor
@@ -250,7 +250,7 @@ class Users extends Dash_backend{
                          </div>
                     </div>";
 			}
-			if($this->session->userdata('role')>=$this->config->item('superAdmin')){
+			if($_SESSION['role']>=$this->config->item('superAdmin')){
 				$actions.="
 				<button class='btn btn-info' type='button' data-toggle='collapse' data-parent='#act-accordion' data-target='#setSectAdmin'>
                     Set as Section Admin

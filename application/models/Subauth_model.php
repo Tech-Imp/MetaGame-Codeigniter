@@ -50,9 +50,9 @@ class Subauth_model extends MY_Model{
 	//---------------------------------------------------------------------------------------------------------
 	//TODO evaluate this further!!
 	public function isAuthorized($here=null){
-		$myID=$this->session->userdata('id');
+		$myID=$_SESSION['id'];
 		
-		if($here===null || $this->session->userdata('role') <= $this->config->item('contributor')){
+		if($here===null || $_SESSION['role'] < $this->config->item('contributor')){
 			return false;
 		}
 		
@@ -69,9 +69,9 @@ class Subauth_model extends MY_Model{
 	//Display list of subdirectories that user has access to
 	//------------------------------------------------------------------------------------------------------
 	public function getSubSelects(){
-		$myID=$this->session->userdata('id');
+		$myID=$_SESSION['id'];
 		
-		if($this->session->userdata('role') >= $this->config->item('contributor')){
+		if($_SESSION['role'] >= $this->config->item('contributor')){
 			$this->db->where("user_id", $myID);
 			$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible");
 			return $this->get();
@@ -103,7 +103,7 @@ class Subauth_model extends MY_Model{
 	//Get all sudirectory assignments made by user
 	//-----------------------------------------------------------------------------------------------------
 	public function getSecAssigned(){
-		$myID=$this->session->userdata('id');
+		$myID=$_SESSION['id'];
 		$this->db->where("sub_auth.author_id", $myID);
 		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible");
           $this->joinTable("users", "user_id", "id", NULL, "name, email");
@@ -113,7 +113,7 @@ class Subauth_model extends MY_Model{
 	//Get all sections user is in
 	//----------------------------------------------------------------------------------------------------
 	public function getMySection(){
-		$myID=$this->session->userdata('id');
+		$myID=$_SESSION['id'];
 		$this->db->where("user_id", $myID);
 		$this->joinTable("subsite_database",  "sub_dir", "sub_dir", "*", "sub_name, visible");
 		return $this->get();

@@ -5,6 +5,9 @@ class MY_Controller extends CI_Controller{
 	function __construct(){
 		parent::__construct();
 		$data['errors']=array();
+		if(!(isset($_SESSION['role']))){
+			$_SESSION['role']=0;
+		}
 		// $data['site_name']=config_item('site_name');
 	}
 	protected function dropdownOptions($selected=NULL, $arrayOpts, $arrayVals=NULL){
@@ -83,7 +86,7 @@ class MY_Controller extends CI_Controller{
           }
      }
      protected function protectedArea($minRank=1, $redirect=""){
-          if($this->session->userdata('role') < $minRank){
+          if($_SESSION['role'] < $minRank){
                redirect($redirect);
           }
      }

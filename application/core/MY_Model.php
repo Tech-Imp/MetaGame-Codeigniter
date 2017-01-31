@@ -10,6 +10,9 @@ class MY_Model extends CI_Model{
 		
 	function __construct(){
 		parent::__construct();
+		if(!(isset($_SESSION['role']))){
+			$_SESSION['role']=0;
+		}
 	}
 	public function get($id=NULL, $single=FALSE, $altTable=FALSE, $altOrder=FALSE){
 		// Does a querry sans a where clause but can be limited to a specific row rather than all	
@@ -55,11 +58,11 @@ class MY_Model extends CI_Model{
 			$now=date('Y-m-d H:i:s');
 			if($id===NULL){
 				$data['created']=$now;
-                    $data['author_id']=$this->session->userdata('id');
+                    $data['author_id']=$_SESSION['id'];
 			}
 			else{
 				$data['modified']=$now;
-                    $data['modified_by']=$this->session->userdata('id');
+                    $data['modified_by']=$_SESSION['id'];
 			}
 		}
 		// Insert into DB

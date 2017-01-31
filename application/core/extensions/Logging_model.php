@@ -16,8 +16,8 @@ class Logging_model extends MY_Model{
 	//Get Media from database
 	//-------------------------------------------------------------------------------------------------------
 	public function getLogs($id=NULL){
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
 			
 		//Only limit view if not superadmin
 		if($myRole<$this->config->item('sectionAdmin')){
@@ -31,7 +31,7 @@ class Logging_model extends MY_Model{
 	//Save normal uploads to server
 	//-----------------------------------------------------------------------------------------------------
 	public function newLog($affectedID=NULL, $cat, $catStub){
-		$myID=$this->session->userdata('id');
+		$myID=$_SESSION['id'];
 		
 		if((bool)$myID==FALSE){
 			$myID=0;
@@ -54,7 +54,7 @@ class Logging_model extends MY_Model{
 	//Update normal uploads to server
 	//-----------------------------------------------------------------------------------------------------
 	public function incrementalLog($updateID=NULL, $cat, $catStub){
-		$myID=$this->session->userdata('id');
+		$myID=$_SESSION['id'];
 		
 		if((bool)$myID==FALSE){
 			$myID=0;
@@ -78,8 +78,8 @@ class Logging_model extends MY_Model{
 	//-----------------------------------------------------------------------------------------------------
 	public function getQuickLogs($limit=NULL, $offset=NULL)
 	{
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
 		
 		if($myRole<$this->config->item('sectionAdmin')){
 			$this->db->where('change_made_by =', $myID);

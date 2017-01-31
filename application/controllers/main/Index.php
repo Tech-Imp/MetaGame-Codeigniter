@@ -20,11 +20,9 @@ class Index extends Common_frontend {
 		$data['css'][2]="frontend/home.css";		
 		
 				
-		$currentRole=$this->session->userdata('role');
-		if($currentRole===FALSE){
-			$currentRole=0;
-		}
+		$currentRole=$_SESSION['role'];
 		
+
 		if($currentRole>0){
 			$myMedia=$this->Media_model->getFrontMedia(NULL, NULL, NULL, 5);
 		}

@@ -80,9 +80,9 @@ class Admin_model extends MY_Model{
 //Used as the default case when accessing settings. Will only allow changing of own password
 //-------------------------------------------------------------------------------------------
 	public function fixSelf(){
-		$id=$this->session->userdata('id');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$id=$_SESSION['id'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		
 		$compId=-1;
 		//TODO use this bit later when only certain people
@@ -154,9 +154,9 @@ class Admin_model extends MY_Model{
 //-----------------------------------------------------
 	//TODO figure out whats wrong with the logic
 	public function fixOther($otherId){
-		$id=$this->session->userdata('id');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$id=$_SESSION['id'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		
 		$compId=-1;
 		

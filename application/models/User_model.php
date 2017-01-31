@@ -17,8 +17,8 @@ class User_model extends MY_Model{
 //Get all users of rank lower than self
 //-----------------------------------------------------------	
 	public function getUsers($id=NULL){
-		$myRole=$this->session->userdata('role');
-          $myID=$this->session->userdata('id');
+		$myRole=$_SESSION['role'];
+          $myID=$_SESSION['id'];
 		$this->joinTable("auth_role",  "id", "id", "name, email, id" , "role, comment, active");
 		//Only limit view if not superadmin
 		if($myRole<$this->config->item('superAdmin')){
@@ -34,7 +34,7 @@ class User_model extends MY_Model{
 //Get all users 
 //-----------------------------------------------------------    
      private function getInternal($id=NULL){
-          $myRole=$this->session->userdata('role');
+          $myRole=$_SESSION['role'];
           $this->joinTable("auth_role",  "id", "id", "name, email, id" , "role, comment, active");
           return $this->get($id);
      }
@@ -42,7 +42,7 @@ class User_model extends MY_Model{
 //Get users that are above a rank
 //-------------------------------------------------------------------------------------------------------	
 	public function getByMinRank($rank=0, $id=NULL){
-		$myRole=$this->session->userdata('role');
+		$myRole=$_SESSION['role'];
 		if(!(abs($rank)<=$myRole)){
 			$rank=0;
 		}

@@ -14,16 +14,16 @@ class Postnews extends MY_Controller{
 //---------------------------------------------------------------------------------------------------------------------------------------
 	function addNews(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		$title = $this->simplePurify($this->input->post('title')); 
 		$section = $this->simplePurify($this->input->post('section')); 
 		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
 		$stub = $this->simplePurify($this->input->post('stub')); 
       	$visibleWhen = $this->simplePurify($this->input->post('visibleWhen'));
 		$uncleanText = $this->input->post('bodyText');
-		// $author =$this->simplePurify( $this->session->userdata('id'));
+		// $author =$this->simplePurify( $_SESSION['id']);
 		$type=$this->simplePurify($this->input->post('type'));
 		
 		if($myRole < $this->config->item('contributor')){
@@ -70,10 +70,10 @@ class Postnews extends MY_Controller{
 	//---------------------------------------------------------------------------------------------------------------
 	function saveNewsEdit(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		$type=$this->simplePurify($this->input->post('type'));
 		$newsID = intval($this->simplePurify($this->input->post('newsID'))); 
 		$title = $this->simplePurify($this->input->post('title'));
@@ -143,10 +143,10 @@ class Postnews extends MY_Controller{
 	//----------------------------------------------------------------------------------------------------------------
 	function deleteSpecificNews(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		$newsID = intval($this->input->post('newsID')); 
 		
 		if(empty($newsID)){

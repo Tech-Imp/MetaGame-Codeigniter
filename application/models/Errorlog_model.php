@@ -16,8 +16,8 @@ class Errorlog_model extends Logging_model{
 	//Get Media from database
 	//-------------------------------------------------------------------------------------------------------
 	public function getLogs($id=NULL){
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
 			
 		//Only limit view if not superadmin
 		$this->db->where('role_to_view <=', $myRole);
@@ -29,7 +29,7 @@ class Errorlog_model extends Logging_model{
 	//Save normal uploads to server
 	//-----------------------------------------------------------------------------------------------------
 	public function newLog($affectedID=NULL, $cat, $catStub, $role=NULL){
-		$myID=$this->session->userdata('id');
+		$myID=$_SESSION['id'];
 		
 		if($role===NULL){
 			$role=$this->config->item('superAdmin');

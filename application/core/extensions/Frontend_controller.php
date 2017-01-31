@@ -28,8 +28,8 @@ class Frontend_controller extends MY_Controller{
 			$minRole=-1;	
 		}
 		//Find current role if it exists		
-		$currentRole=$this->session->userdata('role');
-		if($currentRole===FALSE){
+		$currentRole=$_SESSION['role'];
+		if(!(isset($_SESSION['role']))){
 			$currentRole=0;
 		}
 		

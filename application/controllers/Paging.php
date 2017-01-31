@@ -154,10 +154,8 @@ class Paging extends CI_Controller{
 		$vintage=$this->determineVintage($type);
 		// $vintage=NULL; //DEBUG LINE
 		
-		$currentRole=$this->session->userdata('role');
-		if($currentRole===FALSE){
-			$currentRole=0;
-		}
+		$currentRole=$_SESSION['role'];
+		
 		
 		if($currentRole>0){
 		// Show only images that do not require logging in
@@ -191,10 +189,8 @@ class Paging extends CI_Controller{
 		$vintage=$this->determineVintage($type);
 		// $vintage=NULL; //DEBUG LINE
 		
-		$currentRole=$this->session->userdata('role');
-		if($currentRole===FALSE){
-			$currentRole=0;
-		}
+		$currentRole=$_SESSION['role'];
+		
 		
 		if($currentRole>0){
 			// show only embeded media that do not require login

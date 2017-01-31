@@ -19,10 +19,7 @@ class Video extends Common_frontend {
 		$data['title']="Video";
 		
 		
-		$currentRole=$this->session->userdata('role');
-		if($currentRole===FALSE){
-			$currentRole=0;
-		}
+		$currentRole=$_SESSION['role'];
 		
 		
 		if($id===NULL){

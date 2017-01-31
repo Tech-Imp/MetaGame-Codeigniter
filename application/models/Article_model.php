@@ -16,8 +16,8 @@ class Article_model extends MY_Model{
 	//Get articles from database
 	//-------------------------------------------------------------------------------------------------------
 	public function getArticles($id=NULL, $resultLimit=NULL, $offset=NULL){
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
 	
 		
 		//Only limit view if not superadmin
@@ -112,8 +112,8 @@ class Article_model extends MY_Model{
 	//Generic function for all written content
 	//----------------------------------------------------------------------------
 	public function getWrittenCount($findViaTime=true, $here=null, $type=NULL, $admin=FALSE){
-		$myRole=$this->session->userdata('role');
-          $myID=$this->session->userdata('id');
+		$myRole=$_SESSION['role'];
+          $myID=$_SESSION['id'];
           
 		if($type!==NULL){
 			$this->db->where('type =', $type);

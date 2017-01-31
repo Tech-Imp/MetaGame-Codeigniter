@@ -19,10 +19,7 @@ class Photos extends Common_frontend {
 		$data['title']="Photos";
 		
 		
-		$currentRole=$this->session->userdata('role');
-		if($currentRole===FALSE){
-			$currentRole=0;
-		}
+		$currentRole=$_SESSION['role'];
 		
 		
 		//Populate the photo types

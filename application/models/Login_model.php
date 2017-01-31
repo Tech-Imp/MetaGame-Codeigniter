@@ -72,7 +72,10 @@ class Login_model extends MY_Model{
 		$this->session->sess_destroy();
 	}
 	public function loggedin(){
-		return (bool) $this->session->userdata('loggedin');
+		if(isset($_SESSION['loggedin'])){
+			return (bool) $_SESSION['loggedin'];
+		}
+		return FALSE;
 	}
 	
 }

@@ -18,16 +18,16 @@ class Postmedia extends MY_Controller{
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		$section = $this->simplePurify($this->input->post('section')); 
           
           if(!$this->verifySection($section)){
                $data=array('error' => "Section invalid or does not exist");
                $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog(-1, 'aMed', 'Profile item failed to upload. Section ('.$section.') invalid. User role '.$myRole);  
+               $this->Errorlog_model->newLog(-1, 'aMed', 'Media item failed to upload. Section ('.$section.') invalid. User role '.$myRole);  
                echo json_encode($data);
                exit; 
           }
@@ -183,9 +183,9 @@ class Postmedia extends MY_Controller{
 	//---------------------------------------------------------------------------
 	function addEmbedMedia(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		$title = $this->simplePurify($this->input->post('title')); 
 		$stub = $this->simplePurify($this->input->post('stub')); 
 		$mediaType = $this->simplePurify($this->input->post('mediaType')); 
@@ -248,10 +248,10 @@ class Postmedia extends MY_Controller{
 	//---------------------------------------------------------------------------------------------------------------
 	function saveMediaEdit(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		$mediaID = intval($this->simplePurify($this->input->post('mediaID'))); 
 		$title = $this->simplePurify($this->input->post('title')); 
 		$stub = $this->simplePurify($this->input->post('stub')); 
@@ -318,10 +318,10 @@ class Postmedia extends MY_Controller{
 	//----------------------------------------------------------------------------------------------------------------
 	function deleteSpecificMedia(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		$mediaID = intval($this->input->post('mediaID')); 
 		
 		if(empty($mediaID)){

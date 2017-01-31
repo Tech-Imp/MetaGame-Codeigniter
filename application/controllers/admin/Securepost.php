@@ -11,10 +11,10 @@ class Securepost extends MY_Controller{
 //-------------------------------------------------------------------------------------------------------	
 	function addSection(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
-		$author = $this->session->userdata('id');
+		$myRole=$_SESSION['role'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
+		$author = $_SESSION['id'];
 		
 		$section = $this->simplePurify($this->input->post('section'));
 		$sub_dir = $this->simplePurify($this->input->post('sub_dir'));
@@ -73,10 +73,10 @@ class Securepost extends MY_Controller{
 	
 	function deleteSection(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		$sectionID = intval($this->input->post('sectionID')); 
 
 		if(empty($sectionID) || !is_int($sectionID)){
@@ -123,10 +123,10 @@ class Securepost extends MY_Controller{
 	}
 	function editSection(){
 			header('content-type: text/javascript');
-          	$myRole=$this->session->userdata('role');
-          	$myID=$this->session->userdata('id');
-          	$myName=$this->session->userdata('name');
-          	$myEmail=$this->session->userdata('email');
+          	$myRole=$_SESSION['role'];
+          	$myID=$_SESSION['id'];
+          	$myName=$_SESSION['name'];
+          	$myEmail=$_SESSION['email'];
           	$sectionID = intval($this->input->post('id')); 
 		  	$vis = intval($this->input->post('visibility'));		
 		  	$bindToParent = $this->simplePurify($this->input->post('where'));	
@@ -188,10 +188,10 @@ class Securepost extends MY_Controller{
 //---------------------------------------------------------------------------------
 	function addUserToSection(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
-		$author = $this->session->userdata('id');
+		$myRole=$_SESSION['role'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
+		$author = $_SESSION['id'];
 		
 		$user = $this->simplePurify($this->input->post('user'));
 		$section = $this->simplePurify($this->input->post('section'));
@@ -242,7 +242,7 @@ class Securepost extends MY_Controller{
           else{
                $data=array('error' => "Invalid section ");
                $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user '.$userRecord->name.' ('.$user.') to section. Section invalid. User: '.$myName.' ('.$myEmail.') role: '.$myRole.' Section: '.$section);  
+               $this->Errorlog_model->newLog($user, 'uAdd', 'Failed to add user '.$userRecord->name.' ('.$user.') to section. Section '.$section.' invalid. User: '.$myName.' ('.$myEmail.') role: '.$myRole);  
                echo json_encode($data);
                exit; 
           } 
@@ -250,10 +250,10 @@ class Securepost extends MY_Controller{
 	
      function deleteUserFromSection(){
           header('content-type: text/javascript');
-          $myRole=$this->session->userdata('role');
-          $myID=$this->session->userdata('id');
-          $myName=$this->session->userdata('name');
-          $myEmail=$this->session->userdata('email');
+          $myRole=$_SESSION['role'];
+          $myID=$_SESSION['id'];
+          $myName=$_SESSION['name'];
+          $myEmail=$_SESSION['email'];
           $entryID = intval($this->input->post('entryID')); 
 
           if(empty($entryID) || !is_int($entryID)){
@@ -297,10 +297,10 @@ class Securepost extends MY_Controller{
 //-------------------------------------------------------------------------------------------------------------
 	function setRole(){
           header('content-type: text/javascript');
-          $myRole=$this->session->userdata('role');
-          $myID=$this->session->userdata('id');
-          $myName=$this->session->userdata('name');
-          $myEmail=$this->session->userdata('email');
+          $myRole=$_SESSION['role'];
+          $myID=$_SESSION['id'];
+          $myName=$_SESSION['name'];
+          $myEmail=$_SESSION['email'];
           $entryID = intval($this->input->post('userID')); 
 		  $adjustRole = $this->input->post('rank');		
 			

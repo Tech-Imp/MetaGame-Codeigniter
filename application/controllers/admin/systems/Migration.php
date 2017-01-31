@@ -12,7 +12,7 @@
 			$data['currentLocation']="<div class='navbar-brand'>Migration Dashboard</div>";
 			$this->load->view('templates/header', $data);
 			$this->load->view('inc/dash_header', $data);
-			if($this->session->userdata('role') >= $this->config->item('superAdmin')){
+			if($_SESSION['role'] >= $this->config->item('superAdmin')){
 				$this->load->library('migration');
 				$this->config->load('migration');
 				$data['currentVersion']=$this->config->item('migration_version');
@@ -41,7 +41,7 @@
 			$data['currentLocation']="<div class='navbar-brand'>Migration Dashboard</div>";
 			$this->load->view('templates/header', $data);
 			$this->load->view('inc/dash_header', $data);
-			if($this->session->userdata('role') >= $this->config->item('superAdmin')){
+			if($_SESSION['role'] >= $this->config->item('superAdmin')){
 				$this->load->library('migration');
 				$this->config->load('migration');
 				$version=abs($this->config->item('migration_version')-1);
@@ -73,7 +73,7 @@
 			$data['currentLocation']="<div class='navbar-brand'>Migration Dashboard</div>";
 			$this->load->view('templates/header', $data);
 			$this->load->view('inc/dash_header', $data);
-			if($this->session->userdata('role') >= $this->config->item('superAdmin')){
+			if($_SESSION['role'] >= $this->config->item('superAdmin')){
 				$this->load->library('migration');
 				$this->config->load('migration');
 				$data['currentVersion']="Latest recognized from list";

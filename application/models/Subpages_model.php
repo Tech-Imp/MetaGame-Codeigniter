@@ -63,7 +63,7 @@ class Subpages_model extends MY_Model{
 	public function uniqueSelf($target="self", $group=false){
           //Group refers to the fact that multiple people would have edit permissions
           if($group){
-               $myID=$this->session->userdata('id');
+               $myID=$_SESSION['id'];
                $this->db->where("author_id", $myID);
           }
 	     $this->db->where('sub_dir', $target);

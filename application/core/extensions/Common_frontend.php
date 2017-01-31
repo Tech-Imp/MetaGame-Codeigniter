@@ -59,8 +59,8 @@ class Common_frontend extends Frontend_controller{
 	}
 	//---------------------------------------------------------------------------------------	
 	public function myDash(){
-		$currentRole=$this->session->userdata('role');
-		if($currentRole===FALSE){
+		$currentRole=$_SESSION['role'];
+		if(!(isset($_SESSION['role']))){
 			$currentRole=0;
 			// return "<ul class='nav navbar-nav navbar-right'>
 	      			// <li>".anchor('signup', "<span class='glyphicon glyphicon-plus'></span>Sign up")."</li>

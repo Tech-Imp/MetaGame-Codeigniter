@@ -11,9 +11,9 @@ class Postprofile extends MY_Controller{
 //-------------------------------------------------------------------------------------------------------	
 	function addProfile(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		$avatarID = intval($this->simplePurify($this->input->post('avatarID')));
 		$profileName = $this->simplePurify($this->input->post('profileName'));
 		$title = $this->simplePurify($this->input->post('title'));
@@ -21,7 +21,7 @@ class Postprofile extends MY_Controller{
 		$section = $this->simplePurify($this->input->post('section')); 
 		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
 		
-		$author = $this->session->userdata('id');
+		$author = $_SESSION['id'];
 
 		if($myRole< $this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges");
@@ -64,9 +64,9 @@ class Postprofile extends MY_Controller{
 	
 	function editProfile(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		
 		$profileID = intval($this->simplePurify($this->input->post('profileID')));
 		$avatarID = intval($this->simplePurify($this->input->post('avatarID')));
@@ -76,7 +76,7 @@ class Postprofile extends MY_Controller{
 		$section = $this->simplePurify($this->input->post('section')); 
 		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
 		
-		$author = $this->session->userdata('id');
+		$author = $_SESSION['id'];
 		
 		if(empty($profileID)){
 			$data=array('error' => "Error retrieving staticID"); 
@@ -127,10 +127,10 @@ class Postprofile extends MY_Controller{
 	
 	function deleteProfile(){
 		header('content-type: text/javascript');
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
-		$myName=$this->session->userdata('name');
-		$myEmail=$this->session->userdata('email');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
+		$myName=$_SESSION['name'];
+		$myEmail=$_SESSION['email'];
 		$profileID = intval($this->input->post('profileID')); 
 		
 		if(empty($profileID)){
@@ -169,10 +169,10 @@ class Postprofile extends MY_Controller{
 //-------------------------------------------------------------------------------------------------------------------	
 	    function addSocial(){
           header('content-type: text/javascript');
-          $myRole=$this->session->userdata('role');
-          $myName=$this->session->userdata('name');
-          $myEmail=$this->session->userdata('email');
-          $author = $this->session->userdata('id');
+          $myRole=$_SESSION['role'];
+          $myName=$_SESSION['name'];
+          $myEmail=$_SESSION['email'];
+          $author = $_SESSION['id'];
           
           $logoID = intval($this->simplePurify($this->input->post('logoID')));
           $target = $this->simplePurify($this->input->post('target'));
@@ -233,10 +233,10 @@ class Postprofile extends MY_Controller{
      
      function editSocial(){
           header('content-type: text/javascript');
-          $myRole=$this->session->userdata('role');
-          $myName=$this->session->userdata('name');
-          $myEmail=$this->session->userdata('email');
-          $author = $this->session->userdata('id');
+          $myRole=$_SESSION['role'];
+          $myName=$_SESSION['name'];
+          $myEmail=$_SESSION['email'];
+          $author = $_SESSION['id'];
           
           $info_id=intval($this->simplePurify($this->input->post('infoID')));
           $logoID = intval($this->simplePurify($this->input->post('logoID')));
@@ -290,10 +290,10 @@ class Postprofile extends MY_Controller{
      
      function deleteSocial(){
           header('content-type: text/javascript');
-          $myRole=$this->session->userdata('role');
-          $myID=$this->session->userdata('id');
-          $myName=$this->session->userdata('name');
-          $myEmail=$this->session->userdata('email');
+          $myRole=$_SESSION['role'];
+          $myID=$_SESSION['id'];
+          $myName=$_SESSION['name'];
+          $myEmail=$_SESSION['email'];
           $profileID = intval($this->input->post('infoID')); 
           
           if(empty($profileID)){

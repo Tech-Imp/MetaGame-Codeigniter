@@ -16,8 +16,8 @@ class Media_model extends MY_Model{
 	//Get Media from database, primarily used on backend, no media type distinction, except profile pic
 	//-------------------------------------------------------------------------------------------------------
 	public function getMedia($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
 		if($id===NULL){
 			$this->db->where('mediaType !=', 'avatar');
                $this->db->where('mediaType !=', 'logo');
@@ -29,8 +29,8 @@ class Media_model extends MY_Model{
 		return $this->getCommonMedia($id, $resultLimit, $offset, $here, $timeNeed=NULL);
 	}
 	public function getMediaCount($here=null){
-		$myRole=$this->session->userdata('role');
-		$myID=$this->session->userdata('id');
+		$myRole=$_SESSION['role'];
+		$myID=$_SESSION['id'];
 		$this->db->where('mediaType !=', 'avatar');
 		$this->db->where('mediaType !=', 'logo');
 		//Only limit view if not superadmin
