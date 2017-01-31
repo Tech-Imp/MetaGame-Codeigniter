@@ -12,6 +12,7 @@
 
     function adminTools() {
       this.addUser = bind(this.addUser, this);
+      this.regen = bind(this.regen, this);
       this.saveSection = bind(this.saveSection, this);
       this.setupEvents = bind(this.setupEvents, this);
       if (this.debug) {
@@ -41,6 +42,12 @@
         return function(event) {
           $("#saveNewContact").prop("disabled", "disabled");
           return _this.addUser();
+        };
+      })(this));
+      $("#regen").unbind().bind("click", (function(_this) {
+        return function(event) {
+          $("#regen").prop("disabled", "disabled");
+          return _this.regen();
         };
       })(this));
       $("#clearSection").unbind().bind("click", (function(_this) {
@@ -103,6 +110,34 @@
       } else {
         return this.textBodyResponse("You need fill in all the fields!", "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection");
       }
+    };
+
+    adminTools.prototype.regen = function() {
+      if (this.debug) {
+        console.log("adminTools.regen");
+      }
+      return $.ajax({
+        url: this.base_url + "/admin/securepost/regenerateSections",
+        type: 'post',
+        dataType: 'json',
+        success: (function(_this) {
+          return function(response) {
+            if (response.success) {
+              console.log("Success");
+              _this.cleanAreas();
+              _this.textBodyResponse(response.error, "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection");
+              return $("#regen").prop("disabled", false);
+            } else if (response.debug) {
+              console.log("debug");
+              return $("#regen").prop("disabled", false);
+            } else if (response.error) {
+              console.log("error");
+              _this.textBodyResponse(response.error, "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection");
+              return $("#regen").prop("disabled", false);
+            }
+          };
+        })(this)
+      });
     };
 
     adminTools.prototype.addUser = function() {

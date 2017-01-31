@@ -53,7 +53,7 @@ class Sectionexposure_model extends MY_Model{
    			if($this->createLock()){	//Check lock just in case some other process is running
 	       		$otherUrls=array();
 	           	$otherUrls=array_map(function($suffix) use ($url){
-	            	return $url."/".$suffix;
+	            	      return $url."/".$suffix;
 	           	}, $this->_basicSection);
 	           
 	           	$this->db->where('sub_url', $url);
@@ -63,12 +63,12 @@ class Sectionexposure_model extends MY_Model{
 	           	$this->db->like('sub_url', $url);  
 	           	$results=$this->get();
 				$this->removeLock();
-				if( count($results) ==0 ){
-	            	return "success";
+				if( count($results) ==0){
+				     return "success";
 	           	}
 	           	else {
-	            	//Show variance of results found versus expected
-	            	return count($results) - (count($this->_basicSection)+1);
+	            	      //Show variance of results found versus expected
+	            	      return count($results) - (count($this->_basicSection)+1);
 	           	}
 			}
 			else{return " ERROR[Routing locked, unable to delete] ";}
@@ -124,7 +124,7 @@ class Sectionexposure_model extends MY_Model{
 	     	$this->load->model("SectionAuth_model");
 			//Remove existing secondary routing file
 			if(file_exists($this->_exRouteFile)){
-               unlink($this->_exRouteFile);
+                    unlink($this->_exRouteFile);
           	}
           	$result=$this->SectionAuth_model->get();
 			if(count($result)){

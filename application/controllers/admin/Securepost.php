@@ -91,19 +91,26 @@ class Securepost extends MY_Controller{
           if(count($verify)){
               if(($verify->author_id==$myID && $myRole> $this->config->item('contributor')) || $myRole> $this->config->item('sectionAdmin')){
      			$result=$this->SectionAuth_model->removeSubDir($sectionID);
-     			$data=array('success' => $result);
+     			
      			$this->load->model("Logging_model");
-     			$this->Logging_model->newLog($sectionID, 'dSec', $result.' by user '.$myName.'('.$myEmail.') ');
+     			
                     // Remove basic visibility template explicitly- DO NOT HANDLE SPECIFIC custom ones here, handle that with specific page subsection addition/deletion
                     $this->load->model("Sectionexposure_model");
                     $visSuccess=$this->Sectionexposure_model->sectionRemoveBasic($verify->sub_dir);
+                    
                     if($visSuccess=="success"){
-                         $this->Logging_model->newLog($result, 'dVis', 'Deleted Section '.$verify->sub_name.' ('.$verify->sub_dir.') basic visibility template successfully by User '.$myName.'('.$myEmail.')');  
+                         $this->Logging_model->newLog($sectionID, 'dVis', 'Deleted Section '.$verify->sub_name.' ('.$verify->sub_dir.') basic visibility template successfully by User '.$myName.'('.$myEmail.')');  
                     }
                     else{
                          $this->load->model("Errorlog_model");
-                         $this->Errorlog_model->newLog($result, 'dVis', 'Delete Section '.$verify->sub_name.' ('.$verify->sub_dir.') basic visibility FAILED!! Remaining vis:'.$visSuccess.' by User '.$myName.' ('.$myEmail.')'); 
+                         $this->Errorlog_model->newLog($sectionID, 'dVis', 'Delete Section '.$verify->sub_name.' ('.$verify->sub_dir.') basic visibility FAILED!! Remaining vis:'.$visSuccess.' by User '.$myName.' ('.$myEmail.')'); 
                     }
+                    if($this->Sectionexposure_model->regenRoutes()){
+                         $result=$result." and routing file updated";
+                    }
+                    else{$result="!!ISSUE ".$result." and routing file needs manual intervention";}
+                    $this->Logging_model->newLog($sectionID, 'dSec', $result.' by user '.$myName.'('.$myEmail.') ');
+                    $data=array('success' => $result);
      		}
      		else{
      			$data=array('error' => "Insufficient privledges"); 
@@ -182,7 +189,42 @@ class Securepost extends MY_Controller{
           	echo json_encode($data);
           	exit; 
      }
-
+	function regenerateSections(){
+  		header('content-type: text/javascript');
+      	$myRole=$_SESSION['role'];
+      	$myID=$_SESSION['id'];
+      	$myName=$_SESSION['name'];
+      	$myEmail=$_SESSION['email'];
+      	
+          
+      	$this->load->model("Sectionexposure_model");  
+      	
+       	//only the original assigner or someone with greater rank than section admin can remove user
+      	if($myRole > $this->config->item('sectionAdmin')){
+                     
+             	if($this->Sectionexposure_model->regenRoutes()){
+             		$data=array('success' => "Routing updated");
+     			$this->load->model("Logging_model");
+                 	$this->Logging_model->newLog(0, 'uSec', 'Routing updated by user '.$myName.'('.$myEmail.') ');
+             	}
+			else{
+				$data=array('error' => "An error occured on regeneration");
+				$this->load->model("Errorlog_model");
+                    $this->Errorlog_model->newLog(0, 'uSec', 'Routing regeneration failed. User '.$myName.'('.$myEmail.') role '.$myRole);
+			}
+      
+       }
+       else{
+            $data=array('error' => "Insufficient privledges"); 
+            $this->load->model("Errorlog_model");
+            $this->Errorlog_model->newLog(0, 'uSec', 'Insufficient permissions to update routing by User '.$myName.'('.$myEmail.') role '.$myRole);
+       } 
+      	
+          
+           
+      	echo json_encode($data);
+      	exit; 
+ 	}
 //---------------------------------------------------------------------------------
 //USER->SECTION RELATED FEATURES
 //---------------------------------------------------------------------------------
@@ -248,49 +290,50 @@ class Securepost extends MY_Controller{
           } 
 	}	
 	
-     function deleteUserFromSection(){
-          header('content-type: text/javascript');
-          $myRole=$_SESSION['role'];
-          $myID=$_SESSION['id'];
-          $myName=$_SESSION['name'];
-          $myEmail=$_SESSION['email'];
-          $entryID = intval($this->input->post('entryID')); 
+	function deleteUserFromSection(){
+  		header('content-type: text/javascript');
+      	$myRole=$_SESSION['role'];
+      	$myID=$_SESSION['id'];
+      	$myName=$_SESSION['name'];
+      	$myEmail=$_SESSION['email'];
+      	$entryID = intval($this->input->post('entryID')); 
 
-          if(empty($entryID) || !is_int($entryID)){
-               $data=array('error' => "Error retrieving entry ID"); 
-               echo json_encode($data);
-               exit; 
-          } 
+      	if(empty($entryID) || !is_int($entryID)){
+           	$data=array('error' => "Error retrieving entry ID"); 
+       		echo json_encode($data);
+           	exit; 
+      	} 
           
-          $this->load->model("SectionAuth_model");
-          // Verify user has rights to section and section exists
-          $verify=$this->SectionAuth_model->getAuthInfo($entryID);
+      	$this->load->model("SectionAuth_model");
+      	// Verify user has rights to section and section exists
+      	$verify=$this->SectionAuth_model->getAuthInfo($entryID);
           
-          if(count($verify)){
-               //only the original assigner or someone with greater rank than section admin can remove user
-              if(($verify->author_id==$myID && $myRole> $this->config->item('contributor')) || $myRole> $this->config->item('sectionAdmin')){
+      	if(count($verify)){
+           	//only the original assigner or someone with greater rank than section admin can remove user
+          	if(($verify->author_id==$myID && $myRole> $this->config->item('contributor')) || $myRole> $this->config->item('sectionAdmin')){
                          
-                    $result=$this->SectionAuth_model->removeUserFromSection($entryID);
-                    $data=array('success' => $result);
-                    $this->load->model("Logging_model");
-                    $this->Logging_model->newLog($entryID, 'uDel', $result.' by user '.$myName.'('.$myEmail.') ');
-               }
-               else{
-                    $data=array('error' => "Insufficient privledges"); 
-                    $this->load->model("Errorlog_model");
-                    $this->Errorlog_model->newLog($entryID, 'uDel', 'User '.$verify->name.'('.$verify->user_id.') deallocation failed. Insufficient permissions. User '.$myID.' role '.$myRole);
-               } 
-          }
-          else{
-               $data=array('error' => "Entry does not exist"); 
-               $this->load->model("Errorlog_model");
-               $this->Errorlog_model->newLog($entryID, 'uDel', 'User ('.$sectionID.') deallocation failed. ID does not exist. User '.$myID.' role '.$myRole);
-          }
+            	$result=$this->SectionAuth_model->removeUserFromSection($entryID);
+                $data=array('success' => $result);
+                $this->load->model("Logging_model");
+                $this->Logging_model->newLog($entryID, 'uDel', $result.' by user '.$myName.'('.$myEmail.') ');
+           }
+           else{
+                $data=array('error' => "Insufficient privledges"); 
+                $this->load->model("Errorlog_model");
+                $this->Errorlog_model->newLog($entryID, 'uDel', 'User '.$verify->name.'('.$verify->user_id.') deallocation failed. Insufficient permissions. User '.$myID.' role '.$myRole);
+           } 
+      	}
+      	else{
+           $data=array('error' => "Entry does not exist"); 
+           $this->load->model("Errorlog_model");
+           $this->Errorlog_model->newLog($entryID, 'uDel', 'User ('.$sectionID.') deallocation failed. ID does not exist. User '.$myID.' role '.$myRole);
+      	}
           
            
-          echo json_encode($data);
-          exit; 
-     }
+      	echo json_encode($data);
+      	exit; 
+ 	}
+
 
 //-------------------------------------------------------------------------------------------------------------
 //USER->UserRole related functions

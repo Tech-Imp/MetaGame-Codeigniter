@@ -20,7 +20,7 @@ class Media_model extends MY_Model{
 		$myID=$_SESSION['id'];
 		if($id===NULL){
 			$this->db->where('mediaType !=', 'avatar');
-               $this->db->where('mediaType !=', 'logo');
+        	$this->db->where('mediaType !=', 'logo');
 		}
 		//Only limit view if not superadmin
 		if($myRole<$this->config->item('superAdmin')){
@@ -73,9 +73,9 @@ class Media_model extends MY_Model{
 		
 		return $photoId;
 	}
-	//--------------------------------------------------------------------------------------------------------------------
+	//================================================================================================
 	//Get only photos from database, use limit
-	//--------------------------------------------------------------------------------------------------------------------
+	//================================================================================================
 	public function getPhotos($id=NULL, $vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
 		$this->db->where('fileLoc !=', '');
 		$this->db->where('mediaType', 'picture');
@@ -102,9 +102,9 @@ class Media_model extends MY_Model{
 		return $this->getCommonCount($here, true);
 	}
 		
-	//---------------------------------------------------------------------------------------------------------------------------
+	//================================================================================================
 	//Get only embeds (video only) from database, use limit 
-	//---------------------------------------------------------------------------------------------------------------------------
+	//================================================================================================
 	public function getEmbeds($id=NULL ,$vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
 		$this->db->where('embed !=', '');
 		$this->db->where('mediaType', 'video');
@@ -129,13 +129,41 @@ class Media_model extends MY_Model{
 		}
 		return $this->getCommonCount($here, true);
 	}
-	//--------------------------------------------------------------------------------------------------------------------
+	//=================================================================================================
+	//Get Audio files from database, use limit
+	//=================================================================================================
+	public function getAudio($id=NULL ,$vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
+		$this->db->where('embed !=', '');
+		$this->db->where('mediaType', 'sound');
+		//Only limit to vintage or nonvintage when proper value
+		if($vintage != NULL){
+			$this->db->where('vintage', intval($vintage));
+		}
+		//Only limit when logging needs to limit
+		if($logged != NULL){
+			$this->db->where('loggedOnly', intval($vintage));
+		}
+		return $this->getCommonMedia($id, $resultLimit, $offset, $here, true);
+	}
+	public function getAudioCount($vintage=0, $logged=1, $here=null){
+		$this->db->where('embed !=', '');
+		$this->db->where('mediaType', 'sound');
+		if($vintage != NULL){
+			$this->db->where('vintage', intval($vintage));
+		}
+		if($logged != NULL){
+			$this->db->where('loggedOnly', intval($vintage));
+		}
+		return $this->getCommonCount($here, true);
+	}
+	
+	//================================================================================================
 	//Get only avatars from database, use limit
-	//--------------------------------------------------------------------------------------------------------------------
+	//================================================================================================
 	public function getAvatarLogo($id=NULL, $resultLimit=NULL, $offset=NULL, $here=null){
 		$this->db->where('fileLoc !=', '');
 		$this->db->where('mediaType', 'avatar');
-          $this->db->or_where('mediaType', 'logo');
+        $this->db->or_where('mediaType', 'logo');
 		return $this->getCommonMedia($id, $resultLimit, $offset, $here, NULL);
 	}
 	
@@ -151,7 +179,7 @@ class Media_model extends MY_Model{
 	public function getFrontMedia($id=NULL ,$vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
 		if($id===NULL){
 			$this->db->where('mediaType !=', 'avatar');
-               $this->db->where('mediaType !=', 'logo');
+        	$this->db->where('mediaType !=', 'logo');
 		}
 		//Only limit to vintage or nonvintage when proper value
 		if($vintage != NULL){

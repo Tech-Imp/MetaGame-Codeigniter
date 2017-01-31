@@ -26,9 +26,10 @@ class Tools extends Dash_backend{
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
 		
-          $data['createUserLink']="";
+          $data['createUserLink']=$data['regenSectionButton']="";
 		if($_SESSION['role'] >= $this->config->item('sectionAdmin')){
-               $data['createUserLink']=anchor('admin/systems/tools/createuser',"<span class='glyphicon glyphicon-user'></span> Create User", array('class'=>'btn btn-success btn-lg btn-block', 'id'=>'cNewUser'));
+				$data['regenSectionButton']="<button id='regen' class='btn btn-warning'>Regen Route</button>";
+               	$data['createUserLink']=anchor('admin/systems/tools/createuser',"<span class='glyphicon glyphicon-user'></span> Create User", array('class'=>'btn btn-success btn-lg btn-block', 'id'=>'cNewUser'));
           }
 		//Logging of recent items
 		$types=array("aSec", "dSec", "uAdd", "uDel");

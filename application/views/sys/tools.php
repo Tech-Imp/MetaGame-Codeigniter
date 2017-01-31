@@ -159,7 +159,7 @@
 					       	<br>
 					       	<button id="saveNewTravel" class="btn btn-success" >Save to Database</button>
 					       	<button id="clearArticle" class="btn btn-warning">Clear</button>
-					      	
+					      	<?php echo $regenSectionButton?>
 				      	
 				      	</div>
 				    </div>

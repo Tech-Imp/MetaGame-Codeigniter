@@ -29,7 +29,12 @@ class adminTools extends window.classes.dashboardIndex
           $("#saveNewContact").unbind().bind "click", (event)=>
                $("#saveNewContact").prop("disabled", "disabled")    
                @addUser()
-
+          
+          $("#regen").unbind().bind "click", (event)=>
+               $("#regen").prop("disabled", "disabled")    
+               @regen()
+          
+          
           $("#clearSection").unbind().bind "click", (event)=>
                @cleanAreas()
 
@@ -76,6 +81,31 @@ class adminTools extends window.classes.dashboardIndex
                               $("#saveNewContact").prop("disabled", false)
           else
                @textBodyResponse("You need fill in all the fields!", "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection")
+     
+     regen:()=>
+          if @debug then console.log "adminTools.regen"
+          
+          
+          $.ajax
+               url: @base_url+"/admin/securepost/regenerateSections"
+               type: 'post'
+               dataType: 'json'
+              
+               success: (response)=>
+                    if response.success
+                         console.log "Success"
+                         @cleanAreas()
+                         @textBodyResponse(response.error,  "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection")
+                         $("#regen").prop("disabled", false)
+                    else if response.debug
+                         console.log "debug"
+                         $("#regen").prop("disabled", false)
+                    else if response.error
+                         console.log "error"
+                         @textBodyResponse(response.error,  "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection")  
+                         $("#regen").prop("disabled", false)
+          
+     
      
      addUser:()=>
           if @debug then console.log "adminTools.addUser"
