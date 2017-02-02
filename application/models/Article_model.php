@@ -34,6 +34,7 @@ class Article_model extends MY_Model{
 			}
 						
 		}
+          $this->joinTable("users", "author_id", "id", "*", "name, email");
 		return $this->get($id);
 		
 	}
@@ -95,6 +96,7 @@ class Article_model extends MY_Model{
 			}
 						
 		}
+		$this->joinTable("users", "author_id", "id", "*", "name, email");
 		return $this->get($id);
 	}
 	
@@ -113,13 +115,14 @@ class Article_model extends MY_Model{
 	//----------------------------------------------------------------------------
 	public function getWrittenCount($findViaTime=true, $here=null, $type=NULL, $admin=FALSE){
 		$myRole=$_SESSION['role'];
-          $myID=$_SESSION['id'];
+          
           
 		if($type!==NULL){
 			$this->db->where('type =', $type);
 		}
 		
           if($admin && $myRole<$this->config->item('superAdmin')){
+               $myID=$_SESSION['id'];
                $this->db->where('author_id =', $myID);
           }
           

@@ -42,10 +42,13 @@ td{
 	display: none;
 }
 .titleSizer{
-	height: 2em; 
+	height: 4em; 
 	min-height: 2em;
      line-height: 1em; 
      overflow: hidden;
+}
+.author{
+     text-decoration: underline;
 }
 .itemVis{
 	background-image: linear-gradient(to bottom,#0099FF 0,#f5f5f5 100%);

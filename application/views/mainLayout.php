@@ -50,6 +50,12 @@
     					<h3 class="panel-title">Quick Links</h3>
   					</div>
   					<div class="panel-body">
+  					     <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" style="width: 99%">
+                         <span class="sr-only">Quicklinks down</span>
+                         Under Construction
+                         </div>
+				     </div>
+  					<div class="panel-body noshow">
     					<a href='<?php echo base_url() ; ?>main'><img class='img-responsive img-rounded'src="<?php echo base_url() ; ?>assets/image/Placeholder.jpg" alt='Main site'> </a>
                          <?php echo $siteLinks ?>
   					</div>

@@ -108,6 +108,7 @@ class Dataprep_model extends CI_Model{
                 $export.="
                 	".$this->generateRows($newsID, $perRow, $rowCount)."
                     <div class='titleSizer'><h4><strong>".$row->title."</strong></h4></div><br>
+                    <h5 class='author'>Posted by:  ".$row->name."</h5>
                     ".$this->meatyContent($row, count($myMedia), $myLink, $area, $perRow, $maxPerRow, $primary_key)."
                     <br>
                     ".$this->modifiedCreation($row)."
@@ -199,7 +200,7 @@ class Dataprep_model extends CI_Model{
 	//It will strip out the ID of the video so that an image can be used as a placeholder instead to increase optimization
 	//of the page itself.
 	//------------------------------------------------------------------------------------------------
-	protected function checkYoutube($embed, $redirectPage="", $redirectID=""){
+	protected function checkEmbedDisplay($embed, $redirectPage="", $redirectID=""){
 		if(strpos($embed, "youtube.com/embed/") !==FALSE){
 			$precheck=explode("youtube.com/embed/", $embed);
 			$embedID=explode("\"", $precheck[1]);
@@ -210,6 +211,13 @@ class Dataprep_model extends CI_Model{
 			</div>
 			";
 		}
+          elseif (strpos($embed, "soundcloud.com/player") !==FALSE) {
+              $img='<img class="img-responsive center-block youtube-thumb" src="'.base_url().'assets/image/soundcloud-Logo.png">';
+               return "<div class='soundcloud-item' >
+                    ".anchor($redirectPage.'/'.$redirectID, $img)."
+               </div>
+               ";
+          }
 		else{
 			return $embed;
 		}
@@ -339,7 +347,7 @@ class Dataprep_model extends CI_Model{
 		}
 		elseif (array_key_exists('embed', $row) && $row->embed !== "") {
 			// Determine if video is alone on page, and if so just show it. Otherwise, thumbnail
-			return $this->checkYoutube($row->embed, $area.'/'.$myLink.'/'.$ctrlFunc, $row->$primary_key);
+			return $this->checkEmbedDisplay($row->embed, $area.'/'.$myLink.'/'.$ctrlFunc, $row->$primary_key);
 		}
 		elseif (array_key_exists('body', $row) && $row->body !== "" && $showText) {
 			return $row->body;

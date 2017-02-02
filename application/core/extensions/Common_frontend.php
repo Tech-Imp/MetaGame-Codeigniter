@@ -75,10 +75,7 @@ class Common_frontend extends Frontend_controller{
 	      		</ul>";
 		}
 		else{
-			return "<ul class='nav navbar-nav navbar-right'>
-	      			<li>".anchor('admin/dashboard', "<span class='glyphicon glyphicon-dashboard' title='Dashboard'></span> Dash")."</li>
-	      			<li>".anchor('login/logout', "<span class='glyphicon glyphicon-log-out' title='Log Out'></span> Logout")."</li>
-	      		</ul>";
+			return "";
 		}
 		
 	}

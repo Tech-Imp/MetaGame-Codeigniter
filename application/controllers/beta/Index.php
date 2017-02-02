@@ -22,6 +22,7 @@ class Index extends Common_frontend {
 				
 		$currentRole=$_SESSION['role'];
 		
+
 		if($currentRole>0){
 			$myMedia=$this->Media_model->getFrontMedia(NULL, NULL, NULL, 5);
 		}

@@ -179,7 +179,8 @@ class Media_model extends MY_Model{
 	public function getFrontMedia($id=NULL ,$vintage=0, $logged=1, $resultLimit=NULL, $offset=NULL, $here=null){
 		if($id===NULL){
 			$this->db->where('mediaType !=', 'avatar');
-        	$this->db->where('mediaType !=', 'logo');
+               $this->db->where('mediaType !=', 'logo');
+               $this->db->where('mediaType !=', 'sound');
 		}
 		//Only limit to vintage or nonvintage when proper value
 		if($vintage != NULL){
@@ -211,6 +212,7 @@ class Media_model extends MY_Model{
 				$this->db->limit(intval($resultLimit));
 			}
 		}
+          $this->joinTable("users", "author_id", "id", "*", "name, email");
 		return $this->get($id);
 	}
 	private function getCommonCount($here=null, $timeNeed=NULL){
