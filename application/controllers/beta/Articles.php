@@ -10,8 +10,8 @@ class Articles extends Common_frontend {
 
 	public function index($id=NULL)
 	{
-		$this->load->model('Article_model');
-		$this->load->model('Dataprep_model');
+		$this->load->model('beta/Article_model', "Article_model");
+		$this->load->model('beta/Dataprep_model', "Dataprep_model");
 		
 		$maxLimit=$this->config->item('maxArticles');	
 		$data=$this->commonHeader();

@@ -9,8 +9,8 @@ class Merch extends Common_frontend {
 
 	public function index()
 	{
-		$this->load->model('Vendor_model');
-		$this->load->model('Dataprep_model');	
+		$this->load->model('beta/Vendor_model', "Vendor_model");
+		$this->load->model('beta/Dataprep_model', "Dataprep_model");	
 		$data=$this->commonHeader();
 		// $data['js'][0]='bookObject.js';
 		// $data['js'][1]='bookIndex.js';

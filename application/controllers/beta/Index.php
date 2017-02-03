@@ -10,9 +10,9 @@ class Index extends Common_frontend {
 	
 	public function index()
 	{
-		$this->load->model('Media_model');
-		$this->load->model('Article_model');
-		$this->load->model('Dataprep_model');
+		$this->load->model('beta/Media_model', "Media_model");
+		$this->load->model('beta/Article_model', "Article_model");
+		$this->load->model('beta/Dataprep_model', "Dataprep_model");
 		$data=$this->commonHeader();
 		// $data['js'][0]='bookObject.js';
 		// $data['js'][1]='bookIndex.js';

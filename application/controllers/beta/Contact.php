@@ -9,8 +9,8 @@ class Contact extends Common_frontend {
 
 	public function index()
 	{
-		$this->load->model('Profilepages_model');
-		$this->load->model('Dataprep_model');	
+		$this->load->model('beta/Profilepages_model', "Profilepages_model");
+		$this->load->model('beta/Dataprep_model', "Dataprep_model");	
 		$data=$this->commonHeader();
 		$data['css'][2]="frontend/contact.css";
 		// $data['js'][0]='bookObject.js';

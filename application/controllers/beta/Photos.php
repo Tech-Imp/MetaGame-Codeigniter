@@ -9,8 +9,8 @@ class Photos extends Common_frontend {
 
 	public function index($id=NULL)
 	{
-		$this->load->model('Media_model');	
-		$this->load->model('Dataprep_model');
+		$this->load->model('beta/Media_model', "Media_model");	
+		$this->load->model('beta/Dataprep_model', "Dataprep_model");
 		$data=$this->commonHeader();
 		$maxLimit=$this->config->item('maxPMedia');
 	
