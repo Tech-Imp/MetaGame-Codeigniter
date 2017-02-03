@@ -48,18 +48,21 @@ class Media extends Common_frontend {
 			
 			
 			if($maxVideoItems>0 || $maxPics>0 || $maxAudio>0){
-			     
+			     $tabInc=1;
                     if($maxVideoItems>0){
-                         $data['mediaHeader'].=$this->prepHeader("<h3><span class='glyphicon glyphicon-facetime-video'></span> Videos </h3>");
-                         $data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVids, "media", "media_id", "video", 3, $maxVideoItems, $maxLimitVid, 0, "all.videos"));
+                         $data['mediaHeader'].=$this->prepHeader("<h3><span class='glyphicon glyphicon-facetime-video'></span> Videos </h3>", $tabInc);
+                         $data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myVids, "media", "media_id", "video", 3, $maxVideoItems, $maxLimitVid, 0, "all.videos"), $tabInc);
+                         ++$tabInc;
                     }
                     if($maxPics>0){
-                         $data['mediaHeader'].=$this->prepHeader("<h3><span class='glyphicon glyphicon-picture'></span>  Images </h3>", 2);
-                         $data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myPics, "media", "media_id", "photos", 3, $maxPics, $maxLimitPic, 0, "all.photos"), 2);
+                         $data['mediaHeader'].=$this->prepHeader("<h3><span class='glyphicon glyphicon-picture'></span>  Images </h3>", $tabInc);
+                         $data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myPics, "media", "media_id", "photos", 3, $maxPics, $maxLimitPic, 0, "all.photos"), $tabInc);
+                         ++$tabInc;
                     }
                     if($maxAudio>0){
-                         $data['mediaHeader'].=$this->prepHeader("<h3><span class='glyphicon glyphicon-volume-up'></span>  Audio </h3>", 3);
-                         $data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myAudio, "media", "media_id", "audio", 3, $maxAudio, $maxLimitAudio, 0, "all.audio"), 3);
+                         $data['mediaHeader'].=$this->prepHeader("<h3><span class='glyphicon glyphicon-volume-up'></span>  Audio </h3>", $tabInc);
+                         $data['mediaContent'].=$this->prepContent($this->Dataprep_model->gatherItems($myAudio, "media", "media_id", "audio", 3, $maxAudio, $maxLimitAudio, 0, "all.audio"), $tabInc);
+                         ++$tabInc; //in case in the future I need an addition media section
                     }
                }
                else{
