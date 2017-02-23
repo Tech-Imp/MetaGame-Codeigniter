@@ -59,10 +59,18 @@ class MY_Model extends CI_Model{
 			if($id===NULL){
 				$data['created']=$now;
                     $data['author_id']=$_SESSION['id'];
+                    if(array_key_exists("visibleWhen", $data)){
+                         $adjustment=$this->adjustPostTime($data['visibleWhen']);
+                         $data['visibleWhen']=$adjustment;
+                    }
 			}
 			else{
 				$data['modified']=$now;
                     $data['modified_by']=$_SESSION['id'];
+                    if(array_key_exists("visibleWhen", $data)){
+                         $adjustment=$this->adjustPostTime($data['visibleWhen'], FALSE);
+                         $data['visibleWhen']=$adjustment;
+                    }
 			}
 		}
 		// Insert into DB
@@ -154,7 +162,29 @@ class MY_Model extends CI_Model{
 		}
 		return $selStatement;
 	}
-//---------------------------------------------------------------
+     
+//---------------------------------------------------------------------------------
+     private function adjustPostTime($whenReleased, $isNew=TRUE){
+          if($whenReleased=="0000-00-00 00:00:00" || $whenReleased==""){return $whenReleased;}
+          //Active determines delay in post by days, max of a week
+          $postDelayMax=7;
+          if(!(isset($_SESSION['activeStatus']))){$delay=$postDelayMax;}
+          else{
+               $delay=abs($_SESSION['activeStatus'])%$postDelayMax;
+          }
+          
+          $future=date('Y-m-d H:i:s');
+          if($delay!=0){
+               $delay="+".$delay." day";
+               $future=date('Y-m-d H:i:s', strtotime($delay));
+          }
+          
+          if($whenReleased<=$future && $isNew){return $future;}//if new and didnt give leeway
+          elseif($whenReleased>=$future){return $whenReleased;} //if the date selected is in future already
+          else{return $future;} //assume future is better as default
+         
+     }
+//----------------------------------------------------------------------------------
 	public function restrictSect($here=NULL, $exclusiveExists=TRUE, $specTable=FALSE){
 		//Whole section dedicated to making sure that items can be separated based on 
 		//exclusive areas.

@@ -8,7 +8,7 @@ class Dash_backend extends Admin_controller{
 //-------------------------------------------------------------------------------
 //Common functions
 //------------------------------------------------------------------------------
-	protected function exclusiveSelector($multi="", $exFlag=false, $exPage=''){
+	protected function exclusiveSelector($multi="", $exFlag=TRUE, $exPage=''){
 			
 		if($multi===NULL){$multi="";}
 		$exYes=$exNo="";
@@ -33,8 +33,8 @@ class Dash_backend extends Admin_controller{
 						<div class="col-xs-2"><strong>Exclusive to section?</strong></div>
 						<div class="col-xs-10 col-md-4">
 	      					<select id="exclusiveFlag'.$multi.'">
+                                        <option '.$exYes.' value="1">Yes</option>
 	      						<option '.$exNo.' value="0">No</option>
-  								<option '.$exYes.' value="1">Yes</option>
 							</select>
       					</div>
 		      			<div class="col-xs-12 col-md-6">"Yes" will only display to specific section</div>
