@@ -81,17 +81,18 @@ class dashboardNews extends window.classes.dashboardIndex
                          if response.success
                               console.log "Success"
                               @cleanAreas()
-                              @textBodyResponse("Item added to news database", "#userMessage", false, "#textArea-alert", "#saveNewArticle")
-                              $("#saveNewArticle").prop("disabled", false)
+                              @textBodyResponse("Item added to news database", "#userMessage", false, "#textArea-alert", ["#saveNewArticle", "#saveWrittenNews", "#saveWrittenArticle"])
+                               
                          else if response.debug
                               console.log "debug"
-                              $("#saveNewArticle").prop("disabled", false)
+                               
                          else if response.error
                               console.log "error"
-                              @textBodyResponse(response.error,  "#userMessage", true, "#textArea-alert", "#saveNewArticle")  
-                              $("#saveNewArticle").prop("disabled", false)
+                              @textBodyResponse(response.error,  "#userMessage", true, "#textArea-alert", ["#saveNewArticle", "#saveWrittenNews", "#saveWrittenArticle"])  
+                              
           else
-               @textBodyResponse("You need to add something to the body of the article!", "#userMessage", true, "#textArea-alert", "#saveNewArticle")
+               @textBodyResponse("You need to add something to the body of the article!", "#userMessage", true, "#textArea-alert", ["#saveNewArticle", "#saveWrittenNews", "#saveWrittenArticle"])
+               
      
                           
      

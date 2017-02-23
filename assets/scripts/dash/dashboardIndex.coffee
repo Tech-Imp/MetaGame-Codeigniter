@@ -39,8 +39,12 @@ class dashboardIndex
           $(alertID).removeClass("noshow")
           $(alertID).fadeTo(2000, 500).slideUp 500, ->
                $(alertID).addClass("noshow")
-               if uploadID!=null  
-                    $(uploadID).prop("disabled", false)
+               if uploadID!=null
+                    if $.isArray(uploadID)
+                         for item in uploadID
+                              $(item).prop("disabled", false)
+                    else  
+                         $(uploadID).prop("disabled", false)
                           
     #generic version for general quality of life                      
     refreshData:=>

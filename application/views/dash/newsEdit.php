@@ -46,7 +46,7 @@
 	    						<br>
 	    						<div>Are you sure?</div><br> 
 	    						<button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#deleteMedia" aria-expanded="false" aria-controls="deleteMedia">No, Cancel</button>
-	    						<button class="btn btn-success" type="button" id='permDelete'>Yes, Delete Media</button>
+	    						<button class="btn btn-success" type="button" id='permDelete'>Yes, Delete News</button>
 	  						</div>
 						</div>
 			      	</div>
