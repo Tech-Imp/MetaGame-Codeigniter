@@ -16,11 +16,12 @@ class Multimedia extends Dash_backend{
 		$this->load->model('Media_model');
 		$this->load->model('Adminprep_model');
 		$data=$this->commonHeader();
-		$data['js'][0]= 'plupload/plupload.full.min.js';
-		$data['js'][1]= 'plupload/jquery.ui.plupload/jquery.ui.plupload.js';
-		$data['js'][2]= 'dash/dashboardIndex.js';
-		$data['js'][3]= 'dash/dashboardMedia.js';
-		$data['js'][4]='commonShared.js';
+          $data['js'][0]= 'tinymce/jquery.tinymce.min.js';
+		$data['js'][1]= 'plupload/plupload.full.min.js';
+		$data['js'][2]= 'plupload/jquery.ui.plupload/jquery.ui.plupload.js';
+		$data['js'][3]= 'dash/dashboardIndex.js';
+		$data['js'][4]= 'dash/dashboardMedia.js';
+		$data['js'][5]='commonShared.js';
 		$data['css'][1]='plupload/jquery.ui.plupload.css';
 		$data['currentLocation']="<div class='navbar-brand'>Media Dashboard</div>";
 		$data['additionalTech']="<div class='row'>
@@ -55,6 +56,7 @@ class Multimedia extends Dash_backend{
 		$data=$this->commonHeader();
 		$data['js'][0]= 'dash/dashboardIndex.js';
 		$data['js'][1]= 'dash/dashboardUpdateMedia.js';
+          $data['heavy_js'][0]= 'tinymce/jquery.tinymce.min.js';
 		$data['currentLocation']="<div class='navbar-brand'>Edit Media</div>";
 		
 		$this->load->view('templates/header', $data);
@@ -113,6 +115,7 @@ class Multimedia extends Dash_backend{
 				
 				$data['exclusive']=$this->exclusiveSelector(NULL, $allData->exclusiveSection, $allData->forSection);
 				$data['mediaWhen']=$allData->visibleWhen;
+                    $data['mediaBlurb']=$allData->body;
 				$this->load->view('dash/mediaEdit', $data);
 			}
 			else{

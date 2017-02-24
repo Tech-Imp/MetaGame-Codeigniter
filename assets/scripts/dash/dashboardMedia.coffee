@@ -47,6 +47,28 @@ class dashboardMedia extends window.classes.dashboardIndex
                     mediaType: "picture"
                     exFlag:  $("#exclusiveFlagPic").val()
                     section:  $("#sectionPic").val()
+                    bodyText: $('#mceMediaBlurb').html()
+          
+          $("#mceEmbedBlurb").tinymce
+               script_url : @base_url+'/assets/scripts/tinymce/tinymce.min.js',
+               theme : "modern",
+               plugins: [
+                    "advlist autolink lists link image charmap print preview anchor",
+                    "searchreplace visualblocks code fullscreen",
+                    "insertdatetime media table contextmenu paste" 
+                    ],
+               toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+          
+          $("#mceMediaBlurb").tinymce
+               script_url : @base_url+'/assets/scripts/tinymce/tinymce.min.js',
+               theme : "modern",
+               plugins: [
+                    "advlist autolink lists link image charmap print preview anchor",
+                    "searchreplace visualblocks code fullscreen",
+                    "insertdatetime media table contextmenu paste" 
+                    ],
+               toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+          
                     
           $("#saveEmbedded").unbind().bind "click", (event)=>
                $("#saveEmbedded").prop("disabled", "disabled")    
@@ -85,6 +107,7 @@ class dashboardMedia extends window.classes.dashboardIndex
                          mediaType: $("#mediaOptions").val()
                          exFlag:  $("#exclusiveFlagEmbed").val()
                          section:  $("#sectionEmbed").val()
+                         bodyText: $('#mceEmbedBlurb').html()
                               
                     success: (response)=>
                          if response.success
@@ -92,6 +115,7 @@ class dashboardMedia extends window.classes.dashboardIndex
                               @cleanAreas()
                               @textBodyResponse("Item added to media database", "#userEmbedMessage", false, "#textArea-alert", "#saveEmbedded")
                               $('#mceEmbedArea').val("")
+                              $('#mceEmbedBlurb').val("")
                               $("#saveEmbedded").prop("disabled", false)
                          else if response.debug
                               console.log "debug"

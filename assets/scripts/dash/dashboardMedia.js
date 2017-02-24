@@ -60,10 +60,23 @@
             loggedOnly: $('#uploadLogged').val(),
             mediaType: "picture",
             exFlag: $("#exclusiveFlagPic").val(),
-            section: $("#sectionPic").val()
+            section: $("#sectionPic").val(),
+            bodyText: $('#mceMediaBlurb').html()
           };
         };
       })(this));
+      $("#mceEmbedBlurb").tinymce({
+        script_url: this.base_url + '/assets/scripts/tinymce/tinymce.min.js',
+        theme: "modern",
+        plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+      });
+      $("#mceMediaBlurb").tinymce({
+        script_url: this.base_url + '/assets/scripts/tinymce/tinymce.min.js',
+        theme: "modern",
+        plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+      });
       $("#saveEmbedded").unbind().bind("click", (function(_this) {
         return function(event) {
           $("#saveEmbedded").prop("disabled", "disabled");
@@ -109,7 +122,8 @@
             embed: $('#mceEmbedArea').val(),
             mediaType: $("#mediaOptions").val(),
             exFlag: $("#exclusiveFlagEmbed").val(),
-            section: $("#sectionEmbed").val()
+            section: $("#sectionEmbed").val(),
+            bodyText: $('#mceEmbedBlurb').html()
           },
           success: (function(_this) {
             return function(response) {
@@ -118,6 +132,7 @@
                 _this.cleanAreas();
                 _this.textBodyResponse("Item added to media database", "#userEmbedMessage", false, "#textArea-alert", "#saveEmbedded");
                 $('#mceEmbedArea').val("");
+                $('#mceEmbedBlurb').val("");
                 return $("#saveEmbedded").prop("disabled", false);
               } else if (response.debug) {
                 console.log("debug");

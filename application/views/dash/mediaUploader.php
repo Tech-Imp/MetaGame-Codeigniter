@@ -40,9 +40,13 @@
 					</div>
 					<?php echo $exclusivePic;?>
 					<br>
+					<h3>Text Blurb (optional)</h3>
+                         <textarea name="MCEarea" class='cleanMe' cols="40" rows="5" id="mceMediaBlurb" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
+                         <br>
 	      			<div class='nUpload'>
 	      				<p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
 	      			</div>
+	      			
 	      		</div>
 			</div>
 	  	</div>
@@ -79,8 +83,11 @@
 						<button type="button" class="close" data-dismiss="alert">x</button>
 						<strong id="userEmbedMessage">You need to add the embedded text! </strong>
 					</div>
-			      	<textarea name="MCEembed" class='cleanMe' cols="40" rows="5" id="mceEmbedArea" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
+			      	<textarea name="MCEembed" class='cleanMe' cols="40" rows="3" id="mceEmbedArea" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
 			       	<br>
+			       	<h3>Text Blurb (optional)</h3>
+                         <textarea name="MCEarea" class='cleanMe' cols="40" rows="10" id="mceEmbedBlurb" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
+                         <br>
 			       	<button id="saveEmbedded" class="submitButton btn btn-success" disabled="disabled">Save Embedded Media</button>
 			       	<button id="clearEmbed" class="submitButton btn btn-warning">Clear</button>
 	      		</div>
