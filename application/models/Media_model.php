@@ -42,7 +42,7 @@ class Media_model extends MY_Model{
 	//-------------------------------------------------------------------------------------------------------
 	//Save normal uploads to server
 	//-----------------------------------------------------------------------------------------------------
-	public function uploadMedia($location=NULL, $embed=NULL, $mediaType, $md5=NULL, $visibleWhen, $title, $stub, $loggedOnly, $exFlag, $section, $id=NULL, $vintage=NULL){
+	public function uploadMedia($location=NULL, $embed=NULL, $mediaType, $md5=NULL, $visibleWhen, $title, $stub, $bodyText="", $loggedOnly, $exFlag, $section, $id=NULL, $vintage=NULL){
 			
 		$data=array(
 			'title'=>$title,
@@ -67,6 +67,9 @@ class Media_model extends MY_Model{
 		if($location!==NULL){
 			$data['fileLoc']=$location;
 		}
+          if($bodyText!==""){
+               $data['body']=$bodyText;
+          }
 
 
 		$photoId=$this->save($data, $id);

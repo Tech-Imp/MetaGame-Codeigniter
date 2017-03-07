@@ -54,9 +54,9 @@ class Multimedia extends Dash_backend{
 	     $this->secureArea();
 		$this->load->model('Media_model');
 		$data=$this->commonHeader();
-		$data['js'][0]= 'dash/dashboardIndex.js';
-		$data['js'][1]= 'dash/dashboardUpdateMedia.js';
-          $data['heavy_js'][0]= 'tinymce/jquery.tinymce.min.js';
+		$data['js'][0]= 'tinymce/jquery.tinymce.min.js';
+		$data['js'][1]= 'dash/dashboardIndex.js';
+		$data['js'][2]= 'dash/dashboardUpdateMedia.js';
 		$data['currentLocation']="<div class='navbar-brand'>Edit Media</div>";
 		
 		$this->load->view('templates/header', $data);
@@ -71,7 +71,6 @@ class Multimedia extends Dash_backend{
 				$data['mediaID']=$allData->media_id;
 				$data['mediaTitle']=$allData->title;
 				$data['mediaStub']=$allData->stub;
-				
 				// Display Media item
 				if($allData->fileLoc !== ""){
 					$data['mediaItem']="<img class='img-responsive' alt='{$allData->title}' src='".$allData->fileLoc."'></img>";

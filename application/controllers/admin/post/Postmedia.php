@@ -162,10 +162,14 @@ class Postmedia extends MY_Controller{
 			$loggedOnly = $this->simplePurify(intval($this->input->post('loggedOnly')));
 			$exFlag = $this->simplePurify($this->input->post('exFlag'));
 			$mediaType=$this->simplePurify($this->input->post('mediaType'));
+               $uncleanText = $this->input->post('bodyText');
+               $this->load->helper('htmlpurifier');
+               $clean_html = html_purify($uncleanText);
+               if(empty($clean_html)){$clean_html ="";}
 			$this->load->model("Media_model");
 			$loc=base_url().$uploadDir.'/'.$fileName;
 			//TODO need to prevent duplicates
-        	$result=$this->Media_model->uploadMedia($loc, NULL, $mediaType, $fileMD5hash, $visibleWhen, $title, $stub, $loggedOnly, $exFlag, $section);
+			$result=$this->Media_model->uploadMedia($loc, NULL, $mediaType, $fileMD5hash, $visibleWhen, $title, $stub, $clean_html, $loggedOnly, $exFlag, $section);
 		}
 		
 		
@@ -193,7 +197,9 @@ class Postmedia extends MY_Controller{
       	$visibleWhen = $this->simplePurify($this->input->post('visibleWhen'));
 		$uncleanText = $this->input->post('embed');
 		$section = $this->simplePurify($this->input->post('section')); 
-		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
+		$exFlag = $this->simplePurify($this->input->post('exFlag'));
+          $uncleanBlockText = $this->input->post('bodyText');
+               
 		
 		if($myRole<$this->config->item('contributor')){
 			$data=array('error' => "Insufficient privledges"); 
@@ -223,9 +229,13 @@ class Postmedia extends MY_Controller{
 		//Base case
 		$medias=$this->config->item('recognizedMedia');
 		if(in_array($mediaType, $medias)===TRUE){
+		     // TODO Find a good way to check embed link for nastiness, cant use purifier sadly
+		     $this->load->helper('htmlpurifier');
+               $clean_html = html_purify($uncleanBlockText);
+               if(empty($clean_html)){$clean_html ="";} 
 			$md5=md5($uncleanText);
 			$this->load->model("Media_model");
-			$result=$this->Media_model->uploadMedia(NULL, $uncleanText, $mediaType, $md5, $visibleWhen, $title, $stub, $loggedOnly, $exFlag, $section);
+			$result=$this->Media_model->uploadMedia(NULL, $uncleanText, $mediaType, $md5, $visibleWhen, $title, $stub, $clean_html, $loggedOnly, $exFlag, $section);
 			//Log a good entry		
 			$this->load->model("Logging_model");
 			$this->Logging_model->newLog($result, 'aEmb', 'Embed item '.$title.' ('.$result.') uploaded successfully by '.$myName.'('.$myEmail.')'); 
@@ -261,6 +271,7 @@ class Postmedia extends MY_Controller{
 		$vintage = $this->simplePurify(intval($this->input->post('vintage'))); 
 		$section = $this->simplePurify($this->input->post('section')); 
 		$exFlag = $this->simplePurify($this->input->post('exFlag')); 
+          $uncleanBlockText = $this->input->post('bodyText');
 		
 		if(empty($mediaID)){
 			$data=array('error' => "Error retrieving MediaID"); 
@@ -298,7 +309,10 @@ class Postmedia extends MY_Controller{
 		// Verify user has rights to media
 		$verify=$this->Media_model->get($mediaID, TRUE);
 		if($verify->author_id==$myID || $myRole>$this->config->item('sectionAdmin')){
-			$result=$this->Media_model->uploadMedia(NULL, NULL, $mediaType, NULL, $visibleWhen, $title, $stub, $loggedOnly, $exFlag, $section, $mediaID, $vintage);
+		     $this->load->helper('htmlpurifier');
+               $clean_html = html_purify($uncleanBlockText);
+               if(empty($clean_html)){$clean_html ="";} 
+			$result=$this->Media_model->uploadMedia(NULL, NULL, $mediaType, NULL, $visibleWhen, $title, $stub, $clean_html, $loggedOnly, $exFlag, $section, $mediaID, $vintage);
 			$data=array('success' => $result);
 			$this->load->model("Logging_model");
 			$this->Logging_model->newLog($mediaID, 'eMed', 'Media item '.$title.' ('.$mediaID.') edit saved successfully by '.$myName.'('.$myEmail.')'); 

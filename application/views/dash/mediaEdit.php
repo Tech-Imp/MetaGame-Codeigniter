@@ -57,6 +57,9 @@
 					</div>
 					<?php echo $exclusive;?>
 					<br>
+                         <h3>Text Blurb (optional)</h3>
+                         <textarea name="MCEarea" class='cleanMe' cols="40" rows="5" id="mceMediaBlurb" style="width: 100%; resize: vertical; overflow-y: scroll; "><?php echo $mediaBlurb;?></textarea>
+					<br>
 	      				<?php echo $mediaItem;?>
 	      			<br>
 	      			<div>

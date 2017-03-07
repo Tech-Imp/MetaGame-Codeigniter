@@ -25,6 +25,12 @@
       if (this.debug) {
         console.log("dashboardUpdateMedia.setupEvents");
       }
+      $("#mceMediaBlurb").tinymce({
+        script_url: this.base_url + '/assets/scripts/tinymce/tinymce.min.js',
+        theme: "modern",
+        plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+      });
       $("#saveEdits").unbind().bind("click", (function(_this) {
         return function(event) {
           return _this.saveEdits();
@@ -54,7 +60,8 @@
           vintage: $('#mediaVintage').val(),
           mediaType: $('#mediaType').val(),
           exFlag: $("#exclusiveFlag").val(),
-          section: $("#section").val()
+          section: $("#section").val(),
+          bodyText: $('#mceMediaBlurb').html()
         },
         success: (function(_this) {
           return function(response) {

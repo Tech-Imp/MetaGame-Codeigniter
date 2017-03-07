@@ -10,6 +10,16 @@ class dashboardUpdateMedia extends window.classes.dashboardIndex
   
      setupEvents:=>
           if @debug then console.log "dashboardUpdateMedia.setupEvents"
+          $("#mceMediaBlurb").tinymce
+               script_url : @base_url+'/assets/scripts/tinymce/tinymce.min.js',
+               theme : "modern",
+               plugins: [
+                    "advlist autolink lists link image charmap print preview anchor",
+                    "searchreplace visualblocks code fullscreen",
+                    "insertdatetime media table contextmenu paste" 
+                    ],
+               toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+          
           
           $("#saveEdits").unbind().bind "click", (event)=>
                # $("#saveEditsded").prop("disabled", "disabled")    
@@ -37,6 +47,7 @@ class dashboardUpdateMedia extends window.classes.dashboardIndex
                     mediaType: $('#mediaType').val()
                     exFlag:  $("#exclusiveFlag").val()
                     section:  $("#section").val()
+                    bodyText: $('#mceMediaBlurb').html()
                          
                success: (response)=>
                     if response.success
