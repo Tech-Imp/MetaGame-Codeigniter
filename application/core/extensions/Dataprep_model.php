@@ -111,6 +111,8 @@ class Dataprep_model extends CI_Model{
                     <h5 class='author'>Posted by:  ".$row->name."</h5>
                     ".$this->meatyContent($row, count($myMedia), $myLink, $area, $perRow, $maxPerRow, $primary_key)."
                     <br>
+                    ".$this->textualContent($row, FALSE, count($myMedia), $perRow)."
+                    <br>
                     ".$this->modifiedCreation($row)."
                     ".$this->generatePermalink($newsID, $items, $area, $myLink, $redirect, $perRow, $maxPerRow, count($myMedia)).
                     "</div>";
@@ -291,9 +293,10 @@ class Dataprep_model extends CI_Model{
 		return array('css'=>$artVis, 'text'=>$vis);
 	}
 	//----------------------------------------------------------------------------------------------------
-	protected function textualContent($row, $adminView=TRUE){
+	protected function textualContent($row, $adminView=TRUE, $currentCount=1, $perRow=1){
 		$content="";
 		// Setup styling on a component level so it doesnt need to be bothered
+		// Body set up so it displays only when in single item or when its set like a news feed
 		if($adminView){
 			$styling='class="shortText"';
 		}
@@ -301,10 +304,10 @@ class Dataprep_model extends CI_Model{
 			$styling='class="expandedText"';
 		}
 		
-		if(array_key_exists('stub', $row)){
+		if(array_key_exists('stub', $row) && $adminView){
 			$content="<div><textarea disabled='disabled' {$styling}>".$row->stub."</textarea></div><br>";
 		}
-		elseif(array_key_exists('body', $row)){
+		elseif(array_key_exists('body', $row) && $row->body !== "" && ($currentCount==1 || $perRow==1)){
 			$content="<div {$styling}>".$row->body."</div><br>";
 		}
 		else{
@@ -328,24 +331,29 @@ class Dataprep_model extends CI_Model{
 			$media.=$this->simpleContent($row, $myLink, $area, $primary_key)."</div>";
 		}
 		elseif (array_key_exists('embed', $row) && $row->embed !== "") {
-			// Determine if video is alone on page, and if so just show it. Otherwise, thumbnail
+			// Determine if video is alone on page, and if so just show it. Otherwise, thumbnail. 
+			// Youtube and Soundcloud special cases due to interactions with bootstrap
+			$cssSizeAdjust="";
 			if($perRow==1 && $overallCount==1 && $maxPerRow==0){
 				$embedItem=$row->embed;
+                    if(strpos($row->embed, "soundcloud.com/player") !==FALSE){
+                         $cssSizeAdjust="embedThin";   
+                    }
 			}
 			else{
 				$embedItem=$this->simpleContent($row, $myLink, $area, $primary_key);
+                    if(strpos($row->embed, "youtube.com/embed/") !==FALSE){
+                         $cssSizeAdjust="embedBigger";   
+                    }
 			}
-			$media="<div class='embed-responsive embed-responsive-16by9'>"
+			$media="<div class='embed-responsive embed-responsive-16by9 ".$cssSizeAdjust."'>"
 			.$embedItem."
 			</div>";	
 		}
-		elseif (array_key_exists('body', $row) && $row->body !== "" && $showText) {
-			$media="<div>"
-			.$this->simpleContent($row, $myLink, $area, $primary_key)."
-			</div>";
-		}
+		
 		return $media;
 	}
+     //------------------------------------------------------------------------------------------------------------------------------------------------
 	protected function simpleContent($row, $myLink, $area, $primary_key, $ctrlFunc='index', $showText=TRUE){
 		if(array_key_exists('fileLoc', $row) && $row->fileLoc !== ""){
 			return "<img class='img-responsive center-block' alt='{$row->title}' src='".$row->fileLoc."'></img>";
@@ -354,9 +362,7 @@ class Dataprep_model extends CI_Model{
 			// Determine if video is alone on page, and if so just show it. Otherwise, thumbnail
 			return $this->checkEmbedDisplay($row->embed, $area.'/'.$myLink.'/'.$ctrlFunc, $row->$primary_key);
 		}
-		elseif (array_key_exists('body', $row) && $row->body !== "" && $showText) {
-			return $row->body;
-		}
+		
 		return "";
 	
 	}
@@ -369,15 +375,15 @@ class Dataprep_model extends CI_Model{
 		else {
 			//Manages the whole row nesting. Only triggered when a value is passed.
 			if($rowCount%$perRow ==0 || $rowCount==0){
-				$export.="<div class='row'>";
+				$export.="<div class='row well'>";
 			}
 			if(12%$perRow ==0 and $perRow<=12 and $perRow>0){
 				$adjusted=12/$perRow;
-				$export.="<div id=mediaItem".$newsID." class='col-md-".$adjusted." col-xs-12 well '>";
+				$export.="<div id=mediaItem".$newsID." class='col-md-".$adjusted." col-xs-12'>";
 			}
 			//Catchall case in case of coding fault AKA item is not within 1 to 12 and a clean mod of 12
 			else {
-				$export.="<div id=mediaItem".$newsID." class='col-xs-12 well '>";
+				$export.="<div id=mediaItem".$newsID." class='col-xs-12'>";
 			}
 		}
 		return $export;

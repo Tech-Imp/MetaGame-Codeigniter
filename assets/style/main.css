@@ -68,9 +68,17 @@ td{
 .expandedText{
 	width: 100%; 
 	resize: none;
+	padding-left: 7px;
+	padding-right: 7px;
 }
 .linkText{
      position: relative;
      top: -20px;
      left: 10px;
+}
+.embedBigger{
+     padding-bottom: 75.25% !important;
+}
+.embedThin{
+     padding-bottom: 25.25% !important;
 }
