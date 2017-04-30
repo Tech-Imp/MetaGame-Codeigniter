@@ -128,7 +128,8 @@ class Securepost extends MY_Controller{
       	echo json_encode($data);
       	exit; 
 	}
-	function editSection(){
+	
+     function editSection(){
 			header('content-type: text/javascript');
           	$myRole=$_SESSION['role'];
           	$myID=$_SESSION['id'];
@@ -189,7 +190,8 @@ class Securepost extends MY_Controller{
           	echo json_encode($data);
           	exit; 
      }
-	function regenerateSections(){
+	
+     function regenerateSections(){
   		header('content-type: text/javascript');
       	$myRole=$_SESSION['role'];
       	$myID=$_SESSION['id'];
@@ -398,11 +400,64 @@ class Securepost extends MY_Controller{
           exit; 
      }
 
+//----------------------------------------------------------------------------------
+//SECTION VISIBILITY RELATED FEATURES
+//----------------------------------------------------------------------------------
+     
+     function setSectionNorm(){
+          header('content-type: text/javascript');
+          $myRole=$_SESSION['role'];
+          $myName=$_SESSION['name'];
+          $myEmail=$_SESSION['email'];
+          $author = $_SESSION['id'];
+          
+          $sectionID = $this->simplePurify($this->input->post('section'));
+          
+          if($myRole< $this->config->item('sectionAdmin')){
+               $data=array('error' => "Insufficient privledges");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog(-1, 'eVis', 'Failed to change visibility for section. Insufficient privledges. User '.$myName.' ('.$myEmail.') role '.$myRole);  
+               echo json_encode($data);
+               exit; 
+          }
+          
+          if(empty($sectionID)){
+               $data=array('error' => "Required field is empty");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog(-1, 'eVis', 'Failed to change visibility. No section was passed by User '.$myName.' ('.$myEmail.')');  
+               echo json_encode($data);
+               exit; 
+          }
+          
+          $this->load->model("Sectionexposure_model");
+          $sectionData=$this->Sectionexposure_model->getSectionVis($sectionID);
+          
+          if(count($sectionData)){
+               if(strpos($sectionData->sub_url, "/") !==false){
+                    $result=$this->Sectionexposure_model->adjustGroupingBasic($sectionData->sub_url, $this->config->item('baseUser'));    
+               }
+               else{
+                    
+               }
+          }
+          else{
+               $data=array('error' => "Invalid section ");
+               $this->load->model("Errorlog_model");
+               $this->Errorlog_model->newLog(-1, 'eVis', 'Failed to alter visibility. Section invalid. User '.$myName.' ('.$myEmail.') role '.$myRole);  
+               echo json_encode($data);
+               exit; 
+          }
+          
+          $this->load->model("Logging_model");
+          $this->Logging_model->newLog($sectionID, 'eVis', 'Section '.$sectionData->sub_name.' ('.$sectionData->sub_url.')  visibility Updated by '.$myName.'('.$myEmail.')');  
+          
+          $data=array('success' => $result); 
+          echo json_encode($data);
+          exit; 
+         
+     }
 
-
-
-
-
+    
 
 //---------------------------------------------------------------------------------
 //shared functions

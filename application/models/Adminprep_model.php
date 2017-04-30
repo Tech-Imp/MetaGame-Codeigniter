@@ -268,5 +268,37 @@ class Adminprep_model extends Dataprep_model{
           
           
      }
-
+     public function getSectionVis($controlled){
+          if(count($controlled)){
+               $logOutput="<thead><td>Section</td><td>URL suffix</td><td>Parent</td><td>Created by</td><td>Visibility</td></thead><tbody>";
+               foreach ($controlled as $row) {
+                    //Current visibility
+                    if($row->min_role==$this->config->item('baseUser')){$vis="glyphicon-pawn";}
+                    elseif($row->min_role<=$this->config->item('normUser')){$vis="glyphicon-knight";}
+                    elseif($row->min_role<=$this->config->item('contributor')){$vis="glyphicon-lock";}
+                    else{$vis="glyphicon-flag red";}
+                    //Beta exclusivity
+                    if($row->sub_url=="beta"){$visActions="<strong class='red'>Cannot alter</strong>";}
+                    else{
+                         $visActions="<button class='normVis visAdj btn btn-xs btn-success' data-id='".$row->id."'><span class='glyphicon glyphicon-pawn'>Norm</span></button> / ".
+                         "<button class='logVis visAdj btn btn-xs btn-warning' data-id='".$row->id."'><span class='glyphicon glyphicon-knight'>Logged</span></button> / ".
+                         "<button class='lockVis visAdj btn btn-xs btn-danger' data-id='".$row->id."'><span class='glyphicon glyphicon-lock'>Lock</span></button>";}
+                    //row output
+                    $logOutput.='<tr><td><span class="glyphicon '.$vis.'"></span> '.$row->sub_name.' </td>
+                         <td>'.$row->sub_url.'</td>
+                         <td>'.$row->forSection.'</td>
+                         <td> '.$row->name.' </td>
+                         <td>'
+                         .$visActions
+                         .'</td>
+                         </tr>';   
+               }
+               return '<table class="table table-striped">'.$logOutput.'<tbody></table>';
+          }
+          else{
+               return "<li><ul>You dont control any sections.</li></ul>";
+          }
+          
+          
+     }
 }

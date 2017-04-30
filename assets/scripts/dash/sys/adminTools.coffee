@@ -50,7 +50,19 @@ class adminTools extends window.classes.dashboardIndex
                     console.log "open"
                     $("#saveNewSection").prop("disabled", false)
      
-   
+          $(".normVis").unbind().bind "click", (event)=>
+               $(".visAdj").prop("disabled", "disabled")
+               @setNorm($(event.currentTarget).data("id"))
+          
+          $(".logVis").unbind().bind "click", (event)=>
+               $(".visAdj").prop("disabled", "disabled")
+               @setLogged($(event.currentTarget).data("id"))
+          
+          $(".lockVis").unbind().bind "click", (event)=>
+               $(".visAdj").prop("disabled", "disabled")
+               @setLocked($(event.currentTarget).data("id"))
+          
+          
      saveSection:()=>
           if @debug then console.log "adminTools.saveSection"
           
@@ -132,7 +144,32 @@ class adminTools extends window.classes.dashboardIndex
                          @textBodyResponse(response.error,  "#roleMessage", true, "#roleArea-alert", "#saveNewContact")  
                          $("#saveNewContact").prop("disabled", false)
                          
-
+     setNorm:(sectId)=>
+          if @debug then console.log "adminTools.setNorm"
+          
+          $.ajax
+               url: @base_url+"admin/securepost"
+               type: 'post'
+               dataType: 'json'
+               data:
+                    section: sectId
+               
+               success: (response)=>
+                    if response.success
+                         @textBodyResponse("User/Section association added to the database", "#roleMessage", false, "#roleArea-alert", "#saveNewContact")
+                         $(".visAdj").prop("disabled", false)   
+                    else if response.error
+                         console.log "error"
+                         @textBodyResponse(response.error,  "#roleMessage", true, "#roleArea-alert", "#saveNewContact")  
+                         $(".visAdj").prop("disabled", false)
+                    
+     setLogged:()=>
+          if @debug then console.log "adminTools.setLogged"
+          
+          
+     setLocked:()=>
+          if @debug then console.log "adminTools.setLocked"
+     
      
 window.classes ?= {}
 window.classes.adminTools = adminTools

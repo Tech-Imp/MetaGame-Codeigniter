@@ -150,15 +150,7 @@
 				    </div>
 				    <div id="visController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="visibilityAdd">
 			      		<div class="panel-body">
-					      	NYI
-							<!-- <div class="alert alert-danger noshow" id="textArea-alert">
-    							<button type="button" class="close" data-dismiss="alert">x</button>
-    							<strong id="userMessage">You need to add Travel Info </strong>
-							</div> -->
-					      	<textarea name="MCEarea" class='cleanMe' cols="40" rows="10" id="mceTravel" style="width: 100%; resize: vertical; overflow-y: scroll; "></textarea>
-					       	<br>
-					       	<button id="saveNewTravel" class="btn btn-success" >Save to Database</button>
-					       	<button id="clearArticle" class="btn btn-warning">Clear</button>
+					      	<?php echo $secVisTable?>
 					      	<?php echo $regenSectionButton?>
 				      	
 				      	</div>

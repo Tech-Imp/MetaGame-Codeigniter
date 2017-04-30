@@ -52,7 +52,7 @@ class SectionAuth_model extends MY_Model{
 	public function getSelectLinks($id=null){
 		$myRole=$_SESSION['role'];
 		$this->db->where($this->_table_name.".visible", 1);
-		$this->joinTable("page_visibility",  "sub_dir", "sub_dir", "sub_name, sub_dir, usage", "minRole");
+		$this->joinTable("page_visibility",  "sub_dir", "sub_dir", "sub_name, sub_dir, usage", "min_role");
 	 	if($myRole< $this->config->item('superAdmin')){
                $this->db->where("author_id", $myID);
       	}
@@ -67,6 +67,7 @@ class SectionAuth_model extends MY_Model{
           $this->joinTable("users",  "author_id", "id", "*", "name, email");
           return $this->get($id);
      }
+     
 	//--------------------------------------------------------------------------------------------------------
 	//Get info on who has access to what using additional models
 	//essentially acting as a security wrapper around other classes

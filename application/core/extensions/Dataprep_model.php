@@ -318,10 +318,9 @@ class Dataprep_model extends CI_Model{
 	//------------------------------------------------------------------------------------------------
 	protected function meatyContent($row, $overallCount, $myLink, $area, $perRow, $maxPerRow, $primary_key, $ctrlFunc='index', $showText=TRUE){
 		$media="";
-		
+		//Static media like picture
 		if(array_key_exists('fileLoc', $row) && $row->fileLoc !== ""){
 			//TODO Need to verify file exists
-			
 			if($perRow==1){
 				$media="<div>";
 			}
@@ -330,6 +329,7 @@ class Dataprep_model extends CI_Model{
 			}
 			$media.=$this->simpleContent($row, $myLink, $area, $primary_key)."</div>";
 		}
+          //Multimedia
 		elseif (array_key_exists('embed', $row) && $row->embed !== "") {
 			// Determine if video is alone on page, and if so just show it. Otherwise, thumbnail. 
 			// Youtube and Soundcloud special cases due to interactions with bootstrap

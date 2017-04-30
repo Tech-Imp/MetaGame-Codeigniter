@@ -8,8 +8,8 @@ class Sectionexposure_model extends MY_Model{
 	public $rules=array();
 	protected $_timestamp=FALSE;
 	private $_basicSection=array("index", "news", "articles", "media", "photos", "video", "audio", "merch", "contact");
-    private $_origRouteFile="application/config/routes.php";
-    private $_exRouteFile="application/config/addroute.php";
+     private $_origRouteFile="application/config/routes.php";
+     private $_exRouteFile="application/config/addroute.php";
 	
 	 
 	function __construct(){
@@ -137,8 +137,22 @@ class Sectionexposure_model extends MY_Model{
 		}
 		return FALSE;
      }
-     
-    
+     //Retrieves the data on visible pages
+     public function getSectionVis($id=NULL, $subdir=false){
+          $myID=$_SESSION['id'];
+          $myRole=$_SESSION['role'];
+          if($myRole< $this->config->item('superAdmin')){
+               $this->db->where("author_id", $myID);
+          }
+          
+          if(!$subdir){
+               $this->db->not_like("sub_url", "/");
+          }
+          
+          $this->joinTable("subsite_database",  "sub_url", "sub_dir", "*", "subsite_id, sub_name, visible, forSection, author_id");
+          $this->joinTable("users",  "subsite_database.author_id", "users.id", "*", "name, email");
+          return $this->get($id);
+     }
 
 //--------------------------------------------------------------------------------------------
 //Routes specific functions
