@@ -405,13 +405,23 @@ class Securepost extends MY_Controller{
 //----------------------------------------------------------------------------------
      
      function setSectionNorm(){
+          $this->setSectionVis($this->simplePurify($this->input->post('section')), $this->config->item('baseUser'));
+     }
+     
+     function setSectionLogged(){
+          $this->setSectionVis($this->simplePurify($this->input->post('section')), $this->config->item('normUser'));
+     }
+     function setSectionLocked(){
+          $this->setSectionVis($this->simplePurify($this->input->post('section')), $this->config->item('contributor'));
+     }
+     
+     function setSectionVis($sectionID, $sectionRole){
           header('content-type: text/javascript');
           $myRole=$_SESSION['role'];
           $myName=$_SESSION['name'];
           $myEmail=$_SESSION['email'];
           $author = $_SESSION['id'];
           
-          $sectionID = $this->simplePurify($this->input->post('section'));
           
           if($myRole< $this->config->item('sectionAdmin')){
                $data=array('error' => "Insufficient privledges");
@@ -431,13 +441,14 @@ class Securepost extends MY_Controller{
           
           $this->load->model("Sectionexposure_model");
           $sectionData=$this->Sectionexposure_model->getSectionVis($sectionID);
-          
+          $result="out";
           if(count($sectionData)){
                if(strpos($sectionData->sub_url, "/") !==false){
-                    $result=$this->Sectionexposure_model->adjustGroupingBasic($sectionData->sub_url, $this->config->item('baseUser'));    
+                    
+                    $result="top odd";   
                }
                else{
-                    
+                    $result=$this->Sectionexposure_model->adjustGroupingBasic($sectionData->sub_url, $sectionRole); 
                }
           }
           else{

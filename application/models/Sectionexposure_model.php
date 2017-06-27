@@ -84,7 +84,7 @@ class Sectionexposure_model extends MY_Model{
                     'comment'=>$comment
      		); 
                if(!empty($subUrl)){$data['sub_url']=$subUrl;}
-               if(empty($minRole)){
+               if(empty($minRole) && $minRole!==0){
                     $data['min_role']=$this->config->item('contributor');
                }
                else{
@@ -103,14 +103,17 @@ class Sectionexposure_model extends MY_Model{
      //Update group with similar issues     
      public function adjustGroupingBasic($url=NULL, $minRole=NULL, $redirect="", $comment=""){
           if(!(empty($url))){
-               $this->db->like('sub_url', url);  
+               $this->db->like('sub_url', $url);  
                $results=$this->get();
                //verify that the section exists and has children and elements to change
-               if( count($results)&& (!(empty($minRole)) || !(empty($redirect)) || !(empty($comment)))){
+               if( count($results)&& ((isset($minRole)) || !(empty($redirect)) || !(empty($comment)))){
                     foreach($results as $row){
                          $this->saveSectionVis(NULL, $minRole, $redirect, $comment, $row->id);
                     }
                     return TRUE;
+               }
+               else{
+                    return FALSE;
                }
           } 
           else{

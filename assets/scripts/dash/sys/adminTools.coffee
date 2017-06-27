@@ -148,7 +148,7 @@ class adminTools extends window.classes.dashboardIndex
           if @debug then console.log "adminTools.setNorm"
           
           $.ajax
-               url: @base_url+"admin/securepost"
+               url: @base_url+"/admin/securepost/setSectionNorm"
                type: 'post'
                dataType: 'json'
                data:
@@ -156,20 +156,42 @@ class adminTools extends window.classes.dashboardIndex
                
                success: (response)=>
                     if response.success
-                         @textBodyResponse("User/Section association added to the database", "#roleMessage", false, "#roleArea-alert", "#saveNewContact")
-                         $(".visAdj").prop("disabled", false)   
+                         @textBodyResponse("Section updated to Norm", "#visMessage", false, "#visArea-alert", ".visAdj")
                     else if response.error
                          console.log "error"
-                         @textBodyResponse(response.error,  "#roleMessage", true, "#roleArea-alert", "#saveNewContact")  
-                         $(".visAdj").prop("disabled", false)
+                         @textBodyResponse(response.error,  "#visMessage", true, "#visArea-alert", ".visAdj")  
                     
-     setLogged:()=>
+     setLogged:(sectId)=>
           if @debug then console.log "adminTools.setLogged"
+          $.ajax
+               url: @base_url+"/admin/securepost/setSectionLogged"
+               type: 'post'
+               dataType: 'json'
+               data:
+                    section: sectId
+               
+               success: (response)=>
+                    if response.success
+                         @textBodyResponse("Section updated to Logged", "#visMessage", false, "#visArea-alert", ".visAdj")
+                    else if response.error
+                         console.log "error"
+                         @textBodyResponse(response.error,  "#visMessage", true, "#visArea-alert", ".visAdj")
           
-          
-     setLocked:()=>
+     setLocked:(sectId)=>
           if @debug then console.log "adminTools.setLocked"
-     
+          $.ajax
+               url: @base_url+"/admin/securepost/setSectionLocked"
+               type: 'post'
+               dataType: 'json'
+               data:
+                    section: sectId
+               
+               success: (response)=>
+                    if response.success
+                         @textBodyResponse("Section locked down", "#visMessage", false, "#visArea-alert", ".visAdj")
+                    else if response.error
+                         console.log "error"
+                         @textBodyResponse(response.error,  "#visMessage", true, "#visArea-alert", ".visAdj") 
      
 window.classes ?= {}
 window.classes.adminTools = adminTools

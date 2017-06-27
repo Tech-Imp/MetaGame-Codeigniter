@@ -198,7 +198,7 @@
         console.log("adminTools.setNorm");
       }
       return $.ajax({
-        url: this.base_url + "admin/securepost",
+        url: this.base_url + "/admin/securepost/setSectionNorm",
         type: 'post',
         dataType: 'json',
         data: {
@@ -207,28 +207,62 @@
         success: (function(_this) {
           return function(response) {
             if (response.success) {
-              _this.textBodyResponse("User/Section association added to the database", "#roleMessage", false, "#roleArea-alert", "#saveNewContact");
-              return $(".visAdj").prop("disabled", false);
+              return _this.textBodyResponse("Section updated to Norm", "#visMessage", false, "#visArea-alert", ".visAdj");
             } else if (response.error) {
               console.log("error");
-              _this.textBodyResponse(response.error, "#roleMessage", true, "#roleArea-alert", "#saveNewContact");
-              return $(".visAdj").prop("disabled", false);
+              return _this.textBodyResponse(response.error, "#visMessage", true, "#visArea-alert", ".visAdj");
             }
           };
         })(this)
       });
     };
 
-    adminTools.prototype.setLogged = function() {
+    adminTools.prototype.setLogged = function(sectId) {
       if (this.debug) {
-        return console.log("adminTools.setLogged");
+        console.log("adminTools.setLogged");
       }
+      return $.ajax({
+        url: this.base_url + "/admin/securepost/setSectionLogged",
+        type: 'post',
+        dataType: 'json',
+        data: {
+          section: sectId
+        },
+        success: (function(_this) {
+          return function(response) {
+            if (response.success) {
+              return _this.textBodyResponse("Section updated to Logged", "#visMessage", false, "#visArea-alert", ".visAdj");
+            } else if (response.error) {
+              console.log("error");
+              return _this.textBodyResponse(response.error, "#visMessage", true, "#visArea-alert", ".visAdj");
+            }
+          };
+        })(this)
+      });
     };
 
-    adminTools.prototype.setLocked = function() {
+    adminTools.prototype.setLocked = function(sectId) {
       if (this.debug) {
-        return console.log("adminTools.setLocked");
+        console.log("adminTools.setLocked");
       }
+      return $.ajax({
+        url: this.base_url + "/admin/securepost/setSectionLocked",
+        type: 'post',
+        dataType: 'json',
+        data: {
+          section: sectId
+        },
+        success: (function(_this) {
+          return function(response) {
+            if (response.success) {
+              return _this.textBodyResponse("Section locked down", "#visMessage", false, "#visArea-alert", ".visAdj");
+            } else if (response.error) {
+              console.log("error");
+              return _this.textBodyResponse(response.error, "#visMessage", true, "#visArea-alert", ".visAdj");
+            }
+          };
+        })(this)
+      });
     };
 
     return adminTools;

@@ -150,6 +150,10 @@
 				    </div>
 				    <div id="visController" class="panel-collapse collapse" role="tabpanel" aria-labelledby="visibilityAdd">
 			      		<div class="panel-body">
+			      		     <div class="alert alert-danger noshow" id="visArea-alert">
+                                   <button type="button" class="close" data-dismiss="alert">x</button>
+                                   <strong id="visMessage">You need to add Info </strong>
+                                   </div>
 					      	<?php echo $secVisTable?>
 					      	<?php echo $regenSectionButton?>
 				      	
