@@ -202,20 +202,58 @@ class Adminprep_model extends Dataprep_model{
           return $dataItems;
      }
 
-
-   
-     public function getSectionLogs($logs){
+     //----------------------------------------
+     //Shared logging features, solo and group
+     //--------------------------------------
+     public function getSectionLogs($logs, $type=""){
           if(count($logs)){
-               $logOutput='<div><h4>Recent activity:</h4><br><ul>';
+               $logOutput='<div><h4>'.$type.' Recent Activity:</h4><br><ul>';
                foreach ($logs as $row) {
-                    $logOutput.='<li>'.$row->change.'</li>';     
+                    $logOutput.='<li>'.'[ '.$row->dateWhen.' ] > '.$row->change.'</li>';     
                }
                $logOutput.='</ul></div>';
                return $logOutput;
           }
           else{
-               return "<div><h4>Recent Section Activity:</h4><br>No recent section activity to report.</div>";
+               return "<div><h4>".$type." Recent Activity:</h4><br>No recent activity to report.</div>";
           }
+     }
+     //-----------------------------------------------------------------
+     //Multiple logs, meant to be used after first log space is taken up
+     //Can be accordion
+     //-----------------------------------------------------------------
+     public function multiLogs($metalog, $grouped=false){
+          $extraLogs="";
+          $logCount=1;
+          if(count($metalog)){
+               if($grouped){
+                    $extraLogs='<div class=" col-md-8 col-md-offset-4">
+                         <div class="panel-group">
+                              <div class="panel panel-default">';
+                    foreach($metalog as $singleLog){
+                         $extraLogs.='<div class="panel-heading">
+                              <h4 class="panel-title">
+                                   <strong><a data-toggle="collapse" href="#collapse'.$logCount.'">'.$singleLog[1].'</a></strong>
+                              </h4>
+                         </div>';
+                         $extraLogs.='<div id="collapse'.$logCount.'" class="panel-collapse collapse">
+                              <div class="panel-body">'.$this->getSectionLogs($singleLog[0]).'</div>
+                         </div>';
+                         ++$logCount;
+                    }  
+                    $extraLogs.='</div></div></div>';
+               }
+               else{
+                    foreach($metalog as $singleLog){
+                         $extraLogs.='<div id="eLog'.$logCount.'" class="col-md-8 well col-md-offset-4">'
+                         .$this->getSectionLogs($singleLog[0],$singleLog[1]).
+                         '</div>';
+                         ++$logCount;
+                    }  
+               }
+               
+          }
+          return $extraLogs;
      }
      public function getWhoAssigned($assignments){
           $delegation="<thead><td>Section</td><td>User</td><td>Email</td><td>Remove User?</td></thead><tbody>";

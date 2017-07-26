@@ -108,14 +108,14 @@ class Dash_backend extends Admin_controller{
 	protected function adminHeader()
 	{
 		if($_SESSION['role'] >= $this->config->item('sectionAdmin')){
-			$data['css'][0]="main.css";
-			$data['site_name']=config_item('site_name');
+		     $data=$this->commonHeader();
+			
 			$data['title']="System Management";
-			$data['additionalTech']="";
-			$who=$_SESSION['name'];
-			$data['logout']=$this->logoutPATH;
-			$data['userName'] = "<li class='invertColor'>Welcome back, ".$who. "</li>";
+			
 			$data['userOptions']=$this->toolMenu();
+			$data['recentChanges']=$data['recentChangesType']="";
+               $data['addLogs']="";
+               
 			return $data;
 		}
 		else{

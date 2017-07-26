@@ -20,20 +20,27 @@ class Index extends Dash_backend{
 		$this->load->view('inc/dash_header', $data);
 		
 		//Logging of recent items
-		$logOutput="<div><h4>Recent activity:</h4><br>No recent activity to report.</div>";
-		$logs=$this->Logging_model->getQuickLogs(15,0);
-		if(count($logs)){
-			$logOutput='<div><h4>Recent activity:</h4><br><ul>';
-			foreach ($logs as $row) {
-				$logOutput.='<li>'.$row->change.'</li>';	
-			}
-			$logOutput.='</ul></div>';
-		}
-		$data['recentChanges']=$logOutput;
-		//Recent Photos
-		$myMedia=$this->Media_model->getMedia(NULL, 6, 0);
-		$data['mediaTable']=$this->Adminprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", 6, 6);
-		$this->load->view('dashboard', $data);
+		
+		$types=array("aSec", "dSec", "uAdd", "uDel");
+          $logs=$this->Logging_model->getTypeLogs($types,15,0);
+          $data['recentChangesType']="User/Section logs";
+          $data['recentChanges']=$this->Adminprep_model->getSectionLogs($logs);
+		
+          // Secondary logs
+		$types1=array("dVis", "dNew", "dSoc", "dMed", "dCon");
+          $log1=array($this->Logging_model->getTypeLogs($types1,15,0), 'Deletion Actions');
+          $types2=array("aEmb", "aMed", "aSoc", "aUsr", "aVis", "aCon", "aNew");
+          $log2=array($this->Logging_model->getTypeLogs($types2,15,0), "Creation Actions");
+          $types3=array("oPas", "sEma", "sPas");
+          $log3=array($this->Logging_model->getTypeLogs($types3,15,0), "System/admin Actions");
+          
+          $multi=array($log1, $log2, $log3);
+          
+          $data['addLogs']=$this->Adminprep_model->multiLogs($multi, true);
+          
+          
+          
+		$this->load->view('sys/logs', $data);
 		$this->load->view('inc/dash_footer', $data);
 		$this->load->view('templates/footer', $data);
 	}
