@@ -19,10 +19,9 @@ class Logs extends Dash_backend{
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
           
-          $logOutput="<div><h4>Recent activity:</h4><br>No recent activity to report.</div>";
           $logs=$this->Errorlog_model->getQuickLogs(20,0);
           
-          $data['recentChanges']=$this->Adminprep_model->getSectionLogs($logs);;
+          $data['recentChanges']=$this->Adminprep_model->getSectionLogs($logs);
           
           // Secondary logs
           $types1=array("dVis", "dNew", "dSoc", "dMed", "dCon","dSec");

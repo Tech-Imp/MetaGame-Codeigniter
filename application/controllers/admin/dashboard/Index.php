@@ -20,16 +20,9 @@ class Index extends Dash_backend{
 		$this->load->view('inc/dash_header', $data);
 		
 		//Logging of recent items
-		$logOutput="<div><h4>Recent activity:</h4><br>No recent activity to report.</div>";
 		$logs=$this->Logging_model->getQuickLogs(15,0);
-		if(count($logs)){
-			$logOutput='<div><h4>Recent activity:</h4><br><ul>';
-			foreach ($logs as $row) {
-				$logOutput.='<li>'.$row->change.'</li>';	
-			}
-			$logOutput.='</ul></div>';
-		}
-		$data['recentChanges']=$logOutput;
+		
+		$data['recentChanges']=$this->Adminprep_model->getSectionLogs($logs);
 		//Recent Photos
 		$myMedia=$this->Media_model->getMedia(NULL, 6, 0);
 		$data['mediaTable']=$this->Adminprep_model->gatherItemsAdmin($myMedia, "media", "media_id", "multimedia/editMedia", 6, 6);
