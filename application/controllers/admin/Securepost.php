@@ -414,6 +414,10 @@ class Securepost extends MY_Controller{
      function setSectionLocked(){
           $this->setSectionVis($this->simplePurify($this->input->post('section')), $this->config->item('contributor'));
      }
+     function setMaintenance(){
+          $this->setSectionVis("maintenance", $this->config->item('contributor'));
+     }
+     
      
      function setSectionVis($sectionID, $sectionRole){
           header('content-type: text/javascript');
@@ -422,10 +426,11 @@ class Securepost extends MY_Controller{
           $myEmail=$_SESSION['email'];
           $author = $_SESSION['id'];
           
+          $this->load->model("Errorlog_model");
+          $this->load->model("Logging_model");
           
           if($myRole< $this->config->item('sectionAdmin')){
                $data=array('error' => "Insufficient privledges");
-               $this->load->model("Errorlog_model");
                $this->Errorlog_model->newLog(-1, 'eVis', 'Failed to change visibility for section. Insufficient privledges. User '.$myName.' ('.$myEmail.') role '.$myRole);  
                echo json_encode($data);
                exit; 
@@ -433,22 +438,44 @@ class Securepost extends MY_Controller{
           
           if(empty($sectionID)){
                $data=array('error' => "Required field is empty");
-               $this->load->model("Errorlog_model");
                $this->Errorlog_model->newLog(-1, 'eVis', 'Failed to change visibility. No section was passed by User '.$myName.' ('.$myEmail.')');  
                echo json_encode($data);
                exit; 
           }
-          
           $this->load->model("Sectionexposure_model");
-          $sectionData=$this->Sectionexposure_model->getSectionVis($sectionID);
-          $result="out";
-          if(count($sectionData)){
-               if(strpos($sectionData->sub_url, "/") !==false){
-                    
-                    $result="top odd";   
+          //Maintenance ends function early
+          if($sectionID=="maintenance"){
+               $result=$this->Sectionexposure_model->maintenanceMode();
+               if(is_int($result)){
+                    $this->Logging_model->newLog($sectionID, 'eVis', 'System set to maintenance mode by '.$myName.'('.$myEmail.')');  
+                    $data=array('success' => $result); 
                }
                else{
+                    $this->Errorlog_model->newLog(-1, 'eVis', 'Attempted maintenance failed '.$result.' '.$myName.' ('.$myEmail.')');
+                    $data=array('error' => $result);  
+               }
+               echo json_encode($data);
+               exit; 
+          }//Otherwise get info on section
+          else{
+               $sectionData=$this->Sectionexposure_model->getSectionVis($sectionID);
+          }
+          
+          
+          $result="out";
+          if(count($sectionData)){
+               if($sectionID!=="maintenance" && strpos($sectionData->sub_url, "/") ===false){
                     $result=$this->Sectionexposure_model->adjustGroupingBasic($sectionData->sub_url, $sectionRole); 
+               }
+               elseif ($sectionID!=="maintenance" && strpos($sectionData->sub_url, "/") !==false) {
+                   //TODO single adjustments
+               }
+               else{
+                    $data=array('error' => "Section malformed ");
+                    $this->load->model("Errorlog_model");
+                    $this->Errorlog_model->newLog(-1, 'eVis', 'Failed to alter visibility. Section exceeded allotment. User '.$myName.' ('.$myEmail.') role '.$myRole);  
+                    echo json_encode($data);
+                    exit;   
                }
           }
           else{

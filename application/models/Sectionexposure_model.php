@@ -100,6 +100,19 @@ class Sectionexposure_model extends MY_Model{
 //----------------------------------------------------------------------------------------------------------------------------
 //---------------Advanced functions-------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------	 
+     public function maintenanceMode(){
+          $items=$this->maintenanceItems();
+          $result=0;
+          foreach ($items as $row) {
+              $prev=$result;
+              $result=$this->saveSectionVis(NULL, $this->config->item('contributor'), "", "lastMaintenance ".date('Y-m-d H:i:s [e]'), $row->id);
+              if($result==-1)return $result*$prev.", item failed: ".$row->id;//shows last entry that was processed before failure and failure
+          }
+          return $result;
+          
+     }
+     
+     
      //Update group with similar issues     
      public function adjustGroupingBasic($url=NULL, $minRole=NULL, $redirect="", $comment=""){
           if(!(empty($url))){
@@ -140,7 +153,21 @@ class Sectionexposure_model extends MY_Model{
 		}
 		return FALSE;
      }
-     //Retrieves the data on visible pages
+     // Returns all items user has access to for maintenance to lockdown
+     public function maintenanceItems(){
+          $myID=$_SESSION['id'];
+          $myRole=$_SESSION['role'];
+          if($myRole< $this->config->item('superAdmin')){
+               $this->db->where("author_id", $myID);
+          }
+          $this->db->not_like("sub_url", "beta");
+          $this->joinTable("subsite_database",  "sub_url", "sub_dir", "*", "subsite_id, sub_name, visible, forSection, author_id");
+          $this->joinTable("users",  "subsite_database.author_id", "users.id", "*", "name, email");
+          return $this->get();
+     }
+     
+     
+     //Retrieves the data on visible pages, providing a second option returns all available results
      public function getSectionVis($id=NULL, $subdir=false){
           $myID=$_SESSION['id'];
           $myRole=$_SESSION['role'];
