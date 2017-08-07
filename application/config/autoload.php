@@ -39,7 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |  $autoload['packages'] = array(APPPATH.'third_party', '/usr/local/shared');
 |
 */
-$autoload['packages'] = array(APPPATH.'third_party/aws-2.8.2/aws-autoloader');
+$autoload['packages'] = array(APPPATH.'third_party/aws-3.32.3/aws-autoloader');
 
 /*
 | -------------------------------------------------------------------
