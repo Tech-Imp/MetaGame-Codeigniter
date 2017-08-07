@@ -34,7 +34,7 @@ class adminTools extends window.classes.dashboardIndex
                $("#regen").prop("disabled", "disabled")    
                @regen()
           
-          
+               
           $("#clearSection").unbind().bind "click", (event)=>
                @cleanAreas()
 
@@ -52,16 +52,19 @@ class adminTools extends window.classes.dashboardIndex
      
           $(".normVis").unbind().bind "click", (event)=>
                $(".visAdj").prop("disabled", "disabled")
-               @setNorm($(event.currentTarget).data("id"))
+               @setVis($(event.currentTarget).data("id"), "norm", "Section updated to Norm")
           
           $(".logVis").unbind().bind "click", (event)=>
                $(".visAdj").prop("disabled", "disabled")
-               @setLogged($(event.currentTarget).data("id"))
+               @setVis($(event.currentTarget).data("id"), "logged", "Section updated to Logged")
           
           $(".lockVis").unbind().bind "click", (event)=>
                $(".visAdj").prop("disabled", "disabled")
-               @setLocked($(event.currentTarget).data("id"))
+               @setVis($(event.currentTarget).data("id"), "locked", "Section locked down")
           
+          $("#mainMode").unbind().bind "click", (event)=>
+               $("#mainMode").prop("disabled", "disabled")    
+               @setVis(0, "maintenance", "Maintenance mode has been activated")
           
      saveSection:()=>
           if @debug then console.log "adminTools.saveSection"
@@ -83,14 +86,12 @@ class adminTools extends window.classes.dashboardIndex
                               console.log "Success"
                               @cleanAreas()
                               @textBodyResponse("Section added to the database", "#sectionMessage", false, "#sectionArea-alert", "#saveNewSection")
-                              $("#saveNewContact").prop("disabled", false)
                          else if response.debug
                               console.log "debug"
                               $("#saveNewContact").prop("disabled", false)
                          else if response.error
                               console.log "error"
                               @textBodyResponse(response.error,  "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection")  
-                              $("#saveNewContact").prop("disabled", false)
           else
                @textBodyResponse("You need fill in all the fields!", "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection")
      
@@ -107,17 +108,14 @@ class adminTools extends window.classes.dashboardIndex
                     if response.success
                          console.log "Success"
                          @cleanAreas()
-                         @textBodyResponse(response.error,  "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection")
-                         $("#regen").prop("disabled", false)
+                         @textBodyResponse(response.success,  "#visMessage", false, "#visArea-alert", "#regen")
                     else if response.debug
                          console.log "debug"
                          $("#regen").prop("disabled", false)
                     else if response.error
                          console.log "error"
-                         @textBodyResponse(response.error,  "#sectionMessage", true, "#sectionArea-alert", "#saveNewSection")  
-                         $("#regen").prop("disabled", false)
+                         @textBodyResponse(response.error,  "#visMessage", true, "#visArea-alert", "#regen")  
           
-     
      
      addUser:()=>
           if @debug then console.log "adminTools.addUser"
@@ -135,20 +133,27 @@ class adminTools extends window.classes.dashboardIndex
                          console.log "Success"
                          @cleanAreas()
                          @textBodyResponse("User/Section association added to the database", "#roleMessage", false, "#roleArea-alert", "#saveNewContact")
-                         $("#saveNewContact").prop("disabled", false)
                     else if response.debug
                          console.log "debug"
                          $("#saveNewContact").prop("disabled", false)
                     else if response.error
                          console.log "error"
                          @textBodyResponse(response.error,  "#roleMessage", true, "#roleArea-alert", "#saveNewContact")  
-                         $("#saveNewContact").prop("disabled", false)
-                         
-     setNorm:(sectId)=>
-          if @debug then console.log "adminTools.setNorm"
+
+
+     setVis:(sectId, typeSet, message)=>
+          if @debug then console.log "adminTools.setVis"
+          switch typeSet
+               when "norm" then using=@base_url+"/admin/securepost/setSectionNorm"
+               when "logged" then using=@base_url+"/admin/securepost/setSectionLogged"
+               when "locked" then using=@base_url+"/admin/securepost/setSectionLocked"
+               when "maintenance" then using=@base_url+"/admin/securepost/setMaintenance"
+               else  using=@base_url+"/admin/securepost/setSectionLocked"
           
+          buttonRelease=[".visAdj", "#mainMode"]
+               
           $.ajax
-               url: @base_url+"/admin/securepost/setSectionNorm"
+               url: using
                type: 'post'
                dataType: 'json'
                data:
@@ -156,42 +161,11 @@ class adminTools extends window.classes.dashboardIndex
                
                success: (response)=>
                     if response.success
-                         @textBodyResponse("Section updated to Norm", "#visMessage", false, "#visArea-alert", ".visAdj")
+                         @textBodyResponse(message, "#visMessage", false, "#visArea-alert", buttonRelease)
                     else if response.error
                          console.log "error"
-                         @textBodyResponse(response.error,  "#visMessage", true, "#visArea-alert", ".visAdj")  
-                    
-     setLogged:(sectId)=>
-          if @debug then console.log "adminTools.setLogged"
-          $.ajax
-               url: @base_url+"/admin/securepost/setSectionLogged"
-               type: 'post'
-               dataType: 'json'
-               data:
-                    section: sectId
-               
-               success: (response)=>
-                    if response.success
-                         @textBodyResponse("Section updated to Logged", "#visMessage", false, "#visArea-alert", ".visAdj")
-                    else if response.error
-                         console.log "error"
-                         @textBodyResponse(response.error,  "#visMessage", true, "#visArea-alert", ".visAdj")
-          
-     setLocked:(sectId)=>
-          if @debug then console.log "adminTools.setLocked"
-          $.ajax
-               url: @base_url+"/admin/securepost/setSectionLocked"
-               type: 'post'
-               dataType: 'json'
-               data:
-                    section: sectId
-               
-               success: (response)=>
-                    if response.success
-                         @textBodyResponse("Section locked down", "#visMessage", false, "#visArea-alert", ".visAdj")
-                    else if response.error
-                         console.log "error"
-                         @textBodyResponse(response.error,  "#visMessage", true, "#visArea-alert", ".visAdj") 
+                         @textBodyResponse(response.error,  "#visMessage", true, "#visArea-alert", buttonRelease) 
+
      
 window.classes ?= {}
 window.classes.adminTools = adminTools

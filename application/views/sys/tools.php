@@ -156,7 +156,7 @@
                                    </div>
 					      	<?php echo $secVisTable?>
 					      	<?php echo $regenSectionButton?>
-				      	
+                                   <?php echo $maintenanceMode?>
 				      	</div>
 				    </div>
 				    <!-- Add internal user-->

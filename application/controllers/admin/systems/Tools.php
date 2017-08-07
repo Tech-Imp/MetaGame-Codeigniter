@@ -27,10 +27,11 @@ class Tools extends Dash_backend{
 		$this->load->view('templates/header', $data);
 		$this->load->view('inc/dash_header', $data);
 		
-          $data['createUserLink']=$data['regenSectionButton']="";
+          $data['createUserLink']=$data['regenSectionButton']=$data['maintenanceMode']="";
 		if($_SESSION['role'] >= $this->config->item('sectionAdmin')){
-				$data['regenSectionButton']="<button id='regen' class='btn btn-warning'>Regen Route</button>";
-               	$data['createUserLink']=anchor('admin/systems/tools/createuser',"<span class='glyphicon glyphicon-user'></span> Create User", array('class'=>'btn btn-success btn-lg btn-block', 'id'=>'cNewUser'));
+		     $data['maintenanceMode']="<button id='mainMode' class='btn btn-danger'>Maintenance mode</button>";        
+               $data['regenSectionButton']="<button id='regen' class='btn btn-warning'>Regen Route</button>";
+               $data['createUserLink']=anchor('admin/systems/tools/createuser',"<span class='glyphicon glyphicon-user'></span> Create User", array('class'=>'btn btn-success btn-lg btn-block', 'id'=>'cNewUser'));
           }
 		//Logging of recent items
 		$types=array("aSec", "dSec", "uAdd", "uDel");
@@ -231,8 +232,8 @@ class Tools extends Dash_backend{
           $data['currentLocation']="<div class='navbar-brand'>Detailed Visbility Editting (NYI)</div>";
           $data['js'][0]= 'tinymce/jquery.tinymce.min.js';
           $data['js'][1]= 'dash/dashboardIndex.js';
-            $data['js'][2]= 'dash/sys/adminSectionEdit.js';
-            $data['js'][3]='commonShared.js';
+          $data['js'][2]= 'dash/sys/adminSectionEdit.js';
+          $data['js'][3]='commonShared.js';
 
           
           $this->load->view('templates/header', $data);
@@ -249,8 +250,8 @@ class Tools extends Dash_backend{
                     $data['groupURL']=$allData->sub_dir;
                     $data['groupName']=$allData->sub_name;
                     $data['groupUsage']=$allData->usage;
-                         $data["linkVisibility"]=$this->dropdownOptions($allData->visible, array("Yes", "No"), array(1,0));
-                         $data['sectionList']=$this->dropdownSections("void", "The Void", $allData->forSection, $allData->sub_dir);
+                    $data["linkVisibility"]=$this->dropdownOptions($allData->visible, array("Yes", "No"), array(1,0));
+                    $data['sectionList']=$this->dropdownSections("void", "The Void", $allData->forSection, $allData->sub_dir);
                     //Creator
                     $data['creationDate']=$allData->created;
                     $data['creator']=$allData->name;

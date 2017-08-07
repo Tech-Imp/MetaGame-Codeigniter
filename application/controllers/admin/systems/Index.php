@@ -31,10 +31,12 @@ class Index extends Dash_backend{
           $log1=array($this->Logging_model->getTypeLogs($types1,15,0), 'Deletion Actions');
           $types2=array("aEmb", "aMed", "aSoc", "aUsr", "aVis", "aCon", "aNew");
           $log2=array($this->Logging_model->getTypeLogs($types2,15,0), "Creation Actions");
-          $types3=array("oPas", "sEma", "sPas");
-          $log3=array($this->Logging_model->getTypeLogs($types3,15,0), "System/admin Actions");
+          $types3=array("eVis");
+          $log3=array($this->Logging_model->getTypeLogs($types3,15,0), "Visibility Edit Actions");
+          $types4=array("oPas", "sEma", "sPas");
+          $log4=array($this->Logging_model->getTypeLogs($types4,15,0), "System/admin Actions");
           
-          $multi=array($log1, $log2, $log3);
+          $multi=array($log1, $log2, $log3, $log4);
           
           $data['addLogs']=$this->Adminprep_model->multiLogs($multi, true);
           

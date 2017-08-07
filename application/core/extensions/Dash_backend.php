@@ -130,6 +130,7 @@ class Dash_backend extends Admin_controller{
 		$userOptions=anchor('main/index',"<span class='glyphicon glyphicon-arrow-left'></span> Back to Site", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'retSite'));
 		$userOptions.=anchor('admin/dashboard',"<span class='glyphicon glyphicon-home'></span> Back to Dashboard", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'retHome'));
 		if($_SESSION['role'] >= $this->config->item('sectionAdmin')){
+               $userOptions.=anchor('admin/systems/',"<span class='glyphicon glyphicon-thumbs-up'></span> Main Logs", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'successLog'));
                $userOptions.=anchor('admin/systems/tools',"<span class='glyphicon glyphicon-wrench'></span> Section Control", array('class'=>'btn btn-primary btn-lg btn-block', 'id'=>'secControl'));
           }
 		
